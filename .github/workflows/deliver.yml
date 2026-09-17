@@ -1,0 +1,64 @@
+name: برداشتن خروجی ساخت و گذاشتن روی شاخه
+on:
+  push:
+    branches: [deliver]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: گرفتن فایل‌های مخزن
+        uses: actions/checkout@v4
+
+      - name: برداشتن پیوست‌های ساخت و گذاشتن روی شاخهٔ dist
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -e
+          repo="$GITHUB_REPOSITORY"
+          echo "مخزن: $repo"
+          curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/$repo/actions/artifacts?per_page=100" -o arts.json
+          python3 - <<'PY'
+import json
+d = json.load(open('arts.json'))
+print("تعداد پیوست‌ها:", d.get('total_count'))
+for a in d.get('artifacts', []):
+    print(" ", a['id'], a['name'], a['size_in_bytes'], a['expired'], a['workflow_run']['id'])
+PY
+          mkdir -p dist
+          for NAME in NRISP-Remote-installer NRISP-Remote-portable; do
+            AID=$(python3 - <<PY
+import json
+d = json.load(open('arts.json'))
+cands = [a for a in d.get('artifacts', []) if a['name'] == "$NAME" and not a['expired']]
+cands.sort(key=lambda a: a['id'], reverse=True)
+print(cands[0]['id'] if cands else '')
+PY
+)
+            echo "پیوست $NAME → شناسه: ${AID:-پیدا نشد}"
+            [ -n "$AID" ] || { echo "پیوست پیدا نشد"; exit 1; }
+            curl -sL -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/$repo/actions/artifacts/$AID/zip" -o "$NAME.zip"
+            ls -la "$NAME.zip"
+            unzip -o -q "$NAME.zip" -d dist
+          done
+          ls -laR dist
+
+      - name: گذاشتن خروجی روی شاخهٔ dist
+        shell: bash
+        run: |
+          set -e
+          git config user.email "nrisp@nrisp.ac.ir"
+          git config user.name "NRISP Deliver"
+          git checkout --orphan dist
+          git rm -rf --cached . >/dev/null 2>&1 || true
+          git add -f dist
+          git commit -m "خروجی ساخت نرم‌افزار دسترسی راه دور موسسه" || echo "تغییری نبود"
+          git push -f origin dist
