@@ -11,6 +11,7 @@
 
 import json
 import os
+import shutil
 import struct
 import sys
 
@@ -134,6 +135,20 @@ def find_font(bold=False):
         if os.path.exists(c):
             return c
     return None
+
+
+def have_raqm():
+    """
+    آیا نسخهٔ Pillow نصب‌شده از چرخش متن راست‌به‌چپ پشتیبانی می‌کند؟
+    نسخه‌های ویندوزی Pillow معمولاً کتابخانهٔ libraqm را همراه ندارند؛
+    در آن حالت از لوگوهای آمادهٔ کنارِ پروژه استفاده می‌شود.
+    """
+    try:
+        f = ImageFont.truetype(find_font(bold=True) or "", 20)
+        ImageDraw.Draw(Image.new("RGBA", (10, 10))).textbbox((0, 0), "ا", font=f, direction="rtl")
+        return True
+    except Exception:
+        return False
 
 
 def text_size(draw, txt, font):
@@ -306,14 +321,29 @@ def main():
     # لوگوی کامل (نشان + نام) برای اسناد، سرصفحه، پاورپوینت و فایل نصبی
     blue_ink = tuple(blue) + (255,)
     white_ink = (255, 255, 255, 255)
-    draw_lockup(emblem_color, company_fa, blue_ink, height=320).save(
-        os.path.join(OUT_DIR, "logo_full.png"))
-    draw_lockup(emblem_white, company_fa, white_ink, height=320).save(
-        os.path.join(OUT_DIR, "logo_full_dark.png"))
-    draw_lockup(emblem_color, company_fa, blue_ink, target_size=(900, 180)).save(
-        os.path.join(OUT_DIR, "logo_with_name.png"))
-    draw_lockup(emblem_white, company_fa, white_ink, target_size=(900, 180)).save(
-        os.path.join(OUT_DIR, "logo_with_name_dark.png"))
+    lockups = ["logo_full.png", "logo_full_dark.png",
+               "logo_with_name.png", "logo_with_name_dark.png"]
+    if have_raqm():
+        draw_lockup(emblem_color, company_fa, blue_ink, height=320).save(
+            os.path.join(OUT_DIR, "logo_full.png"))
+        draw_lockup(emblem_white, company_fa, white_ink, height=320).save(
+            os.path.join(OUT_DIR, "logo_full_dark.png"))
+        draw_lockup(emblem_color, company_fa, blue_ink, target_size=(900, 180)).save(
+            os.path.join(OUT_DIR, "logo_with_name.png"))
+        draw_lockup(emblem_white, company_fa, white_ink, target_size=(900, 180)).save(
+            os.path.join(OUT_DIR, "logo_with_name_dark.png"))
+        print("لوگوی نام‌دار ساخته شد (با پشتیبانی متن راست‌به‌چپ)")
+    else:
+        # نسخه‌های آمادهٔ همین لوگوها که پیش‌تر روی محیط دارای libraqm ساخته شده‌اند
+        pre = os.path.join(BRAND_DIR, "assets", "lockups")
+        print("توجه: این نسخهٔ Pillow متن راست‌به‌چپ را نمی‌چرخاند؛ از لوگوهای آماده استفاده می‌شود")
+        for nm in lockups:
+            src = os.path.join(pre, nm)
+            if os.path.exists(src):
+                shutil.copyfile(src, os.path.join(OUT_DIR, nm))
+                print("  کپی شد:", nm)
+            else:
+                print("  هشدار: پیدا نشد:", src)
 
     # برداری
     with open(os.path.join(OUT_DIR, "icon.svg"), "w", encoding="utf-8") as f:
