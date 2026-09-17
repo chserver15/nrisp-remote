@@ -6,7 +6,7 @@
 set -e
 MSG="${1:-به‌روزرسانی وضعیت}"
 REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-WORK="${RUNNER_TEMP:-/tmp}/nrisp-ci-status"
+WORK="$(mktemp -d)"
 rm -rf "$WORK"
 mkdir -p "$WORK"
 cd "$WORK"

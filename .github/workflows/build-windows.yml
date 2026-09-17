@@ -25,6 +25,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: "utf-8"
   FLUTTER_VERSION: "3.24.5"
   BRIDGE_FLUTTER_VERSION: "3.22.3"
   FLUTTER_ROOT_DIR: "C:/hostedtoolcache/windows/flutter/stable-3.24.5-x64"
@@ -58,6 +60,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash branding/tools/ci_mark.sh "آغاز کار پل"
+
+      - name: خاموش‌کردن تبدیل خطوط
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
 
       - name: گرفتن سورس راست‌دسک
         shell: bash
@@ -170,9 +178,16 @@ jobs:
       - name: گرفتن فایل‌های این مخزن
         uses: actions/checkout@v4
 
+      - name: خاموش‌کردن تبدیل خطوط
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
       - name: گرفتن سورس راست‌دسک
         shell: bash
         run: |
+          git config --global core.autocrlf false
           git clone --depth 1 --branch "$RUSTDESK_REF" --recurse-submodules --shallow-submodules \
             "$RUSTDESK_REPO" "$SRC_DIR" \
             || git clone --depth 1 --recurse-submodules --shallow-submodules "$RUSTDESK_REPO" "$SRC_DIR"
@@ -267,17 +282,39 @@ jobs:
       - name: ساخت آیکون‌ها از فایل تنظیمات برند
         shell: bash
         run: |
-          python -m pip install --quiet --upgrade pip
-          python -m pip install --quiet pillow brotli
+          exec > >(tee -a "$GITHUB_WORKSPACE/branding-log.txt") 2>&1
+          echo "=== مرحلهٔ ساخت آیکون‌ها ==="
+          python -m pip install --quiet --upgrade pip || true
+          python -m pip install --quiet pillow brotli || true
+          python -c "from PIL import Image; import brotli; print('کتابخانه‌های تصویر آماده‌اند')"
           python branding/tools/generate_icons.py
+          ls -la branding/out/
 
       - name: اعمال هویت بصری موسسه روی سورس
         shell: bash
         run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/branding-log.txt") 2>&1
+          echo "=== مرحلهٔ اعمال هویت بصری ==="
           python branding/tools/apply_branding.py --repo "$SRC_DIR" --rename-exe --android-package --ui
           echo "=== کنترل اعمال برند ==="
           grep -c "NRISP Remote Access" "$SRC_DIR/src/common.rs" || true
           ls -la "$SRC_DIR/flutter/lib/nrisp/" || true
+
+      - name: کنترل کیفیت اعمال هویت بصری
+        shell: bash
+        run: |
+          set -e
+          EXE=$(python -c "import json;print(json.load(open('branding/branding.json',encoding='utf-8'))['exe_name'])")
+          echo "نام فایل اجرایی مورد انتظار: $EXE"
+          grep -q "set(BINARY_NAME \"$EXE\")" "$SRC_DIR/flutter/windows/CMakeLists.txt" \
+            && echo "نام فایل اجرایی درست تنظیم شده" \
+            || { echo "خطا: نام فایل اجرایی تنظیم نشد"; tail -n 60 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
+          grep -q "NrispIdPanel" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
+            && echo "پنل اختصاصی در صفحهٔ اصلی جای گرفت" \
+            || { echo "خطا: پنل اختصاصی در صفحهٔ اصلی جای نگرفت"; tail -n 60 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
+          grep -q "nrisp" "$SRC_DIR/src/common.rs" \
+            && echo "نام برنامه در سورس راست تنظیم شد" \
+            || { echo "خطا: نام برنامه در سورس راست تنظیم نشد"; tail -n 60 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
 
       - name: ثبت وضعیت هویت بصری موسسه روی سورس اعمال شد
         continue-on-error: true
@@ -408,6 +445,8 @@ jobs:
             echo "نام فایل اجرایی: ${{ steps.cfg.outputs.EXE_NAME }}"
             echo "===== پایان گزارش کتابخانه‌ها ====="
             tail -n 300 "$GITHUB_WORKSPACE/vcpkg-log.txt" 2>/dev/null || echo "گزارش کتابخانه‌ها ذخیره نشد"
+            echo "===== پایان گزارش برند ====="
+            tail -n 200 "$GITHUB_WORKSPACE/branding-log.txt" 2>/dev/null || echo "گزارش برند ذخیره نشد"
             echo "===== پایان گزارش کامپایل ====="
             tail -n 500 "$GITHUB_WORKSPACE/build-log.txt" 2>/dev/null || echo "گزارش کامپایل ذخیره نشد"
             echo "===== فهرست پوشهٔ سورس ====="
