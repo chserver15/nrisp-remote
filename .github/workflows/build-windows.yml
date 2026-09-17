@@ -15,6 +15,15 @@ on:
     branches: [main]
     tags: ['v*']
 
+# اجازهٔ نوشتن برای اینکه خود ساخت، نتیجه را در بخش Releases بگذارد
+permissions:
+  contents: write
+
+# اگر چند ارسال پشت‌سرهم شد، فقط آخری اجرا شود
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   FLUTTER_VERSION: "3.24.5"
   BRIDGE_FLUTTER_VERSION: "3.22.3"
@@ -76,6 +85,7 @@ jobs:
       - name: ساخت پل
         shell: bash
         run: |
+          exec > >(tee "$GITHUB_WORKSPACE/bridge-log.txt") 2>&1
           export PATH="$HOME/.cargo/bin:$PATH"
           command -v cargo-expand >/dev/null 2>&1 || cargo install cargo-expand --version "$CARGO_EXPAND_VERSION" --locked
           command -v flutter_rust_bridge_codegen >/dev/null 2>&1 || \
@@ -102,6 +112,27 @@ jobs:
           name: bridge-artifact
           path: /tmp/bridge/*
           if-no-files-found: error
+
+      - name: آماده‌کردن گزارش خطا
+        if: failure()
+        continue-on-error: true
+        shell: bash
+        run: |
+          {
+            echo "اجرا: ${{ github.run_id }} | کار: bridge | زمان: $(date -u)"
+            echo "===== پایان گزارش ساخت پل ====="
+            tail -n 400 "$GITHUB_WORKSPACE/bridge-log.txt" 2>/dev/null || echo "گزارشی ذخیره نشد"
+          } > "$GITHUB_WORKSPACE/ci-failure-bridge.txt"
+
+      - name: گذاشتن گزارش خطا در Releases
+        if: failure()
+        continue-on-error: true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: fail-${{ github.run_number }}
+          name: "گزارش خطای ساخت پل - اجرای ${{ github.run_number }}"
+          body: "گزارش خودکار خطای مرحلهٔ پل فلاتر و راست."
+          files: ci-failure-bridge.txt
 
   # -------------------------------------------------------------------------
   # کار دوم: ساخت نسخهٔ ویندوز ۶۴ بیتی + بسته‌بندی + بارگذاری
@@ -202,8 +233,9 @@ jobs:
           VCPKG_DEFAULT_HOST_TRIPLET: x64-windows-static
         run: |
           cd "$SRC_DIR"
+          set -o pipefail
           if ! "$VCPKG_ROOT/vcpkg" install --triplet x64-windows-static \
-               --x-install-root="$VCPKG_ROOT/installed"; then
+               --x-install-root="$VCPKG_ROOT/installed" 2>&1 | tee "$GITHUB_WORKSPACE/vcpkg-log.txt"; then
             find "${VCPKG_ROOT}/" -name "*.log" | while read -r f; do echo "== $f"; cat "$f"; done
             exit 1
           fi
@@ -235,7 +267,8 @@ jobs:
         shell: bash
         working-directory: ${{ env.SRC_DIR }}
         run: |
-          python3 ./build.py --portable --flutter --skip-portable-pack --hwcodec --vram
+          set -o pipefail
+          python3 ./build.py --portable --flutter --skip-portable-pack --hwcodec --vram 2>&1 | tee "$GITHUB_WORKSPACE/build-log.txt"
           ls -la flutter/build/windows/x64/runner/Release | head -20
           mv ./flutter/build/windows/x64/runner/Release ./rustdesk-dist
 
@@ -326,3 +359,68 @@ jobs:
           path: NRISP-Remote-portable.zip
           if-no-files-found: error
           retention-days: 30
+
+      - name: آماده‌کردن گزارش خطا
+        if: failure()
+        continue-on-error: true
+        shell: bash
+        run: |
+          {
+            echo "اجرا: ${{ github.run_id }} | کار: windows | زمان: $(date -u)"
+            echo "نام فایل اجرایی: ${{ steps.cfg.outputs.EXE_NAME }}"
+            echo "===== پایان گزارش کتابخانه‌ها ====="
+            tail -n 300 "$GITHUB_WORKSPACE/vcpkg-log.txt" 2>/dev/null || echo "گزارش کتابخانه‌ها ذخیره نشد"
+            echo "===== پایان گزارش کامپایل ====="
+            tail -n 500 "$GITHUB_WORKSPACE/build-log.txt" 2>/dev/null || echo "گزارش کامپایل ذخیره نشد"
+            echo "===== فهرست پوشهٔ سورس ====="
+            ls -la "$GITHUB_WORKSPACE/$SRC_DIR" 2>/dev/null | head -30 || true
+          } > "$GITHUB_WORKSPACE/ci-failure-windows.txt"
+
+      - name: گذاشتن گزارش خطا در Releases
+        if: failure()
+        continue-on-error: true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: fail-${{ github.run_number }}
+          name: "گزارش خطای ساخت ویندوز - اجرای ${{ github.run_number }}"
+          body: "گزارش خودکار خطای مرحلهٔ ساخت ویندوز."
+          files: ci-failure-windows.txt
+
+  # -------------------------------------------------------------------------
+  # کار سوم: انتشار فایل نصبی و نسخهٔ پرتابل در بخش Releases همین مخزن
+  # -------------------------------------------------------------------------
+  publish:
+    name: انتشار خروجی ساخت
+    needs: [bridge, windows]
+    if: ${{ needs.windows.result == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: گرفتن فایل نصبی از ساخت
+        uses: actions/download-artifact@v4
+        with:
+          name: NRISP-Remote-installer
+          path: dist
+
+      - name: گرفتن نسخهٔ پرتابل از ساخت
+        uses: actions/download-artifact@v4
+        with:
+          name: NRISP-Remote-portable
+          path: dist
+
+      - name: نمایش فایل‌های آماده
+        run: ls -la dist
+
+      - name: انتشار در Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: "دسترسی راه دور موسسه - ساخت شمارهٔ ${{ github.run_number }}"
+          body: |
+            نرم‌افزار دسترسی راه دور موسسه، ساخته‌شده از سورس رسمی راست‌دسک
+            با هویت بصری و پنل اختصاصی موسسه تحقیقات سیاست علمی کشور.
+
+            - فایل نصبی ویندوز (۶۴ بیتی)
+            - نسخهٔ پرتابل بدون نیاز به نصب
+          files: dist/*
+          draft: false
+          prerelease: false
