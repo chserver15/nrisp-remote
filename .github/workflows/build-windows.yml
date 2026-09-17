@@ -19,11 +19,6 @@ on:
 permissions:
   contents: write
 
-# اگر چند ارسال پشت‌سرهم شد، فقط آخری اجرا شود
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 env:
   PYTHONUTF8: "1"
   PYTHONIOENCODING: "utf-8"
