@@ -417,11 +417,23 @@ jobs:
           echo "--- نصب پیش‌نیازهای بسته‌بند ---"
           python -m pip install --quiet -r requirements.txt || echo "نصب پیش‌نیاز ناموفق بود (ادامه می‌دهیم)"
           echo "--- اجرای بسته‌بند ---"
-          python ./generate.py -f "$DIST/" -o . -e "$EXE"
-          echo "--- نتیجهٔ ساخت بسته‌بند ---"
-          ls -la target/release/ || true
-          PACKER=$(find . -name "*packer*.exe" -type f | head -1)
-          echo "بسته‌بند یافت‌شده: ${PACKER:-هیچ}"
+          # نکتهٔ مهم: این اسکریپت پس از نوشتن data.bin خودش بسته‌بند را با cargo
+          # می‌سازد. چون پوشهٔ بسته‌بند عضو فضای کاری ریشه است، خروجی در
+          # target/release ریشهٔ پروژه ساخته می‌شود، نه در پوشهٔ بسته‌بند.
+          python -u ./generate.py -f "$DIST/" -o . -e "$EXE"
+          echo "--- یافتن فایل بسته‌بند ---"
+          PACKER=""
+          for c in "target/release/rustdesk-portable-packer.exe" \
+                   "../../target/release/rustdesk-portable-packer.exe" \
+                   "../../target/x86_64-pc-windows-msvc/release/rustdesk-portable-packer.exe"; do
+            if [ -f "$c" ]; then PACKER="$c"; break; fi
+          done
+          if [ -z "$PACKER" ]; then
+            PACKER=$(find ../.. -maxdepth 5 -name "rustdesk-portable-packer.exe" -type f 2>/dev/null | head -1)
+          fi
+          echo "بسته‌بند: ${PACKER:-پیدا نشد}"
+          echo "--- محتوای پوشهٔ هدف ریشه ---"
+          ls -la ../../target/release 2>/dev/null | tail -8 || echo "پوشهٔ هدف ریشه نیست"
           if [ -z "$PACKER" ]; then
             echo "خطا: فایل بسته‌بند ساخته نشد"
             exit 1
@@ -473,6 +485,8 @@ jobs:
             ls -la "$GITHUB_WORKSPACE/$SRC_DIR/rustdesk-dist" 2>/dev/null || echo "پوشهٔ خروجی ساخت نیست"
             echo "===== فایل‌های اجرایی بسته‌بند ====="
             find "$GITHUB_WORKSPACE/$SRC_DIR/libs/portable" -name "*.exe" 2>/dev/null | head -20 || true
+            echo "===== پوشهٔ هدف ریشه ====="
+            ls -la "$GITHUB_WORKSPACE/$SRC_DIR/target/release" 2>/dev/null | tail -20 || echo "پوشهٔ هدف ریشه نیست"
             echo "===== فهرست پوشهٔ سورس ====="
             ls -la "$GITHUB_WORKSPACE/$SRC_DIR" 2>/dev/null | head -30 || true
           } > "$GITHUB_WORKSPACE/ci-failure-windows.txt"
