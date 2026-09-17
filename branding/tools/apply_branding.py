@@ -370,13 +370,7 @@ def apply_mobile(repo: Path, brand, android_package: bool):
 def apply_flutter_strings(repo: Path):
     print("\n== in-app visible strings ==")
     # عنوان نوار بالای پنجره‌ی اصلی که در دارت ثابت نوشته شده بود
-    tab = repo / "flutter/lib/desktop/widgets/tabbar_widget.dart"
-    edit(tab, [
-        ('child: const Text(\n                              "RustDesk",\n'
-         '                              style: TextStyle(fontSize: 13),\n                            )',
-         'child: Text(\n                              appName,\n'
-         '                              style: const TextStyle(fontSize: 13),\n                            )'),
-    ], label="tabbar_widget.dart")
+    # عنوان نوار بالا در nrisp_ui.py با نام فارسی گذاشته می‌شود
 
 
 def apply_exe_rename(repo: Path, brand, enabled: bool):

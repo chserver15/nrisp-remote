@@ -191,6 +191,66 @@ def replace_links(repo: Path):
             note(OK, rel, 'نشانی‌ها با نشانی موسسه عوض شد')
 
 
+
+FA_APP_NAME = 'دسترسی راه دور موسسه'
+
+
+def fa_brand_cleanup(repo: Path):
+    """نام برند اصلی را از متن ترجمه‌های فارسی برمی‌دارد (فقط مقدار، نه کلید)."""
+    import re as _re
+    path = repo / 'src' / 'lang' / 'fa.rs'
+    if not path.exists():
+        note(MISS, 'src/lang/fa.rs', 'فایل نبود')
+        return
+    src = read(path)
+    pat = _re.compile(r'\("((?:[^"\\]|\\.)*)",\s*"((?:[^"\\]|\\.)*)"\)')
+    counter = {'n': 0}
+
+    def _fix(m):
+        key, val = m.group(1), m.group(2)
+        if key == 'powered_by_me' or key.startswith('upgrade_rustdesk_server_pro'):
+            return m.group(0)
+        if 'RustDesk' not in val:
+            return m.group(0)
+        counter['n'] += 1
+        return m.group(0).replace('"' + val + '"',
+                                  '"' + val.replace('RustDesk', FA_APP_NAME) + '"', 1)
+
+    new_src = pat.sub(_fix, src)
+    left = sum(1 for m in pat.finditer(new_src)
+               if 'RustDesk' in m.group(2)
+               and m.group(1) != 'powered_by_me'
+               and not m.group(1).startswith('upgrade_rustdesk_server_pro'))
+    write(path, new_src)
+    note(OK if left == 0 else MISS, 'src/lang/fa.rs (نام برند در ترجمه‌ها)',
+         f'{counter["n"]} متن اصلاح شد | باقی‌مانده: {left}')
+
+
+def replace_visible_urls(repo: Path):
+    """نشانی‌های برند اصلی که روی صفحه دیده می‌شوند."""
+    jobs = [
+        (repo / 'flutter/lib/common.dart',
+         [("launchUrl(Uri.parse('https://rustdesk.com'));",
+           "launchUrl(Uri.parse('https://nrisp.ac.ir'));")],
+         'common.dart (نشانی درباره)'),
+        (repo / 'flutter/lib/desktop/pages/connection_page.dart',
+         [('const url = "https://rustdesk.com/pricing";',
+           'const url = "https://nrisp.ac.ir";')],
+         'connection_page.dart (نشانی صفحهٔ ارتقا)'),
+        (repo / 'flutter/lib/desktop/pages/install_page.dart',
+         [("'https://rustdesk.com/privacy.html'", "'https://nrisp.ac.ir'")],
+         'install_page.dart (نشانی حریم خصوصی)'),
+        (repo / 'flutter/lib/mobile/pages/connection_page.dart',
+         [("final url = 'https://rustdesk.com/download';",
+           "final url = 'https://nrisp.ac.ir';")],
+         'mobile/connection_page.dart (نشانی دریافت)'),
+    ]
+    for path, pairs, label in jobs:
+        if not path.exists():
+            note(MISS, label, 'فایل نبود')
+            continue
+        edit(path, pairs, label=label)
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -206,6 +266,8 @@ def main():
     tabbar_title(repo)
     drop_powered(repo)
     replace_links(repo)
+    fa_brand_cleanup(repo)
+    replace_visible_urls(repo)
 
     print('\n--- خلاصه ---')
     print(f"اعمال‌شده: {sum(1 for r in rows if r[0] == OK)}   "
