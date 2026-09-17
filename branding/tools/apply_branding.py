@@ -389,10 +389,12 @@ def apply_exe_rename(repo: Path, brand, enabled: bool):
          [('set(BINARY_NAME "rustdesk")', f'set(BINARY_NAME "{exe}")')])
     edit(repo / "flutter/linux/CMakeLists.txt",
          [('set(BINARY_NAME "rustdesk")', f'set(BINARY_NAME "{exe}")')])
-    edit(repo / "Cargo.toml", [
-        ('name = "rustdesk"\nversion', f'name = "{exe}"\nversion'),
-        ('default-run = "rustdesk"', f'default-run = "{exe}"'),
-    ], label="Cargo.toml (package name)")
+    # نام بستهٔ Cargo عمداً عوض نمی‌شود:
+    # ساخت با پرچم --locked انجام می‌شود و Cargo.lock نام بستهٔ اصلی را
+    # ثبت کرده است؛ با تغییر آن، قفل ناهمخوان می‌شود و ساخت متوقف می‌شود.
+    # نام دیده‌شدهٔ برنامه از CMakeLists، Runner.rc و رشته‌های سورس می‌آید، نه از نام بسته.
+    REPORT.add(SKIP, "Cargo.toml (package name)",
+               "نام بستهٔ راست دست‌نخورده ماند تا Cargo.lock با --locked معتبر بماند")
     edit(repo / "build.py", [
         ("hbb_name = 'rustdesk'", f"hbb_name = '{exe}'"),
         ("-e ../../{flutter_build_dir_2}/rustdesk.exe",
