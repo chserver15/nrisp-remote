@@ -49,6 +49,16 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
     steps:
+      - name: گرفتن فایل‌های این مخزن
+        uses: actions/checkout@v4
+
+      - name: ثبت وضعیت آغاز کار پل
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "آغاز کار پل"
+
       - name: گرفتن سورس راست‌دسک
         shell: bash
         run: |
@@ -106,6 +116,13 @@ jobs:
           cp ./flutter/macos/Runner/bridge_generated.h /tmp/bridge/
           ls -la /tmp/bridge
 
+      - name: ثبت وضعیت پل فلاتر و راست ساخته شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "پل فلاتر و راست ساخته شد"
+
       - name: بارگذاری پل
         uses: actions/upload-artifact@v4
         with:
@@ -143,6 +160,13 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 300
     steps:
+      - name: ثبت وضعیت آغاز کار ساخت ویندوز
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "آغاز کار ساخت ویندوز"
+
       - name: گرفتن فایل‌های این مخزن
         uses: actions/checkout@v4
 
@@ -255,6 +279,13 @@ jobs:
           grep -c "NRISP Remote Access" "$SRC_DIR/src/common.rs" || true
           ls -la "$SRC_DIR/flutter/lib/nrisp/" || true
 
+      - name: ثبت وضعیت هویت بصری موسسه روی سورس اعمال شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "هویت بصری موسسه روی سورس اعمال شد"
+
       - name: خواندن نام فایل اجرایی از فایل تنظیمات
         id: cfg
         shell: bash
@@ -271,6 +302,13 @@ jobs:
           python3 ./build.py --portable --flutter --skip-portable-pack --hwcodec --vram 2>&1 | tee "$GITHUB_WORKSPACE/build-log.txt"
           ls -la flutter/build/windows/x64/runner/Release | head -20
           mv ./flutter/build/windows/x64/runner/Release ./rustdesk-dist
+
+      - name: ثبت وضعیت کامپایل برنامه به پایان رسید
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "کامپایل برنامه به پایان رسید"
 
       - name: افزودن درایور نمایشگر مجازی و چاپگر
         shell: pwsh
