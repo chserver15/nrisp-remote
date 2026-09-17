@@ -251,6 +251,33 @@ def replace_visible_urls(repo: Path):
             continue
         edit(path, pairs, label=label)
 
+
+CORP_FA = 'موسسه تحقیقات سیاست علمی کشور'
+
+
+def corporate_footer(repo: Path):
+    """نام شرکت اصلی سازنده را از جاهایی که کاربر می‌بیند برمی‌دارد."""
+    jobs = [
+        (repo / 'flutter/lib/desktop/pages/desktop_setting_page.dart',
+         [("'Copyright © ${DateTime.now().toString().substring(0, 4)} "
+           "Purslane Tech Pte. Ltd.\\n$license'",
+           "'حقوق © " + CORP_FA + " ۱۴۰۵\\n$license'")],
+         'desktop_setting_page.dart (حق نشر)'),
+        (repo / 'src/ui/index.tis',
+         [('Copyright &copy; 2026 Purslane Tech Pte. Ltd.',
+           'حقوق &copy; ' + CORP_FA + ' ۱۴۰۵')],
+         'index.tis (حق نشر)'),
+        (repo / 'src/auth_2fa.rs',
+         [('const ISSUER: &str = "RustDesk";',
+           'const ISSUER: &str = "' + FA_APP_NAME + '";')],
+         'auth_2fa.rs (نام صادرکننده)'),
+    ]
+    for path, pairs, label in jobs:
+        if not path.exists():
+            note(MISS, label, 'فایل نبود')
+            continue
+        edit(path, pairs, label=label)
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -268,6 +295,7 @@ def main():
     replace_links(repo)
     fa_brand_cleanup(repo)
     replace_visible_urls(repo)
+    corporate_footer(repo)
 
     print('\n--- خلاصه ---')
     print(f"اعمال‌شده: {sum(1 for r in rows if r[0] == OK)}   "
