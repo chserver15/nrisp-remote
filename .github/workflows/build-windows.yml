@@ -168,15 +168,15 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 300
     steps:
-      - name: ثبت وضعیت آغاز کار ساخت ویندوز
+      - name: گرفتن فایل‌های این مخزن
+        uses: actions/checkout@v4
+
+      - name: ثبت وضعیت فایل‌های مخزن گرفته شد
         continue-on-error: true
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash branding/tools/ci_mark.sh "آغاز کار ساخت ویندوز"
-
-      - name: گرفتن فایل‌های این مخزن
-        uses: actions/checkout@v4
+        run: bash branding/tools/ci_mark.sh "فایل‌های مخزن گرفته شد"
 
       - name: خاموش‌کردن تبدیل خطوط
         shell: bash
@@ -198,6 +198,13 @@ jobs:
         with:
           name: bridge-artifact
           path: bridge-files
+
+      - name: ثبت وضعیت سورس راست‌دسک گرفته شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "سورس راست‌دسک گرفته شد"
 
       - name: انتقال فایل‌های پل
         shell: bash
@@ -222,6 +229,13 @@ jobs:
         with:
           toolchain: ${{ env.RUST_VERSION }}
 
+      - name: ثبت وضعیت فایل‌های پل منتقل شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "فایل‌های پل منتقل شد"
+
       - name: نصب Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -237,11 +251,25 @@ jobs:
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
           doNotCache: false
 
+      - name: ثبت وضعیت ابزارهای ساخت نصب شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "ابزارهای ساخت نصب شد"
+
       - name: نگه‌داشتن کتابخانه‌ها
         uses: actions/cache@v4
         with:
           path: C:\vcpkg\installed
           key: vcpkg-${{ env.VCPKG_COMMIT_ID }}-x64-windows-static
+
+      - name: ثبت وضعیت کتابخانه‌های تصویر و صدا نصب شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "کتابخانه‌های تصویر و صدا نصب شد"
 
       - name: جایگزینی موتور فلاتر با موتور سفارشی راست‌دسک
         shell: pwsh
@@ -278,6 +306,13 @@ jobs:
             find "${VCPKG_ROOT}/" -name "*.log" | while read -r f; do echo "== $f"; cat "$f"; done
             exit 1
           fi
+
+      - name: ثبت وضعیت موتور فلاتر آماده شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "موتور فلاتر آماده شد"
 
       - name: ساخت آیکون‌ها از فایل تنظیمات برند
         shell: bash
@@ -506,6 +541,15 @@ jobs:
             echo "===== فهرست پوشهٔ سورس ====="
             ls -la "$GITHUB_WORKSPACE/$SRC_DIR" 2>/dev/null | head -30 || true
           } > "$GITHUB_WORKSPACE/ci-failure-windows.txt"
+
+      - name: ثبت گزارش خطا روی شاخهٔ وضعیت
+        if: failure()
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash branding/tools/ci_note.sh ci-failure-windows.txt "خطای ساخت ویندوز"
 
       - name: گذاشتن گزارش خطا در Releases
         if: failure()
