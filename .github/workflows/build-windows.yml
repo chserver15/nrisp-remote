@@ -300,6 +300,13 @@ jobs:
           grep -c "NRISP Remote Access" "$SRC_DIR/src/common.rs" || true
           ls -la "$SRC_DIR/flutter/lib/nrisp/" || true
 
+      - name: فارسی‌سازی و زیباسازی رابط کاربری
+        shell: bash
+        run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/branding-log.txt") 2>&1
+          echo "=== مرحلهٔ فارسی‌سازی و زیباسازی رابط کاربری ==="
+          python branding/tools/nrisp_ui.py --repo "$SRC_DIR"
+
       - name: کنترل کیفیت اعمال هویت بصری
         shell: bash
         run: |
@@ -315,6 +322,15 @@ jobs:
           grep -q "nrisp" "$SRC_DIR/src/common.rs" \
             && echo "نام برنامه در سورس راست تنظیم شد" \
             || { echo "خطا: نام برنامه در سورس راست تنظیم نشد"; tail -n 60 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
+          grep -q "locale: const Locale('fa')" "$SRC_DIR/flutter/lib/main.dart" \
+            && echo "زبان پیش‌فرض فارسی تنظیم شد" \
+            || { echo "خطا: زبان پیش‌فرض فارسی تنظیم نشد"; exit 1; }
+          grep -q "nrispAppNameFa" "$SRC_DIR/flutter/lib/desktop/widgets/tabbar_widget.dart" \
+            && echo "نام نرم‌افزار در نوار بالا تنظیم شد" \
+            || { echo "خطا: نام نرم‌افزار در نوار بالا تنظیم نشد"; exit 1; }
+          grep -q "nrispAppNameFa" "$SRC_DIR/flutter/lib/nrisp/nrisp_id_panel.dart" \
+            && echo "پنل اختصاصی فارسی در جای خود است" \
+            || { echo "خطا: پنل اختصاصی جای نگرفت"; exit 1; }
 
       - name: ثبت وضعیت هویت بصری موسسه روی سورس اعمال شد
         continue-on-error: true
