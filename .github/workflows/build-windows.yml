@@ -398,11 +398,15 @@ jobs:
         shell: bash
         working-directory: ${{ env.SRC_DIR }}
         run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/packaging-log.txt") 2>&1
+          echo "=== مرحلهٔ بسته‌بندی فایل نصبی ==="
           VERSION=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           DIST="$PWD/rustdesk-dist"
           EXE="$DIST/${{ steps.cfg.outputs.EXE_NAME }}.exe"
           ls -la "$EXE"
+          echo "--- محتوای پوشهٔ بسته‌بندی ---"
+          ls -la libs/portable
           # هویت بسته‌بند
           sed -i 's|ProductName = "RustDesk"|ProductName = "دسترسی راه دور موسسه"|' libs/portable/Cargo.toml || true
           sed -i 's|OriginalFilename = "rustdesk.exe"|OriginalFilename = "nrisp-remote.exe"|' libs/portable/Cargo.toml || true
@@ -410,10 +414,19 @@ jobs:
           sed -i 's|LegalCopyright = "Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved."|LegalCopyright = "© موسسه تحقیقات سیاست علمی کشور ۱۴۰۵"|' libs/portable/Cargo.toml || true
           sed -i '/dpiAware/d' res/manifest.xml || true
           cd libs/portable
-          python -m pip install --quiet -r requirements.txt
+          echo "--- نصب پیش‌نیازهای بسته‌بند ---"
+          python -m pip install --quiet -r requirements.txt || echo "نصب پیش‌نیاز ناموفق بود (ادامه می‌دهیم)"
+          echo "--- اجرای بسته‌بند ---"
           python ./generate.py -f "$DIST/" -o . -e "$EXE"
-          ls -la target/release/ | grep -i packer || true
-          cp target/release/rustdesk-portable-packer.exe "$GITHUB_WORKSPACE/${{ env.DIST_NAME }}-$VERSION-install.exe"
+          echo "--- نتیجهٔ ساخت بسته‌بند ---"
+          ls -la target/release/ || true
+          PACKER=$(find . -name "*packer*.exe" -type f | head -1)
+          echo "بسته‌بند یافت‌شده: ${PACKER:-هیچ}"
+          if [ -z "$PACKER" ]; then
+            echo "خطا: فایل بسته‌بند ساخته نشد"
+            exit 1
+          fi
+          cp "$PACKER" "$GITHUB_WORKSPACE/${{ env.DIST_NAME }}-$VERSION-install.exe"
           ls -la "$GITHUB_WORKSPACE/${{ env.DIST_NAME }}-$VERSION-install.exe"
 
       - name: بسته‌بندی نسخهٔ پرتابل
@@ -452,6 +465,14 @@ jobs:
             tail -n 200 "$GITHUB_WORKSPACE/branding-log.txt" 2>/dev/null || echo "گزارش برند ذخیره نشد"
             echo "===== پایان گزارش کامپایل ====="
             tail -n 500 "$GITHUB_WORKSPACE/build-log.txt" 2>/dev/null || echo "گزارش کامپایل ذخیره نشد"
+            echo "===== پایان گزارش بسته‌بندی ====="
+            tail -n 200 "$GITHUB_WORKSPACE/packaging-log.txt" 2>/dev/null || echo "گزارش بسته‌بندی ذخیره نشد"
+            echo "===== فهرست ریشهٔ کار ====="
+            ls -la "$GITHUB_WORKSPACE" 2>/dev/null || true
+            echo "===== فهرست خروجی ساخت ====="
+            ls -la "$GITHUB_WORKSPACE/$SRC_DIR/rustdesk-dist" 2>/dev/null || echo "پوشهٔ خروجی ساخت نیست"
+            echo "===== فایل‌های اجرایی بسته‌بند ====="
+            find "$GITHUB_WORKSPACE/$SRC_DIR/libs/portable" -name "*.exe" 2>/dev/null | head -20 || true
             echo "===== فهرست پوشهٔ سورس ====="
             ls -la "$GITHUB_WORKSPACE/$SRC_DIR" 2>/dev/null | head -30 || true
           } > "$GITHUB_WORKSPACE/ci-failure-windows.txt"
