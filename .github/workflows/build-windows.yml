@@ -322,25 +322,48 @@ jobs:
           python -m pip install --quiet --upgrade pip || true
           python -m pip install --quiet pillow brotli || true
           python -c "from PIL import Image; import brotli; print('کتابخانه‌های تصویر آماده‌اند')"
-          python branding/tools/generate_icons.py
+          python branding/tools/generate_icons.py || { echo "خطا در ساخت آیکون‌ها"; exit 1; }
           ls -la branding/out/
+
+      - name: ثبت وضعیت آیکون‌ها ساخته شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "آیکون‌ها ساخته شد"
 
       - name: اعمال هویت بصری موسسه روی سورس
         shell: bash
         run: |
           exec > >(tee -a "$GITHUB_WORKSPACE/branding-log.txt") 2>&1
           echo "=== مرحلهٔ اعمال هویت بصری ==="
-          python branding/tools/apply_branding.py --repo "$SRC_DIR" --rename-exe --android-package --ui
+          python branding/tools/apply_branding.py --repo "$SRC_DIR" --rename-exe --android-package --ui || { echo "خطا در اعمال برند"; exit 1; }
           echo "=== کنترل اعمال برند ==="
           grep -c "NRISP Remote Access" "$SRC_DIR/src/common.rs" || true
           ls -la "$SRC_DIR/flutter/lib/nrisp/" || true
+
+      - name: ثبت وضعیت برند روی سورس اعمال شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "برند روی سورس اعمال شد"
 
       - name: فارسی‌سازی و زیباسازی رابط کاربری
         shell: bash
         run: |
           exec > >(tee -a "$GITHUB_WORKSPACE/branding-log.txt") 2>&1
           echo "=== مرحلهٔ فارسی‌سازی و زیباسازی رابط کاربری ==="
-          python branding/tools/nrisp_ui.py --repo "$SRC_DIR"
+          python branding/tools/nrisp_ui.py --repo "$SRC_DIR" || { echo "خطا در فارسی‌سازی"; exit 1; }
+
+      - name: ثبت وضعیت رابط کاربری فارسی و بازطراحی شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "رابط کاربری فارسی و بازطراحی شد"
+
+      - name: کنترل کیفیت اعمال هویت بصری
 
       - name: کنترل کیفیت اعمال هویت بصری
         shell: bash
@@ -519,6 +542,7 @@ jobs:
         continue-on-error: true
         shell: bash
         run: |
+          set +e
           {
             echo "اجرا: ${{ github.run_id }} | کار: windows | زمان: $(date -u)"
             echo "نام فایل اجرایی: ${{ steps.cfg.outputs.EXE_NAME }}"
@@ -549,6 +573,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set +e
           bash branding/tools/ci_note.sh ci-failure-windows.txt "خطای ساخت ویندوز"
 
       - name: گذاشتن گزارش خطا در Releases
