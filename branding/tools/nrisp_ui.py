@@ -70,17 +70,10 @@ def restyle_theme(repo: Path):
     edit(p, [
         ('static const Color grayBg = Color(0xFFEFEFF2);',
          'static const Color grayBg = Color(0xFFF3F6FC);'),
-        ('static const Color accent = Color(0xFF0071FF);',
-         'static const Color accent = Color(0xFF0E3091);'),
-        ('static const Color accent50 = Color(0x770071FF);',
-         'static const Color accent50 = Color(0x770E3091);'),
-        ('static const Color accent80 = Color(0xAA0071FF);',
-         'static const Color accent80 = Color(0xAA0E3091);'),
-        ('static const Color button = Color(0xFF2C8CFF);',
-         'static const Color button = Color(0xFF0E3091);'),
-        ('static const Color idColor = Color(0xFF00B6F0);',
+        ('static const Color idColor = Color(0xFF0E3091);',
          'static const Color idColor = Color(0xFFE89B25);'),
         ('primary: Colors.blue,', 'primary: const Color(0xFF0E3091),'),
+        ('secondary: accent,', 'secondary: const Color(0xFFE89B25),'),
     ], label='common.dart (رنگ‌های سازمانی)')
 
 
@@ -133,6 +126,22 @@ def tabbar_title(repo: Path):
            '                                  color: NrispBrand.blue),\n'
            '                            ).marginOnly(left: 2))')
     edit(p, [(old, new)], label='tabbar_widget.dart (نام نرم‌افزار)')
+
+    # اگر apply_branding پیش‌تر نام انگلیسی را گذاشته باشد، اینجا فارسی می‌شود
+    s = read(p)
+    eng = ('                            child: Text(\n'
+           '                              appName,\n'
+           '                              style: const TextStyle(fontSize: 13),\n')
+    fa = ('                            child: Text(\n'
+          '                              nrispAppNameFa,\n'
+          '                              style: const TextStyle(\n'
+          '                                  fontSize: 13,\n'
+          '                                  fontWeight: FontWeight.w700,\n'
+          '                                  color: NrispBrand.blue),\n')
+    if eng in s:
+        s = s.replace(eng, fa, 1)
+        write(p, s)
+        note(OK, 'tabbar_widget.dart (نام فارسی در نوار بالا)')
     # افزودن import پنل اختصاصی
     s = read(p)
     imp = "import 'package:flutter_hbb/nrisp/nrisp_id_panel.dart';\n"

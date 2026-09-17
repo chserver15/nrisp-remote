@@ -27,6 +27,8 @@ TMP_BODY="$WORK/body.txt"
 cd "$WORK" || exit 0
 if ! git clone --quiet --depth 1 --branch ci-status "$REPO_URL" . >/dev/null 2>&1; then
   git init -q . ; git remote add origin "$REPO_URL" ; git checkout -q -b ci-status
+  # شاخه از پیش هست؟ پیش از افزودن، محتوای موجود را بگیر
+  git fetch --quiet --depth 1 origin ci-status >/dev/null 2>&1 && git reset --soft FETCH_HEAD >/dev/null 2>&1
 fi
 git config user.email "nrisp@nrisp.ac.ir"
 git config user.name "NRISP Build"

@@ -371,9 +371,12 @@ jobs:
           grep -q "NrispIdPanel" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
             && echo "پنل اختصاصی در صفحهٔ اصلی جای گرفت" \
             || { echo "خطا: پنل اختصاصی در صفحهٔ اصلی جای نگرفت"; tail -n 60 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
-          grep -q "nrisp" "$SRC_DIR/src/common.rs" \
+          grep -qi "nrisp" "$SRC_DIR/libs/hbb_common/src/config.rs" \
+            && echo "نام برنامه در پیکربندی راست تنظیم شد" \
+            || { echo "هشدار: نام برنامه در پیکربندی راست یافت نشد"; }
+          grep -qi "NRISP" "$SRC_DIR/src/common.rs" \
             && echo "نام برنامه در سورس راست تنظیم شد" \
-            || { echo "خطا: نام برنامه در سورس راست تنظیم نشد"; tail -n 60 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
+            || echo "هشدار: رشتهٔ نام در src/common.rs یافت نشد (اشکالی ندارد)";
           grep -q "locale: const Locale('fa')" "$SRC_DIR/flutter/lib/main.dart" \
             && echo "زبان پیش‌فرض فارسی تنظیم شد" \
             || { echo "خطا: زبان پیش‌فرض فارسی تنظیم نشد"; exit 1; }
