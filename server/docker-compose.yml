@@ -1,0 +1,28 @@
+# سرور رایگان راست‌دسک روی سرور خودتان (ایران)
+# دو سرویس دارد:
+#   hbbs = سرور شناسایی؛ کد دستگاه می‌دهد و دو طرف را به هم می‌رساند
+#   hbbr = سرور رله؛ اگر اتصال مستقیم ممکن نبود، ترافیک را رد می‌کند
+# ترافیک رمزنگاری سرتاسری است و همین سرور هم نمی‌تواند آن را باز کند.
+#
+# اجرا:   docker compose up -d
+# لاگ:    docker compose logs -f
+# کلید:   cat ./data/id_ed25519.pub
+
+services:
+  hbbs:
+    container_name: rd-hbbs
+    image: rustdesk/rustdesk-server:latest
+    command: hbbs -r rd.yourcompany.ir:21117
+    network_mode: host
+    volumes:
+      - ./data:/root
+    restart: always
+
+  hbbr:
+    container_name: rd-hbbr
+    image: rustdesk/rustdesk-server:latest
+    command: hbbr
+    network_mode: host
+    volumes:
+      - ./data:/root
+    restart: always

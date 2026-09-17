@@ -1,0 +1,24 @@
+{
+  "_راهنما": "این تنها فایلی است که باید ویرایش شود. پس از تغییر، run.sh را اجرا کنید.",
+  "app_name_en": "NRISP Remote Access",
+  "file_description": "NRISP Remote Access — دسترسی راه دور",
+  "app_name_fa": "دسترسی راه دور موسسه",
+  "exe_name": "nrisp-remote",
+  "company_en": "NRISP",
+  "company_fa": "موسسه تحقیقات سیاست علمی کشور",
+  "app_identifier": "ac.ir.nrisp.remote",
+  "copyright_year": "1405",
+  "wordmark_latin": "NRISP",
+  "url_scheme": "nrisp",
+  "_سرور": "خالی بگذارید تا از سرورهای عمومی راست‌دسک استفاده شود. اگر روزی سرور اختصاصی گرفتید، دامنه را اینجا بنویسید.",
+  "server": "",
+  "public_key": "",
+  "_رنگ‌ها": "استخراج‌شده از لوگوی رسمی موسسه",
+  "colors": {
+    "primary": "#0E3091",
+    "accent": "#E89B25",
+    "accent50": "#77E89B25",
+    "accent80": "#AAE89B25",
+    "gray_bg": "#EFEFF2"
+  }
+}
