@@ -842,7 +842,8 @@ jobs:
 
   publish:
     name: انتشار خروجی ساخت
-    needs: [bridge, windows, android]
+    # فقط به ویندوز وابسته است تا انتشار فایل نصبی منتظر اندروید نماند
+    needs: [bridge, windows]
     if: ${{ always() && needs.windows.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
