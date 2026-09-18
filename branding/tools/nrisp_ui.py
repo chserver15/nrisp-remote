@@ -818,6 +818,103 @@ def connect_card_fixes(repo: Path):
         note(SKIP, 'connection_page.dart (کارت اتصال)', 'از قبل')
 
 
+
+def final_tweaks(repo: Path):
+    """اصلاحات نهایی: دکمه‌های پنجره سمت راست، متن‌های خوانا، برداشتن متن‌های پایین صفحه."""
+    # ۱) دکمه‌های پنجره سمت راست: چیدمان چپ‌به‌راست روی نوار بالا (_buildBar)
+    p = repo / 'flutter/lib/desktop/widgets/tabbar_widget.dart'
+    if p.exists():
+        s2 = read(p)
+        old = """  Widget _buildBar() {
+    final isIncomingHomePage = bind.isIncomingOnly() && isInHomePage();
+    return Row(
+      children: ["""
+        new = """  Widget _buildBar() {
+    final isIncomingHomePage = bind.isIncomingOnly() && isInHomePage();
+    // چیدمان چپ‌به‌راست نوار بالا: دکمه‌های پنجره همیشه سمت راست بمانند
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+      children: ["""
+        oldc = """        ).paddingOnly(left: 10)
+      ],
+    );
+  }
+}"""
+        newc = """        ).paddingOnly(left: 10)
+      ],
+    ));
+  }
+}"""
+        if old in s2 and oldc in s2:
+            s2 = s2.replace(old, new, 1).replace(oldc, newc, 1)
+            write(p, s2)
+            note(OK, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)')
+        else:
+            note(MISS, 'tabbar_widget.dart (_buildBar)', 'لنگر پیدا نشد')
+
+    # ۲) عنوان کارت: رنگ خوانا در هر دو پوسته
+    p = repo / 'flutter/lib/common/widgets/connection_page_title.dart'
+    if p.exists():
+        s = read(p)
+        old = """            style: Theme.of(context)
+                .textTheme
+                .titleLarge
+                ?.merge(TextStyle(height: 1)),"""
+        new = """            style: Theme.of(context).textTheme.titleLarge?.merge(TextStyle(
+                  height: 1,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFFF3F5F8)
+                      : const Color(0xFF1E2430),
+                )),"""
+        if old in s:
+            s = s.replace(old, new, 1)
+            write(p, s)
+            note(OK, 'عنوان کارت اتصال (رنگ خوانا)')
+        else:
+            note(MISS, 'عنوان کارت اتصال', 'لنگر پیدا نشد')
+
+    # ۳) متن و راهنمای کادر شناسه: رنگ روشن و خوانا
+    p = repo / 'flutter/lib/desktop/pages/connection_page.dart'
+    if p.exists():
+        s = read(p)
+        n = 0
+        old = """                          style: const TextStyle(
+                            fontFamily: 'WorkSans',
+                            fontSize: 19,
+                            height: 1.5,
+                            color: Color(0xFFF2F4F7),
+                          ),"""
+        new = """                          style: TextStyle(
+                            fontFamily: 'WorkSans',
+                            fontSize: 19,
+                            height: 1.5,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? const Color(0xFFF3F5F8)
+                                    : const Color(0xFF1E2430),
+                          ),"""
+        if old in s:
+            s = s.replace(old, new, 1); n += 1
+        old2 = """                                      ? const Color(0xFF98A2B0)
+                                      : const Color(0xFF77808C)),"""
+        new2 = """                                      ? const Color(0xFFB4BCC8)
+                                      : const Color(0xFF5C6673)),"""
+        if old2 in s:
+            s = s.replace(old2, new2, 1); n += 1
+        old3 = """            offstage: !(!_svcStopped.value &&
+                stateGlobal.svcStatus.value == SvcStatus.ready &&
+                _svcIsUsingPublicServer.value),"""
+        if old3 in s:
+            s = s.replace(old3, """            offstage: true, // متن راهنمای سرور برداشته شد""", 1); n += 1
+        if n:
+            write(p, s)
+            note(OK, 'connection_page.dart (خوانایی متن و برداشتن متن پایین)', f'{n} مورد')
+        else:
+            note(MISS, 'connection_page.dart (خوانایی)', 'لنگر پیدا نشد')
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -843,6 +940,7 @@ def main():
     remove_extras(repo)
     disable_account(repo)
     connect_card_fixes(repo)
+    final_tweaks(repo)
     bundle_font(repo)
     bump_version(repo)
     voice_call_hint(repo)

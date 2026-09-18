@@ -14,7 +14,7 @@ import 'package:flutter_hbb/models/platform_model.dart';
 import 'package:flutter_hbb/models/state_model.dart';
 
 /// نام نمایشی برنامه (فارسی)
-const String nrispAppNameFa = 'دسترسی راه دور موسسه';
+const String nrispAppNameFa = 'دسترسی راه دور';
 
 /// نام سازمان
 const String nrispCompanyFa = 'موسسه تحقیقات سیاست علمی کشور';
@@ -132,7 +132,6 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
               const SizedBox(height: 8),
               _themeRow(),
               const SizedBox(height: 18),
-              _footer(),
             ],
           ),
         ),
@@ -533,37 +532,6 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
         const SizedBox(width: 8),
         chip('تیره', Icons.dark_mode_outlined, _dark,
             () => MyTheme.changeDarkMode(ThemeMode.dark)),
-      ],
-    );
-  }
-
-  // ------------------------------------------------------------- پابرگ
-
-  Widget _footer() {
-    return Column(
-      children: [
-        Text(
-          nrispCompanyFa,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 9.5, color: _muted, height: 1.6),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          nrispDomain,
-          style: const TextStyle(
-            fontSize: 10,
-            color: nrispOrange,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.4,
-          ),
-        ),
-        if (_version.isNotEmpty) ...[
-          const SizedBox(height: 4),
-          Text(
-            'نسخه: $_version',
-            style: TextStyle(fontSize: 9.5, color: _muted),
-          ),
-        ],
       ],
     );
   }
