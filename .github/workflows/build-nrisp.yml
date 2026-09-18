@@ -397,9 +397,9 @@ jobs:
           grep -q "width: 520," "$SRC_DIR/flutter/lib/desktop/pages/connection_page.dart" \
             && echo "کارت اتصال بزرگ درسان‌گونه شد" \
             || { echo "خطا: کارت اتصال بازطراحی نشد"; exit 1; }
-          grep -q "if (false && !bind.mainIsInstalled())" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
-            && echo "کارت راهنمای نصب برداشته شد" \
-            || { echo "خطا: کارت راهنمای نصب برداشته نشد"; exit 1; }
+          grep -q "if (!bind.mainIsInstalled())" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
+            && echo "کارت نصب سر جایش است (ثبت در کنترل پنل و نصب سرویس)" \
+            || { echo "خطا: کارت نصب پیدا نشد"; exit 1; }
           grep -q "nrispOrange" "$SRC_DIR/flutter/lib/nrisp/nrisp_id_panel.dart" \
             && echo "ستون کنار با رنگ سازمانی ساخته شد" \
             || { echo "خطا: ستون کنار ساخته نشد"; exit 1; }
