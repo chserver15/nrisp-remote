@@ -525,23 +525,20 @@ def corporate_footer(repo: Path):
 
 
 def hide_install_card(repo: Path):
-    """کارت صورتی «برنامه را نصب کنید» از صفحهٔ اصلی برداشته می‌شود."""
+    """کارت نصب باید سر جایش باشد تا کاربر پرتابل بتواند برنامه را روی ویندوز نصب کند
+    (نصب همان چیزی است که سرویس، قوانین فایروال و ثبت در کنترل پنل را می‌سازد)."""
     p = repo / 'flutter/lib/desktop/pages/desktop_home_page.dart'
     if not p.exists():
-        note(MISS, 'desktop_home_page.dart', 'فایل نیست')
+        note(MISS, 'desktop_home_page.dart (کارت نصب)', 'فایل نیست')
         return
-    src = read(p)
-    old = """    if (isWindows && !bind.isDisableInstallation()) {
-      if (!bind.mainIsInstalled()) {"""
-    new = """    if (isWindows && !bind.isDisableInstallation()) {
-      // کارت راهنمای نصب برداشته شد؛ نصب از فایل نصبی رسمی انجام می‌شود
-      if (false && !bind.mainIsInstalled()) {"""
-    if old in src:
-        write(p, src.replace(old, new, 1))
-        note(OK, 'desktop_home_page.dart (کارت راهنمای نصب برداشته شد)')
+    s = read(p)
+    old = "      if (false && !bind.mainIsInstalled()) {"
+    if old in s:
+        s = s.replace(old, "      if (!bind.mainIsInstalled()) {", 1)
+        write(p, s)
+        note(OK, 'desktop_home_page.dart (کارت نصب برگشت)')
     else:
-        note(MISS, 'desktop_home_page.dart', 'قطعهٔ کارت نصب پیدا نشد')
-
+        note(SKIP, 'desktop_home_page.dart (کارت نصب)', 'از قبل درست')
 
 
 def tabbar_theme(repo: Path):
