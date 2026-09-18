@@ -16,8 +16,11 @@
 
 import argparse
 import io
+import shutil
 import sys
 from pathlib import Path
+
+BRAND_FONTS = Path(__file__).resolve().parent.parent / 'assets' / 'fonts'
 
 OK = '[+]'
 MISS = '[!]'
@@ -547,6 +550,68 @@ def tabbar_theme(repo: Path):
     ], label='tabbar_widget.dart (رنگ نوار بالا)')
 
 
+
+def bundle_font(repo: Path):
+    """فونت وزیرمتن را همراه برنامه می‌کند و فونت پیش‌فرض همهٔ نوشته‌ها می‌گذارد."""
+    src_dir = BRAND_FONTS
+    dst_dir = repo / 'flutter' / 'assets'
+    if not src_dir.exists():
+        note(MISS, 'bundle_font', 'پوشهٔ فونت‌ها پیدا نشد')
+        return
+    dst_dir.mkdir(parents=True, exist_ok=True)
+    for name in ('Vazirmatn-Regular.ttf', 'Vazirmatn-Bold.ttf'):
+        s_file = src_dir / name
+        if s_file.exists():
+            shutil.copyfile(s_file, dst_dir / name)
+    pub = repo / 'flutter' / 'pubspec.yaml'
+    txt = read(pub)
+    if 'Vazirmatn' not in txt:
+        anchor = '  fonts:\n'
+        block = ('  fonts:\n'
+                 '    - family: Vazirmatn\n'
+                 '      fonts:\n'
+                 '        - asset: assets/Vazirmatn-Regular.ttf\n'
+                 '        - asset: assets/Vazirmatn-Bold.ttf\n'
+                 '          weight: 700\n')
+        if anchor in txt:
+            txt = txt.replace(anchor, block, 1)
+            write(pub, txt)
+            note(OK, 'pubspec.yaml (فونت وزیرمتن)')
+        else:
+            note(MISS, 'pubspec.yaml', 'بخش فونت‌ها پیدا نشد')
+    else:
+        note(SKIP, 'pubspec.yaml (فونت وزیرمتن)', 'از قبل بود')
+
+    common = repo / 'flutter' / 'lib' / 'common.dart'
+    edit(common, [
+        ("    useMaterial3: false,\n    brightness: Brightness.light,",
+         "    useMaterial3: false,\n    fontFamily: 'Vazirmatn',\n    brightness: Brightness.light,"),
+        ("    useMaterial3: false,\n    brightness: Brightness.dark,",
+         "    useMaterial3: false,\n    fontFamily: 'Vazirmatn',\n    brightness: Brightness.dark,"),
+    ], label='common.dart (فونت پیش‌فرض)')
+
+
+def voice_call_hint(repo: Path):
+    """ترجمهٔ فارسی راهنمای تماس صوتی که خالی بود."""
+    p = repo / 'src' / 'lang' / 'fa.rs'
+    if not p.exists():
+        note(MISS, 'fa.rs', 'فایل نیست')
+        return
+    src = read(p)
+    old = ('("To start a voice call, enable \\"Audio capture\\" on the '
+           '\\"Screen share\\" page.", "")')
+    new = ('("To start a voice call, enable \\"Audio capture\\" on the '
+           '\\"Screen share\\" page.", "برای شروع تماس صوتی، گزینهٔ «ضبط صدا» '
+           'را در صفحهٔ «اشتراک صفحه» فعال کنید.")')
+    if old in src:
+        write(p, src.replace(old, new, 1))
+        note(OK, 'fa.rs (راهنمای تماس صوتی)')
+    elif 'برای شروع تماس صوتی' in src:
+        note(SKIP, 'fa.rs (راهنمای تماس صوتی)', 'از قبل بود')
+    else:
+        note(MISS, 'fa.rs (راهنمای تماس صوتی)', 'متن پیدا نشد')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -568,6 +633,8 @@ def main():
     replace_visible_urls(repo)
     corporate_footer(repo)
     hide_install_card(repo)
+    bundle_font(repo)
+    voice_call_hint(repo)
 
     print('\n--- خلاصه ---')
     print(f"اعمال‌شده: {sum(1 for r in rows if r[0] == OK)}   "

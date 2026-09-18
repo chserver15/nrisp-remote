@@ -404,6 +404,15 @@ jobs:
           grep -q "cardColor: Colors.white," "$SRC_DIR/flutter/lib/common.dart" \
             && echo "پوستهٔ روشن بازسازی شد" \
             || { echo "خطا: پوستهٔ روشن اعمال نشد"; exit 1; }
+          grep -q "fontFamily: 'Vazirmatn'," "$SRC_DIR/flutter/lib/common.dart" \
+            && echo "فونت فارسی روی برنامه نشست" \
+            || { echo "خطا: فونت فارسی اعمال نشد"; exit 1; }
+          test -f "$SRC_DIR/flutter/assets/Vazirmatn-Regular.ttf" \
+            && echo "فایل فونت همراه برنامه بسته‌بندی شد" \
+            || { echo "خطا: فایل فونت پیدا نشد"; exit 1; }
+          grep -q "برای شروع تماس صوتی" "$SRC_DIR/src/lang/fa.rs" \
+            && echo "راهنمای تماس صوتی فارسی شد" \
+            || echo "هشدار: متن راهنمای تماس صوتی یافت نشد";
           grep -q "const NrispIdPanel()" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
             && echo "ستون شناسه در جای تازه نشست" \
             || { echo "خطا: چیدمان دو ستونی اعمال نشد"; exit 1; }
