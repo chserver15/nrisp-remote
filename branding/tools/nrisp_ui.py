@@ -100,8 +100,7 @@ def restyle_theme(repo: Path):
         # پوستهٔ روشن: زمینهٔ نرم و کارت سفید (مثل درسان با تم روشن)
         ('scaffoldBackgroundColor: Colors.white,',
          'scaffoldBackgroundColor: Color(0xFFF7F8FA),'),
-        ('    dialogBackgroundColor: Colors.white,\n    appBarTheme: AppBarTheme(',
-         '    dialogBackgroundColor: Colors.white,\n    cardColor: Colors.white,\n    appBarTheme: AppBarTheme('),
+        ('    cardColor: grayBg,', '    cardColor: Colors.white,'),
         ('hoverColor: Color.fromARGB(255, 224, 224, 224),',
          'hoverColor: Color(0xFFF1F3F7),'),
         # رنگ اصلی: نارنجی روی هر دو پوسته
@@ -358,7 +357,7 @@ def tabbar_title(repo: Path):
            "                              style: const TextStyle(\n"
            '                                  fontSize: 13,\n'
            '                                  fontWeight: FontWeight.w700,\n'
-           '                                  color: NrispBrand.blue),\n'
+           '                                  color: nrispOrange),\n'
            '                            ).marginOnly(left: 2))')
     edit(p, [(old, new)], label='tabbar_widget.dart (نام نرم‌افزار)')
 
@@ -372,7 +371,7 @@ def tabbar_title(repo: Path):
           '                              style: const TextStyle(\n'
           '                                  fontSize: 13,\n'
           '                                  fontWeight: FontWeight.w700,\n'
-          '                                  color: NrispBrand.blue),\n')
+          '                                  color: nrispOrange),\n')
     if eng in s:
         s = s.replace(eng, fa, 1)
         write(p, s)

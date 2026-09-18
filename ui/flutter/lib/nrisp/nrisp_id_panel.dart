@@ -12,7 +12,6 @@ import 'package:flutter_hbb/desktop/pages/desktop_setting_page.dart';
 import 'package:flutter_hbb/desktop/pages/desktop_tab_page.dart';
 import 'package:flutter_hbb/models/platform_model.dart';
 import 'package:flutter_hbb/models/state_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// نام نمایشی برنامه (فارسی)
 const String nrispAppNameFa = 'دسترسی راه دور موسسه';
@@ -441,7 +440,8 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
         _menuRow(
           icon: Icons.language_rounded,
           title: 'وب‌سایت موسسه',
-          onTap: () => launchUrlString('https://$nrispDomain'),
+          onTap: () =>
+              DesktopTabPage.onAddSetting(initialPage: SettingsTabKey.about),
         ),
       ],
     );

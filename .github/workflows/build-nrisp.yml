@@ -417,6 +417,24 @@ jobs:
             && echo "ستون شناسه در جای تازه نشست" \
             || { echo "خطا: چیدمان دو ستونی اعمال نشد"; exit 1; }
 
+      - name: کنترل نحو و نام‌های دارت پیش از کامپایل
+        continue-on-error: true
+        shell: bash
+        working-directory: ${{ env.SRC_DIR }}/flutter
+        run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/analyze-log.txt") 2>&1
+          echo "=== تحلیل دارت فایل‌های تغییریافته ==="
+          flutter analyze lib/nrisp/nrisp_id_panel.dart lib/common.dart \
+            lib/desktop/pages/desktop_home_page.dart \
+            lib/desktop/pages/connection_page.dart \
+            lib/desktop/widgets/tabbar_widget.dart || true
+          echo "=== خطاهای زبان در فایل‌های ما ==="
+          if grep -E "error" "$GITHUB_WORKSPACE/analyze-log.txt" | grep -E "nrisp_id_panel|lib/common.dart|desktop_home_page|connection_page|tabbar_widget"; then
+            echo "خطای زبان دارت: باید پیش از کامپایل اصلاح شود"
+            exit 1
+          fi
+          echo "بدون خطای زبان"
+
       - name: ثبت وضعیت هویت بصری موسسه روی سورس اعمال شد
         continue-on-error: true
         shell: bash
