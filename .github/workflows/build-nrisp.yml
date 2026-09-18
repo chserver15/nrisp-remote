@@ -413,6 +413,12 @@ jobs:
           grep -q "برای شروع تماس صوتی" "$SRC_DIR/src/lang/fa.rs" \
             && echo "راهنمای تماس صوتی فارسی شد" \
             || echo "هشدار: متن راهنمای تماس صوتی یافت نشد";
+          grep -q '^version = "1.5.2"' "$SRC_DIR/Cargo.toml" \
+            && echo "شمارهٔ نسخه روی ۱٫۵٫۲ نشست" \
+            || { echo "خطا: شمارهٔ نسخه بالا نرفت"; exit 1; }
+          grep -q "0xFFFFD9C2" "$SRC_DIR/flutter/lib/desktop/pages/connection_page.dart" \
+            && echo "کارت اتصال با رنگ گرم درسان‌گونه شد" \
+            || { echo "خطا: کارت اتصال اعمال نشد"; exit 1; }
           grep -q "const NrispIdPanel()" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
             && echo "ستون شناسه در جای تازه نشست" \
             || { echo "خطا: چیدمان دو ستونی اعمال نشد"; exit 1; }

@@ -198,7 +198,10 @@ def dorsan_look(repo: Path):
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: const BorderRadius.all(Radius.circular(22)),
-          border: Border.all(color: Theme.of(context).dividerColor),
+          border: Border.all(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF2A2F37)
+                  : const Color(0xFFF6C4AC)),
           boxShadow: [
             BoxShadow(
                 color: Colors.black.withOpacity(0.16),
@@ -291,15 +294,23 @@ def dorsan_look(repo: Path):
               padding: const EdgeInsets.symmetric(vertical: 30),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFFFB4201).withOpacity(0.10),
-                    const Color(0xFFFB4201).withOpacity(0.0),
-                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: Theme.of(context).brightness == Brightness.dark
+                      ? [
+                          const Color(0xFFFB4201).withOpacity(0.16),
+                          const Color(0xFFFB4201).withOpacity(0.02),
+                        ]
+                      : [
+                          const Color(0xFFFFD9C2),
+                          const Color(0xFFFFF3EC),
+                        ],
                 ),
                 borderRadius: BorderRadius.circular(22),
-                border: Border.all(color: Theme.of(context).dividerColor),
+                border: Border.all(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF2A2F37)
+                        : const Color(0xFFF6C4AC)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -611,6 +622,30 @@ def voice_call_hint(repo: Path):
         note(MISS, 'fa.rs (راهنمای تماس صوتی)', 'متن پیدا نشد')
 
 
+
+def bump_version(repo: Path):
+    """شمارهٔ نسخه را بالا می‌برد تا نسخه‌ها از هم قابل تشخیص باشند."""
+    import re as _re
+    ver = '1.5.2'
+    ct = repo / 'Cargo.toml'
+    cl = repo / 'Cargo.lock'
+    src = read(ct)
+    new = _re.sub(r'(?m)^version = "1[.]5[.]0"', f'version = "{ver}"', src, count=1)
+    if new != src:
+        write(ct, new)
+        note(OK, 'Cargo.toml (شمارهٔ نسخه)', ver)
+    else:
+        note(SKIP, 'Cargo.toml (شمارهٔ نسخه)', 'از قبل')
+    if cl.exists():
+        src = read(cl)
+        old = 'name = "rustdesk"\nversion = "1.5.0"'
+        if old in src:
+            write(cl, src.replace(old, f'name = "rustdesk"\nversion = "{ver}"', 1))
+            note(OK, 'Cargo.lock (شمارهٔ نسخه)', ver)
+        else:
+            note(SKIP, 'Cargo.lock (شمارهٔ نسخه)', 'از قبل')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -633,6 +668,7 @@ def main():
     corporate_footer(repo)
     hide_install_card(repo)
     bundle_font(repo)
+    bump_version(repo)
     voice_call_hint(repo)
 
     print('\n--- خلاصه ---')
