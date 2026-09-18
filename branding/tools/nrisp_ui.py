@@ -1097,6 +1097,19 @@ def silent_installer(repo: Path):
     else:
         note(SKIP, 'libs/portable/src/main.rs (نام فایل)', 'از قبل یا پیدا نشد')
 
+    # پس از نصب بی‌صفحه، پنجرهٔ برنامه هم باز شود (وگرنه کاربر فکر می‌کند نصب نشده)
+    r = repo / 'src' / 'core_main.rs'
+    if r.exists():
+        t = read(r)
+        old4 = 'let res = platform::install_me(options, "".to_owned(), true, debug);'
+        new4 = ('// پس از نصب، پنجرهٔ برنامه هم باز شود\n'
+                '                let res = platform::install_me(options, "".to_owned(), false, debug);')
+        if old4 in t:
+            write(r, t.replace(old4, new4, 1))
+            note(OK, 'src/core_main.rs (باز شدن پنجره پس از نصب)')
+        else:
+            note(SKIP, 'src/core_main.rs', 'از قبل یا پیدا نشد')
+
     # کارت «نصب» داخل برنامه هم مستقیماً نصب کند، نه اینکه صفحهٔ دو‌دکمه‌ای را باز کند
     q = repo / 'src/ui_interface.rs'
     if q.exists():
