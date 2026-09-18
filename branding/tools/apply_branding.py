@@ -470,8 +470,9 @@ def apply_ui(repo: Path, brand, enabled: bool):
         if (isIncomingOnly)
           Expanded(child: buildLeftPane(context))
         else ...[
-          Expanded(child: buildRightPane(context)),
+          // در چیدمان راست‌به‌چپ، فرزند نخست سمت راست می‌نشیند
           const NrispIdPanel(),
+          Expanded(child: buildRightPane(context)),
         ],
       ],
     ));"""),

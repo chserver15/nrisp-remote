@@ -80,20 +80,28 @@ def restyle_theme(repo: Path):
         ('static const Color idColor = Color(0xFF0E3091);',
          'static const Color idColor = Color(0xFFFB4201);'),
         ('static const Color grayBg = Color(0xFFEFEFF2);',
-         'static const Color grayBg = Color(0xFF181B21);'),
+         'static const Color grayBg = Color(0xFFF4F6F9);'),
         ('static const Color border = Color(0xFFCCCCCC);',
-         'static const Color border = Color(0xFF2A2F37);'),
+         'static const Color border = Color(0xFFE3E7EE);'),
         ('static const Color hoverBorder = Color(0xFF999999);',
-         'static const Color hoverBorder = Color(0xFF8C3A17);'),
+         'static const Color hoverBorder = Color(0xFFFB4201);'),
         # پوستهٔ تیره: زمینه و کارت‌های تیره
         ('hoverColor: Color.fromARGB(255, 45, 46, 53),',
          'hoverColor: Color(0xFF24282F),'),
         ('scaffoldBackgroundColor: Color(0xFF18191E),',
          'scaffoldBackgroundColor: Color(0xFF181B21),'),
         ('dialogBackgroundColor: Color(0xFF18191E),',
-         'dialogBackgroundColor: Color(0xFF1F232A),'),
+         'dialogBackgroundColor: Color(0xFF20242B),'),
         ('cardColor: Color(0xFF24252B),',
-         'cardColor: Color(0xFF1F232A),'),
+         'cardColor: Color(0xFF20242B),'),
+        # پوستهٔ روشن: زمینهٔ نرم و کارت سفید (مثل درسان با تم روشن)
+        ('scaffoldBackgroundColor: Colors.white,',
+         'scaffoldBackgroundColor: Color(0xFFF7F8FA),'),
+        ('    dialogBackgroundColor: Colors.white,\n    appBarTheme: AppBarTheme(',
+         '    dialogBackgroundColor: Colors.white,\n    cardColor: Colors.white,\n    appBarTheme: AppBarTheme('),
+        ('hoverColor: Color.fromARGB(255, 224, 224, 224),',
+         'hoverColor: Color(0xFFF1F3F7),'),
+        # رنگ اصلی: نارنجی روی هر دو پوسته
         ('primary: Colors.blue,', 'primary: const Color(0xFFFB4201),'),
         ('secondary: accent,', 'secondary: const Color(0xFFFF7A3D),'),
         ('background: Color(0xFF24252B),', 'background: Color(0xFF1F232A),'),
@@ -131,12 +139,6 @@ def restyle_theme(repo: Path):
         ('side: BorderSide(color: Colors.white12, width: 0.5),',
          'side: const BorderSide(color: Color(0xFF2A2F37), width: 1),'),
         # نوار بالای پنجره
-        ("""  static const dark = TabbarTheme(
-      selectedTabIconColor: MyTheme.accent,
-      unSelectedTabIconColor: Color.fromARGB(255, 30, 65, 98),""",
-         """  static const dark = TabbarTheme(
-      selectedTabIconColor: Color(0xFFFFB599),
-      unSelectedTabIconColor: Color(0xFFFFB599),"""),
     ], label='common.dart (پوستهٔ تیرهٔ نارنجی)')
 
 
@@ -189,20 +191,16 @@ def dorsan_look(repo: Path):
                 offset: const Offset(0, 5))
           ]),""",
          """    var w = Container(
-      width: 560,
+      width: 520,
       padding: const EdgeInsets.fromLTRB(30, 30, 30, 28),
       decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF2A1A12), Color(0xFF1F232A)],
-          ),
+          color: Theme.of(context).cardColor,
           borderRadius: const BorderRadius.all(Radius.circular(22)),
-          border: Border.all(color: const Color(0xFF2A2F37)),
+          border: Border.all(color: Theme.of(context).dividerColor),
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(0.35),
-                blurRadius: 26,
+                color: Colors.black.withOpacity(0.16),
+                blurRadius: 24,
                 offset: const Offset(0, 10))
           ]),"""),
         ("""                          style: const TextStyle(
@@ -281,7 +279,33 @@ def dorsan_look(repo: Path):
                     border: Border.all(color: const Color(0xFF2A2F37)),
                     borderRadius: BorderRadius.circular(23),
                   ),"""),
-        ('.marginOnly(top: 22),', '.marginOnly(top: 36),'),
+        ("""            Row(
+              children: [
+                Flexible(child: _buildRemoteIDTextField(context)),
+              ],
+            ).marginOnly(top: 22),""",
+         """            Container(
+              margin: const EdgeInsets.fromLTRB(12, 22, 12, 4),
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    const Color(0xFFFB4201).withOpacity(0.10),
+                    const Color(0xFFFB4201).withOpacity(0.0),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: Theme.of(context).dividerColor),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(child: _buildRemoteIDTextField(context)),
+                ],
+              ),
+            ).marginOnly(top: 22),"""),
     ], label='connection_page.dart (کارت اتصال درسان‌گونه)')
 
 
@@ -486,6 +510,43 @@ def corporate_footer(repo: Path):
             continue
         edit(path, pairs, label=label)
 
+
+def hide_install_card(repo: Path):
+    """کارت صورتی «برنامه را نصب کنید» از صفحهٔ اصلی برداشته می‌شود."""
+    p = repo / 'flutter/lib/desktop/pages/desktop_home_page.dart'
+    if not p.exists():
+        note(MISS, 'desktop_home_page.dart', 'فایل نیست')
+        return
+    src = read(p)
+    old = """    if (isWindows && !bind.isDisableInstallation()) {
+      if (!bind.mainIsInstalled()) {"""
+    new = """    if (isWindows && !bind.isDisableInstallation()) {
+      // کارت راهنمای نصب برداشته شد؛ نصب از فایل نصبی رسمی انجام می‌شود
+      if (false && !bind.mainIsInstalled()) {"""
+    if old in src:
+        write(p, src.replace(old, new, 1))
+        note(OK, 'desktop_home_page.dart (کارت راهنمای نصب برداشته شد)')
+    else:
+        note(MISS, 'desktop_home_page.dart', 'قطعهٔ کارت نصب پیدا نشد')
+
+
+
+def tabbar_theme(repo: Path):
+    """رنگ آیکون‌های نوار بالای پنجره (پوستهٔ تیره)."""
+    p = repo / 'flutter/lib/desktop/widgets/tabbar_widget.dart'
+    if not p.exists():
+        note(MISS, 'tabbar_widget.dart', 'فایل نیست')
+        return
+    edit(p, [
+        ("""  static const dark = TabbarTheme(
+      selectedTabIconColor: MyTheme.accent,
+      unSelectedTabIconColor: Color.fromARGB(255, 30, 65, 98),""",
+         """  static const dark = TabbarTheme(
+      selectedTabIconColor: Color(0xFFFFB599),
+      unSelectedTabIconColor: Color(0xFFFFB599),"""),
+    ], label='tabbar_widget.dart (رنگ نوار بالا)')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -498,14 +559,15 @@ def main():
     print(f'سورس: {repo}')
     persian_default(repo)
     restyle_theme(repo)
-    force_dark(repo)
     dorsan_look(repo)
     tabbar_title(repo)
+    tabbar_theme(repo)
     drop_powered(repo)
     replace_links(repo)
     fa_brand_cleanup(repo)
     replace_visible_urls(repo)
     corporate_footer(repo)
+    hide_install_card(repo)
 
     print('\n--- خلاصه ---')
     print(f"اعمال‌شده: {sum(1 for r in rows if r[0] == OK)}   "

@@ -392,9 +392,18 @@ jobs:
           grep -q "0xFFFB4201" "$SRC_DIR/flutter/lib/common.dart" \
             && echo "رنگ نارنجی سازمانی اعمال شد" \
             || { echo "خطا: رنگ نارنجی اعمال نشد"; exit 1; }
-          grep -q "width: 560," "$SRC_DIR/flutter/lib/desktop/pages/connection_page.dart" \
+          grep -q "width: 520," "$SRC_DIR/flutter/lib/desktop/pages/connection_page.dart" \
             && echo "کارت اتصال بزرگ درسان‌گونه شد" \
             || { echo "خطا: کارت اتصال بازطراحی نشد"; exit 1; }
+          grep -q "if (false && !bind.mainIsInstalled())" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
+            && echo "کارت راهنمای نصب برداشته شد" \
+            || { echo "خطا: کارت راهنمای نصب برداشته نشد"; exit 1; }
+          grep -q "nrispOrange" "$SRC_DIR/flutter/lib/nrisp/nrisp_id_panel.dart" \
+            && echo "ستون کنار با رنگ سازمانی ساخته شد" \
+            || { echo "خطا: ستون کنار ساخته نشد"; exit 1; }
+          grep -q "cardColor: Colors.white," "$SRC_DIR/flutter/lib/common.dart" \
+            && echo "پوستهٔ روشن بازسازی شد" \
+            || { echo "خطا: پوستهٔ روشن اعمال نشد"; exit 1; }
           grep -q "const NrispIdPanel()" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
             && echo "ستون شناسه در جای تازه نشست" \
             || { echo "خطا: چیدمان دو ستونی اعمال نشد"; exit 1; }
