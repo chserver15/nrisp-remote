@@ -932,6 +932,31 @@ def silent_installer(repo: Path):
     else:
         note(SKIP, 'libs/portable/src/main.rs', 'از قبل یا پیدا نشد')
 
+    # دوبار کلیک روی فایل نصبی، با هر نامی، باید نصب کند (به‌جز نسخهٔ portable)
+    s = read(p)
+    old2 = ('    let click_setup = args.is_empty() '
+            '&& arg_exe.to_lowercase().ends_with("install.exe");')
+    new2 = ('    // نام فایل مهم نیست: هر فایل نصبی (به‌جز portable) با دوبار کلیک نصب می‌کند\n'
+            '    let click_setup = args.is_empty() '
+            '&& !arg_exe.to_lowercase().contains("portable");')
+    if old2 in s:
+        write(p, s.replace(old2, new2, 1))
+        note(OK, 'libs/portable/src/main.rs (نصب مستقل از نام فایل)')
+    else:
+        note(SKIP, 'libs/portable/src/main.rs (نام فایل)', 'از قبل یا پیدا نشد')
+
+    # کارت «نصب» داخل برنامه هم مستقیماً نصب کند، نه اینکه صفحهٔ دو‌دکمه‌ای را باز کند
+    q = repo / 'src/ui_interface.rs'
+    if q.exists():
+        t = read(q)
+        old3 = 'allow_err!(crate::run_me(vec!["--install"]));'
+        new3 = 'allow_err!(crate::run_me(vec!["--silent-install"]));'
+        if old3 in t:
+            write(q, t.replace(old3, new3, 1))
+            note(OK, 'src/ui_interface.rs (نصب مستقیم از کارت برنامه)')
+        else:
+            note(SKIP, 'src/ui_interface.rs', 'از قبل یا پیدا نشد')
+
 
 def main():
     ap = argparse.ArgumentParser()
