@@ -1,5 +1,4 @@
-===== خطای ساخت ویندوز | اجرا: 6 | کار: windows | زمان: 2026-09-18 16:39:19 =====
-Resolving dependencies...
+===== خطای ساخت ویندوز | اجرا: 7 | کار: windows | زمان: 2026-09-18 16:51:20 =====
 Downloading packages...
   _fe_analyzer_shared 72.0.0 (108.0.0 available)
   analyzer 6.7.0 (14.4.0 available)
@@ -161,10 +160,11 @@ Changed 16 dependencies!
 Try `flutter pub outdated` for more information.
 
 Building Windows application...                                 
-lib/desktop/widgets/tabbar_widget.dart(649,53): error G75B77105: Member not found: 'blue'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
-lib/nrisp/nrisp_id_panel.dart(322,26): error GE5CFE876: The method 'launchUrlString' isn't defined for the class '_NrispIdPanelState'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
+lib/common.dart(411,5): error G94307FCF: Duplicated named argument 'cardColor'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
+lib/desktop/widgets/tabbar_widget.dart(649,42): error GC9768DF9: Undefined name 'NrispBrand'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
+lib/nrisp/nrisp_id_panel.dart(444,24): error GE5CFE876: The method 'launchUrlString' isn't defined for the class '_NrispIdPanelState'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
 C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\CMakeFiles\eeaf6422a1b300cef7f2c682a18c3eac\flutter_windows.dll.rule;D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\CMakeFiles\973d68ab045e56c57739510c701a79d4\flutter_assemble.rule;D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\windows\flutter\CMakeLists.txt' exited with code 1. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
-Building Windows application...                                    47.4s
+Building Windows application...                                    67.3s
 Build process failed.
 Error occurred when executing: `flutter build windows --release`. Exiting.
 features: ['hwcodec', 'vram', 'flutter']
@@ -172,81 +172,81 @@ False
 ===== پایان گزارش بسته‌بندی =====
 گزارش بسته‌بندی ذخیره نشد
 ===== فهرست ریشهٔ کار =====
-total 62209
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:39 .
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 ..
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 .git
--rw-r--r-- 1 runneradmin 197121        8 Sep 18 16:02 .gitattributes
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 .github
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:05 969f6665-88a2-4c98-938e-ca9259871fec
--rw-r--r-- 1 runneradmin 197121    10112 Sep 18 16:02 README.md
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:07 branding
--rw-r--r-- 1 runneradmin 197121    16350 Sep 18 16:08 branding-log.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:03 bridge-files
--rw-r--r-- 1 runneradmin 197121   265163 Sep 18 16:39 build-log.txt
--rw-r--r-- 1 runneradmin 197121    43753 Sep 18 16:39 ci-failure-windows.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 docs
--rwxr-xr-x 1 runneradmin 197121     1397 Sep 18 16:02 run.sh
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 rustdesk-src
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 server
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 tools
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:02 ui
--rw-r--r-- 1 runneradmin 197121     3475 Sep 18 16:07 vcpkg-log.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:07 windows-x64-release
--rw-r--r-- 1 runneradmin 197121 63301215 Sep 18 16:07 windows-x64-release.zip
+total 62193
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:51 .
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 ..
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 .git
+-rw-r--r-- 1 runneradmin 197121        8 Sep 18 16:10 .gitattributes
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 .github
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:13 969f6665-88a2-4c98-938e-ca9259871fec
+-rw-r--r-- 1 runneradmin 197121    10112 Sep 18 16:10 README.md
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:17 branding
+-rw-r--r-- 1 runneradmin 197121    16232 Sep 18 16:17 branding-log.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:11 bridge-files
+-rw-r--r-- 1 runneradmin 197121   245890 Sep 18 16:51 build-log.txt
+-rw-r--r-- 1 runneradmin 197121    43890 Sep 18 16:51 ci-failure-windows.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 docs
+-rwxr-xr-x 1 runneradmin 197121     1397 Sep 18 16:10 run.sh
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:19 rustdesk-src
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 server
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 tools
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:10 ui
+-rw-r--r-- 1 runneradmin 197121     3475 Sep 18 16:16 vcpkg-log.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:16 windows-x64-release
+-rw-r--r-- 1 runneradmin 197121 63301215 Sep 18 16:16 windows-x64-release.zip
 ===== فهرست خروجی ساخت =====
 پوشهٔ خروجی ساخت نیست
 ===== فایل‌های اجرایی بسته‌بند =====
 ===== پوشهٔ هدف ریشه =====
--rw-r--r-- 1 runneradmin 197121         0 Sep 18 16:10 .cargo-lock
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:17 .fingerprint
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:17 build
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:38 deps
--rw-r--r-- 1 runneradmin 197121      2275 Sep 18 16:16 dylib_virtual_display.d
--rwxr-xr-x 2 runneradmin 197121    309760 Sep 18 16:16 dylib_virtual_display.dll
--rw-r--r-- 2 runneradmin 197121      2068 Sep 18 16:16 dylib_virtual_display.dll.exp
--rw-r--r-- 2 runneradmin 197121      4010 Sep 18 16:16 dylib_virtual_display.dll.lib
--rw-r--r-- 2 runneradmin 197121  88159368 Sep 18 16:16 dylib_virtual_display.lib
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:10 examples
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:10 incremental
--rw-r--r-- 1 runneradmin 197121      2279 Sep 18 16:16 libdylib_virtual_display.d
--rw-r--r-- 2 runneradmin 197121    313502 Sep 18 16:16 libdylib_virtual_display.rlib
--rw-r--r-- 1 runneradmin 197121     14814 Sep 18 16:38 liblibrustdesk.d
--rw-r--r-- 2 runneradmin 197121  86242582 Sep 18 16:38 liblibrustdesk.rlib
--rw-r--r-- 1 runneradmin 197121     14810 Sep 18 16:38 librustdesk.d
--rwxr-xr-x 2 runneradmin 197121  40547328 Sep 18 16:38 librustdesk.dll
--rw-r--r-- 2 runneradmin 197121     54482 Sep 18 16:38 librustdesk.dll.exp
--rw-r--r-- 2 runneradmin 197121     91478 Sep 18 16:38 librustdesk.dll.lib
--rw-r--r-- 2 runneradmin 197121 431784760 Sep 18 16:38 librustdesk.lib
+-rw-r--r-- 1 runneradmin 197121         0 Sep 18 16:19 .cargo-lock
+drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:27 .fingerprint
+drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:27 build
+drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:50 deps
+-rw-r--r-- 1 runneradmin 197121      2275 Sep 18 16:26 dylib_virtual_display.d
+-rwxr-xr-x 2 runneradmin 197121    309760 Sep 18 16:26 dylib_virtual_display.dll
+-rw-r--r-- 2 runneradmin 197121      2068 Sep 18 16:26 dylib_virtual_display.dll.exp
+-rw-r--r-- 2 runneradmin 197121      4010 Sep 18 16:26 dylib_virtual_display.dll.lib
+-rw-r--r-- 2 runneradmin 197121  88159368 Sep 18 16:26 dylib_virtual_display.lib
+drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:19 examples
+drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:19 incremental
+-rw-r--r-- 1 runneradmin 197121      2279 Sep 18 16:26 libdylib_virtual_display.d
+-rw-r--r-- 2 runneradmin 197121    313502 Sep 18 16:26 libdylib_virtual_display.rlib
+-rw-r--r-- 1 runneradmin 197121     14814 Sep 18 16:50 liblibrustdesk.d
+-rw-r--r-- 2 runneradmin 197121  86242582 Sep 18 16:50 liblibrustdesk.rlib
+-rw-r--r-- 1 runneradmin 197121     14810 Sep 18 16:50 librustdesk.d
+-rwxr-xr-x 2 runneradmin 197121  40547328 Sep 18 16:50 librustdesk.dll
+-rw-r--r-- 2 runneradmin 197121     54482 Sep 18 16:50 librustdesk.dll.exp
+-rw-r--r-- 2 runneradmin 197121     91478 Sep 18 16:50 librustdesk.dll.lib
+-rw-r--r-- 2 runneradmin 197121 431784760 Sep 18 16:50 librustdesk.lib
 ===== فهرست پوشهٔ سورس =====
 total 465
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:10 .
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:39 ..
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 .cargo
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 .git
--rw-r--r-- 1 runneradmin 197121     12 Sep 18 16:03 .gitattributes
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 .github
--rw-r--r-- 1 runneradmin 197121   1018 Sep 18 16:03 .gitignore
--rw-r--r-- 1 runneradmin 197121    100 Sep 18 16:03 .gitmodules
--rw-r--r-- 1 runneradmin 197121   9595 Sep 18 16:03 AGENTS.md
--rw-r--r-- 1 runneradmin 197121     11 Sep 18 16:03 CLAUDE.md
--rw-r--r-- 1 runneradmin 197121 269210 Sep 18 16:03 Cargo.lock
--rw-r--r-- 1 runneradmin 197121  10587 Sep 18 16:08 Cargo.toml
--rw-r--r-- 1 runneradmin 197121   1753 Sep 18 16:03 Dockerfile
--rw-r--r-- 1 runneradmin 197121     10 Sep 18 16:03 GEMINI.md
--rw-r--r-- 1 runneradmin 197121  34523 Sep 18 16:03 LICENCE
--rw-r--r-- 1 runneradmin 197121   9916 Sep 18 16:03 README.md
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 appimage
--rwxr-xr-x 1 runneradmin 197121  57991 Sep 18 16:08 build.py
--rw-r--r-- 1 runneradmin 197121   3511 Sep 18 16:03 build.rs
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 docs
--rwxr-xr-x 1 runneradmin 197121    657 Sep 18 16:03 entrypoint.sh
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 examples
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 fastlane
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 flatpak
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:38 flutter
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 libs
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:03 res
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 src
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:16 target
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:19 .
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:51 ..
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 .cargo
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 .git
+-rw-r--r-- 1 runneradmin 197121     12 Sep 18 16:11 .gitattributes
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 .github
+-rw-r--r-- 1 runneradmin 197121   1018 Sep 18 16:11 .gitignore
+-rw-r--r-- 1 runneradmin 197121    100 Sep 18 16:11 .gitmodules
+-rw-r--r-- 1 runneradmin 197121   9595 Sep 18 16:11 AGENTS.md
+-rw-r--r-- 1 runneradmin 197121     11 Sep 18 16:11 CLAUDE.md
+-rw-r--r-- 1 runneradmin 197121 269210 Sep 18 16:11 Cargo.lock
+-rw-r--r-- 1 runneradmin 197121  10587 Sep 18 16:17 Cargo.toml
+-rw-r--r-- 1 runneradmin 197121   1753 Sep 18 16:11 Dockerfile
+-rw-r--r-- 1 runneradmin 197121     10 Sep 18 16:11 GEMINI.md
+-rw-r--r-- 1 runneradmin 197121  34523 Sep 18 16:11 LICENCE
+-rw-r--r-- 1 runneradmin 197121   9916 Sep 18 16:11 README.md
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 appimage
+-rwxr-xr-x 1 runneradmin 197121  57991 Sep 18 16:17 build.py
+-rw-r--r-- 1 runneradmin 197121   3511 Sep 18 16:11 build.rs
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 docs
+-rwxr-xr-x 1 runneradmin 197121    657 Sep 18 16:11 entrypoint.sh
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 examples
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 fastlane
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 flatpak
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:50 flutter
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 libs
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:11 res
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:44 src
+drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:26 target
 
