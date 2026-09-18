@@ -445,24 +445,37 @@ def apply_ui(repo: Path, brand, enabled: bool):
     dst = repo / "flutter" / "lib" / "nrisp" / "nrisp_id_panel.dart"
     copy_asset(src, dst)
 
-    # ۲) صفحهٔ اصلی: جایگزینی لوگو و تخته‌های شناسه و رمز
+    # ۲) صفحهٔ اصلی: چیدمان شبیه درسان — کارت اتصال در چپ، ستون شناسه در راست
     home = repo / "flutter/lib/desktop/pages/desktop_home_page.dart"
     edit(home, [
         # افزودن import
         ("import 'package:flutter_hbb/desktop/pages/connection_page.dart';",
          "import 'package:flutter_hbb/desktop/pages/connection_page.dart';\n"
          "import 'package:flutter_hbb/nrisp/nrisp_id_panel.dart';"),
-        # جایگزینی چهار بخش با یک پنل
-        ("""      Align(
-        alignment: Alignment.center,
-        child: loadLogo(),
-      ),
-      buildTip(context),
-      if (!isOutgoingOnly) buildIDBoard(context),
-      if (!isOutgoingOnly) buildPasswordBoard(context),""",
-         """      // پنل اختصاصی موسسه: نشان، شناسهٔ دستگاه، رمز و وضعیت سرویس
-      if (!isOutgoingOnly) const NrispIdPanel(),"""),
-    ], label="desktop_home_page.dart")
+        # جابه‌جایی دو ستون
+        ("""    return _buildBlock(
+        child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildLeftPane(context),
+        if (!isIncomingOnly) const VerticalDivider(width: 1),
+        if (!isIncomingOnly) Expanded(child: buildRightPane(context)),
+      ],
+    ));""",
+         """    // چیدمان سازمان: کارت بزرگ اتصال در سمت چپ، ستون شناسه و تنظیمات در سمت راست
+    return _buildBlock(
+        child: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (isIncomingOnly)
+          Expanded(child: buildLeftPane(context))
+        else ...[
+          Expanded(child: buildRightPane(context)),
+          const NrispIdPanel(),
+        ],
+      ],
+    ));"""),
+    ], label="desktop_home_page.dart (چیدمان دو ستونی)")
 
     # ۳) رنگ‌های سراسری برنامه
     edit(repo / "flutter/lib/common.dart", [

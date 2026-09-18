@@ -62,19 +62,227 @@ def edit(p: Path, pairs, label=None, required=False):
 
 
 def restyle_theme(repo: Path):
-    """رنگ‌های سراسری برنامه"""
+    """پوستهٔ تیره و نارنجی شبیه درسان‌دسک."""
     p = repo / 'flutter/lib/common.dart'
     if not p.exists():
         note(MISS, 'common.dart', 'فایل نیست')
         return
     edit(p, [
-        ('static const Color grayBg = Color(0xFFEFEFF2);',
-         'static const Color grayBg = Color(0xFFF3F6FC);'),
+        # رنگ اصلی: نارنجی
+        ('static const Color accent = Color(0xFF0E3091);',
+         'static const Color accent = Color(0xFFFB4201);'),
+        ('static const Color accent50 = Color(0x770E3091);',
+         'static const Color accent50 = Color(0x77FB4201);'),
+        ('static const Color accent80 = Color(0xAA0E3091);',
+         'static const Color accent80 = Color(0xAAFB4201);'),
+        ('static const Color button = Color(0xFF0E3091);',
+         'static const Color button = Color(0xFFFB4201);'),
         ('static const Color idColor = Color(0xFF0E3091);',
-         'static const Color idColor = Color(0xFFE89B25);'),
-        ('primary: Colors.blue,', 'primary: const Color(0xFF0E3091),'),
-        ('secondary: accent,', 'secondary: const Color(0xFFE89B25),'),
-    ], label='common.dart (رنگ‌های سازمانی)')
+         'static const Color idColor = Color(0xFFFB4201);'),
+        ('static const Color grayBg = Color(0xFFEFEFF2);',
+         'static const Color grayBg = Color(0xFF181B21);'),
+        ('static const Color border = Color(0xFFCCCCCC);',
+         'static const Color border = Color(0xFF2A2F37);'),
+        ('static const Color hoverBorder = Color(0xFF999999);',
+         'static const Color hoverBorder = Color(0xFF8C3A17);'),
+        # پوستهٔ تیره: زمینه و کارت‌های تیره
+        ('hoverColor: Color.fromARGB(255, 45, 46, 53),',
+         'hoverColor: Color(0xFF24282F),'),
+        ('scaffoldBackgroundColor: Color(0xFF18191E),',
+         'scaffoldBackgroundColor: Color(0xFF181B21),'),
+        ('dialogBackgroundColor: Color(0xFF18191E),',
+         'dialogBackgroundColor: Color(0xFF1F232A),'),
+        ('cardColor: Color(0xFF24252B),',
+         'cardColor: Color(0xFF1F232A),'),
+        ('primary: Colors.blue,', 'primary: const Color(0xFFFB4201),'),
+        ('secondary: accent,', 'secondary: const Color(0xFFFF7A3D),'),
+        ('background: Color(0xFF24252B),', 'background: Color(0xFF1F232A),'),
+        # ورودی‌ها و دکمه‌های خطی
+        ("""        ? InputDecorationTheme(
+            fillColor: Color(0xFF24252B),
+            filled: true,
+            isDense: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          )""",
+         """        ? InputDecorationTheme(
+            fillColor: Color(0xFF24282F),
+            filled: true,
+            isDense: true,
+            hintStyle: const TextStyle(color: Color(0xFF98A2B0)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF2A2F37)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF2A2F37)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFFFB4201), width: 1.4),
+            ),
+          )"""),
+        ("""      style: OutlinedButton.styleFrom(
+        backgroundColor: Color(0xFF24252B),""",
+         """      style: OutlinedButton.styleFrom(
+        backgroundColor: Color(0xFF24282F),"""),
+        ('side: BorderSide(color: Colors.white12, width: 0.5),',
+         'side: const BorderSide(color: Color(0xFF2A2F37), width: 1),'),
+        # نوار بالای پنجره
+        ("""  static const dark = TabbarTheme(
+      selectedTabIconColor: MyTheme.accent,
+      unSelectedTabIconColor: Color.fromARGB(255, 30, 65, 98),""",
+         """  static const dark = TabbarTheme(
+      selectedTabIconColor: Color(0xFFFFB599),
+      unSelectedTabIconColor: Color(0xFFFFB599),"""),
+    ], label='common.dart (پوستهٔ تیرهٔ نارنجی)')
+
+
+def force_dark(repo: Path):
+    """برنامه همیشه با پوستهٔ تیره باز می‌شود (مثل درسان)."""
+    p = repo / 'flutter/lib/common.dart'
+    src = read(p)
+    old = """  static ThemeMode currentThemeMode() {
+    final preference = getThemeModePreference();
+    if (preference == ThemeMode.system) {
+      if (WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+          Brightness.light) {
+        return ThemeMode.light;
+      } else {
+        return ThemeMode.dark;
+      }
+    } else {
+      return preference;
+    }
+  }"""
+    new = """  static ThemeMode currentThemeMode() {
+    // پوستهٔ تیرهٔ سازمانی — همیشه تیره
+    return ThemeMode.dark;
+  }"""
+    if old in src:
+        write(p, src.replace(old, new, 1))
+        note(OK, 'common.dart (پوستهٔ تیرهٔ همیشگی)')
+    else:
+        note(MISS, 'common.dart (پوستهٔ تیرهٔ همیشگی)', 'تابع پیدا نشد')
+
+
+def dorsan_look(repo: Path):
+    """کارت اتصال بزرگ و دکمهٔ درشت نارنجی مثل درسان‌دسک."""
+    p = repo / 'flutter/lib/desktop/pages/connection_page.dart'
+    if not p.exists():
+        note(MISS, 'connection_page.dart', 'فایل نیست')
+        return
+    edit(p, [
+        ("""    var w = Container(
+      width: 320 + 20 * 2,
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 22),
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.all(Radius.circular(18)),
+          border: Border.all(color: Theme.of(context).colorScheme.background),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 18,
+                offset: const Offset(0, 5))
+          ]),""",
+         """    var w = Container(
+      width: 560,
+      padding: const EdgeInsets.fromLTRB(30, 30, 30, 28),
+      decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF2A1A12), Color(0xFF1F232A)],
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(22)),
+          border: Border.all(color: const Color(0xFF2A2F37)),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.35),
+                blurRadius: 26,
+                offset: const Offset(0, 10))
+          ]),"""),
+        ("""                          style: const TextStyle(
+                            fontFamily: 'WorkSans',
+                            fontSize: 22,
+                            height: 1.4,
+                          ),""",
+         """                          style: const TextStyle(
+                            fontFamily: 'WorkSans',
+                            fontSize: 19,
+                            height: 1.5,
+                            color: Color(0xFFF2F4F7),
+                          ),"""),
+        ("""                          decoration: InputDecoration(
+                              filled: false,
+                              counterText: '',""",
+         """                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: const Color(0xFF24282F),
+                              counterText: '',"""),
+        ("""                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 13)),""",
+         """                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 18)),"""),
+        ("""                SizedBox(
+                  height: 28.0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      onConnect();
+                    },
+                    child: Text(translate("Connect")),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  height: 28.0,
+                  width: 28.0,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).dividerColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),""",
+         """                SizedBox(
+                  height: 46.0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      onConnect();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFB4201),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(horizontal: 26),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(23),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.arrow_back_rounded,
+                            size: 18, color: Colors.white),
+                        const SizedBox(width: 8),
+                        Text(translate("Connect"),
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  height: 46.0,
+                  width: 46.0,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF24282F),
+                    border: Border.all(color: const Color(0xFF2A2F37)),
+                    borderRadius: BorderRadius.circular(23),
+                  ),"""),
+        ('.marginOnly(top: 22),', '.marginOnly(top: 36),'),
+    ], label='connection_page.dart (کارت اتصال درسان‌گونه)')
 
 
 def persian_default(repo: Path):
@@ -290,6 +498,8 @@ def main():
     print(f'سورس: {repo}')
     persian_default(repo)
     restyle_theme(repo)
+    force_dark(repo)
+    dorsan_look(repo)
     tabbar_title(repo)
     drop_powered(repo)
     replace_links(repo)

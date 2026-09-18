@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
-// صفحهٔ اصلی اختصاصی — موسسه تحقیقات سیاست علمی کشور
-// این پنل جای لوگو، شناسه، رمز و وضعیت سرویس را در صفحهٔ اصلی می‌گیرد و
-// با زبان راست‌به‌چپ، رنگ‌های سازمانی و کارت‌های گرد طراحی شده است.
+// ستون کنار برنامه — موسسه تحقیقات سیاست علمی کشور
+// چیدمان و رنگ‌بندی بر پایهٔ نرم‌افزار درسان‌دسک: زمینهٔ تیره، رنگ نارنجی،
+// کارت «دسکتاپ شما» با شناسه و رمز عبور و فهرست تنظیمات.
 // ---------------------------------------------------------------------------
 
 import 'dart:async';
@@ -12,6 +12,7 @@ import 'package:flutter_hbb/common.dart';
 import 'package:flutter_hbb/desktop/pages/desktop_tab_page.dart';
 import 'package:flutter_hbb/models/platform_model.dart';
 import 'package:flutter_hbb/models/state_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// نام نمایشی برنامه (فارسی)
 const String nrispAppNameFa = 'دسترسی راه دور موسسه';
@@ -22,19 +23,20 @@ const String nrispCompanyFa = 'موسسه تحقیقات سیاست علمی ک�
 /// نشانی سایت سازمان
 const String nrispDomain = 'nrisp.ac.ir';
 
-/// رنگ‌های سازمانی موسسه
+/// رنگ‌های سازمانی — بر پایهٔ پوستهٔ تیرهٔ درسان‌دسک
 class NrispBrand {
-  static const Color blue = Color(0xFF0E3091);
-  static const Color blueDeep = Color(0xFF0A2570);
-  static const Color blueLight = Color(0xFF2C5AC4);
-  static const Color orange = Color(0xFFE89B25);
-  static const Color ink = Color(0xFF16222E);
-  static const Color muted = Color(0xFF7A8A98);
-  static const Color line = Color(0xFFE4EBF1);
-  static const Color cardDark = Color(0xFF1B2430);
-  static const Color softBlue = Color(0xFFEEF3FB);
-  static const Color green = Color(0xFF1E9E6A);
-  static const Color red = Color(0xFFD9534F);
+  static const Color orange = Color(0xFFFB4201); // نارنجی اصلی
+  static const Color orangeSoft = Color(0xFFFF7A3D);
+  static const Color orangeFaint = Color(0x1AFB4201);
+  static const Color bg = Color(0xFF181B21); // زمینهٔ پنجره
+  static const Color sidebar = Color(0xFF1B1F26); // زمینهٔ ستون کنار
+  static const Color card = Color(0xFF1F232A); // کارت‌ها
+  static const Color row = Color(0xFF24282F); // ردیف‌های داخلی
+  static const Color line = Color(0xFF2A2F37);
+  static const Color text = Color(0xFFF2F4F7);
+  static const Color muted = Color(0xFF98A2B0);
+  static const Color green = Color(0xFF2ECC71);
+  static const Color red = Color(0xFFE5484D);
 }
 
 class NrispIdPanel extends StatefulWidget {
@@ -53,7 +55,6 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
   void initState() {
     super.initState();
     _load();
-    // شناسه و رمز یک‌بارمصرف ممکن است از سمت سرویس تغییر کنند
     _timer = Timer.periodic(const Duration(seconds: 2), (_) => _load());
   }
 
@@ -75,314 +76,38 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
         });
       }
     } catch (_) {
-      // سرویس ممکن است هنوز آماده نباشد
+      // سرویس هنوز آماده نیست
     }
   }
 
-  bool get _isDark => Theme.of(context).brightness == Brightness.dark;
-  Color get _card => _isDark ? NrispBrand.cardDark : Colors.white;
-  Color get _title => _isDark ? Colors.white : NrispBrand.ink;
-  Color get _sub => _isDark ? const Color(0xFF9BAAB8) : NrispBrand.muted;
+  void _copy(String text) {
+    if (text.trim().isEmpty) return;
+    Clipboard.setData(ClipboardData(text: text));
+    showToast(translate('Copied'));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 14, 12, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _hero(),
-            const SizedBox(height: 14),
-            _idCard(),
-            const SizedBox(height: 10),
-            _passwordCard(),
-            const SizedBox(height: 12),
-            _actionRow(),
-            const SizedBox(height: 12),
-            _hintCard(),
-            const SizedBox(height: 16),
-            _footer(),
-          ],
+      child: Container(
+        width: 300,
+        decoration: const BoxDecoration(
+          color: NrispBrand.sidebar,
+          border: Border(left: BorderSide(color: NrispBrand.line, width: 1)),
         ),
-      ),
-    );
-  }
-
-  // ------------------------------------------------------------- سرصفحهٔ رنگی
-
-  Widget _hero() {
-    final status = stateGlobal.svcStatus.value;
-    final Color dot;
-    final String label;
-    if (status == SvcStatus.ready) {
-      dot = NrispBrand.green;
-      label = 'آمادهٔ دریافت اتصال';
-    } else if (status == SvcStatus.connecting) {
-      dot = NrispBrand.orange;
-      label = 'در حال آماده‌سازی';
-    } else {
-      dot = NrispBrand.red;
-      label = 'سرویس فعال نیست';
-    }
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 13),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [NrispBrand.blueLight, NrispBrand.blue, NrispBrand.blueDeep],
-        ),
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: NrispBrand.blue.withOpacity(0.28),
-            blurRadius: 18,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(14, 16, 14, 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                width: 46,
-                height: 46,
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: loadIcon(32),
-              ),
-              const SizedBox(width: 11),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      nrispAppNameFa,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        height: 1.35,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      nrispCompanyFa,
-                      style: const TextStyle(
-                        fontSize: 10.5,
-                        color: Color(0xFFD5E0F6),
-                        height: 1.3,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.16),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 7,
-                  height: 7,
-                  decoration: BoxDecoration(color: dot, shape: BoxShape.circle),
-                ),
-                const SizedBox(width: 7),
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ------------------------------------------------------------ کارت شناسه
-
-  Widget _idCard() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: _card,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: _isDark ? Colors.white12 : NrispBrand.line),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(_isDark ? 0.30 : 0.05),
-            blurRadius: 18,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.badge_outlined, size: 15, color: NrispBrand.orange),
-              const SizedBox(width: 6),
-              Text(
-                'شناسهٔ این دستگاه',
-                style: TextStyle(fontSize: 11.5, color: _sub),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              _id.isEmpty ? '...' : _id,
-              style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w800,
-                color: NrispBrand.blue,
-                letterSpacing: 2.0,
-                height: 1.2,
-              ),
-            ),
-          ),
-          const SizedBox(height: 9),
-          _chip(
-            icon: Icons.copy_rounded,
-            text: 'کپی شناسه',
-            onTap: () {
-              if (_id.isEmpty) return;
-              Clipboard.setData(ClipboardData(text: _id));
-              showToast(translate('Copied'));
-            },
-            filled: true,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // -------------------------------------------------------------- کارت رمز
-
-  Widget _passwordCard() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: _isDark ? Colors.white10 : NrispBrand.softBlue,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.lock_outline_rounded, size: 15, color: NrispBrand.orange),
-              const SizedBox(width: 6),
-              Text('رمز عبور یک‌بارمصرف',
-                  style: TextStyle(fontSize: 11.5, color: _sub)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              _password.isEmpty ? '------' : _password,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 4,
-                color: _title,
-                height: 1.2,
-              ),
-            ),
-          ),
-          const SizedBox(height: 9),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _chip(
-                icon: Icons.copy_rounded,
-                text: 'کپی رمز',
-                onTap: () {
-                  if (_password.isEmpty) return;
-                  Clipboard.setData(ClipboardData(text: _password));
-                  showToast(translate('Copied'));
-                },
-                filled: true,
-              ),
-              const SizedBox(width: 8),
-              _chip(
-                icon: Icons.refresh_rounded,
-                text: 'رمز تازه',
-                onTap: _load,
-                filled: false,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _chip({
-    required IconData icon,
-    required String text,
-    required VoidCallback onTap,
-    required bool filled,
-  }) {
-    final Color bg = filled
-        ? (_isDark ? Colors.white12 : Colors.white)
-        : (_isDark ? Colors.white10 : NrispBrand.blue);
-    final Color fg = filled
-        ? NrispBrand.blue
-        : (_isDark ? Colors.white : Colors.white);
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: filled
-                  ? (_isDark ? Colors.white24 : NrispBrand.line)
-                  : Colors.transparent,
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 14, color: fg),
-              const SizedBox(width: 6),
-              Text(
-                text,
-                style: TextStyle(
-                  fontSize: 11.5,
-                  color: fg,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              _brand(),
+              const SizedBox(height: 16),
+              _desktopCard(),
+              const SizedBox(height: 14),
+              _menu(),
+              const SizedBox(height: 20),
+              _footer(),
             ],
           ),
         ),
@@ -390,58 +115,120 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
     );
   }
 
-  // ------------------------------------------------------------- دکمه‌های کار
+  // ------------------------------------------------------------- سرصفحه
 
-  Widget _actionRow() {
+  Widget _brand() {
     return Row(
       children: [
+        Container(
+          width: 40,
+          height: 40,
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: NrispBrand.card,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: NrispBrand.line),
+          ),
+          child: loadIcon(30),
+        ),
+        const SizedBox(width: 10),
         Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                nrispAppNameFa,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w800,
+                  color: NrispBrand.orange,
+                  height: 1.35,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 2),
+              Text(
+                nrispCompanyFa,
+                style: TextStyle(
+                  fontSize: 10,
+                  color: NrispBrand.muted,
+                  height: 1.3,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // -------------------------------------------------- کارت «دسکتاپ شما»
+
+  Widget _desktopCard() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: const [
+            Icon(Icons.desktop_windows_outlined,
+                size: 15, color: NrispBrand.orange),
+            SizedBox(width: 6),
+            Text(
+              'دسکتاپ شما',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: NrispBrand.text,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 9),
+        _valueRow(
+          label: 'شناسه',
+          value: _id.isEmpty ? '...' : _id,
+          onCopy: () => _copy(_id),
+        ),
+        const SizedBox(height: 8),
+        _valueRow(
+          label: 'رمز عبور',
+          value: _password.isEmpty ? '------' : _password,
+          onCopy: () => _copy(_password),
+          trailing: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+            icon: const Icon(Icons.refresh_rounded,
+                size: 16, color: NrispBrand.muted),
+            tooltip: 'رمز تازه',
+            onPressed: _load,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 36,
           child: ElevatedButton(
-            onPressed: () {
-              final text = _password.isEmpty ? _id : '$_id  $_password';
-              if (text.trim().isEmpty) return;
-              Clipboard.setData(ClipboardData(text: text));
-              showToast(translate('Copied'));
-            },
+            onPressed: () => _copy(
+                _password.isEmpty ? _id : '$_id  $_password'),
             style: ElevatedButton.styleFrom(
               backgroundColor: NrispBrand.orange,
               foregroundColor: Colors.white,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13),
-              ),
-            ),
-            child: const Text(
-              'ارسال شناسه و رمز',
-              style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-        const SizedBox(width: 9),
-        Expanded(
-          child: OutlinedButton(
-            onPressed: DesktopTabPage.onAddSetting,
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              backgroundColor: _isDark ? Colors.white10 : Colors.white,
-              side: BorderSide(color: _isDark ? Colors.white24 : NrispBrand.line),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.tune_rounded, size: 15, color: _title),
-                const SizedBox(width: 6),
+              children: const [
+                Icon(Icons.send_rounded, size: 15, color: Colors.white),
+                SizedBox(width: 7),
                 Text(
-                  'تنظیمات',
-                  style: TextStyle(
-                    fontSize: 12.5,
-                    color: _title,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  'ارسال شناسه و رمز',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
@@ -451,32 +238,178 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
     );
   }
 
-  // ---------------------------------------------------------------- راهنما
-
-  Widget _hintCard() {
+  Widget _valueRow({
+    required String label,
+    required String value,
+    required VoidCallback onCopy,
+    Widget? trailing,
+  }) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
+      padding: const EdgeInsets.fromLTRB(6, 6, 11, 6),
       decoration: BoxDecoration(
-        color: _isDark
-            ? Colors.white.withOpacity(0.05)
-            : NrispBrand.orange.withOpacity(0.10),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: _isDark ? Colors.white12 : NrispBrand.orange.withOpacity(0.35),
-        ),
+        color: NrispBrand.row,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: NrispBrand.line),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.support_agent_rounded,
-              size: 17, color: NrispBrand.orange),
+          if (trailing != null) trailing,
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: NrispBrand.text,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ),
+          ),
           const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+            decoration: BoxDecoration(
+              color: NrispBrand.orangeFaint,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 10.5,
+                fontWeight: FontWeight.w700,
+                color: NrispBrand.orangeSoft,
+              ),
+            ),
+          ),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+            icon: const Icon(Icons.copy_rounded,
+                size: 15, color: NrispBrand.muted),
+            tooltip: 'کپی',
+            onPressed: onCopy,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ------------------------------------------------------------ فهرست
+
+  Widget _menu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _menuRow(
+            icon: Icons.monitor_outlined,
+            title: 'نمایش دادن',
+            onTap: DesktopTabPage.onAddSetting),
+        _menuRow(
+            icon: Icons.person_outline_rounded,
+            title: 'پروفایل',
+            onTap: DesktopTabPage.onAddSetting),
+        _menuRow(
+            icon: Icons.info_outline_rounded,
+            title: 'دربارهٔ برنامه',
+            onTap: DesktopTabPage.onAddSetting),
+        _menuRow(
+            icon: Icons.language_rounded,
+            title: 'وب‌سایت موسسه',
+            onTap: () => launchUrlString('https://$nrispDomain')),
+        const SizedBox(height: 6),
+        _serverRow(),
+      ],
+    );
+  }
+
+  Widget _menuRow({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Material(
+        color: NrispBrand.card,
+        borderRadius: BorderRadius.circular(11),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(11),
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(11),
+              border: Border.all(color: NrispBrand.line),
+            ),
+            child: Row(
+              children: [
+                Icon(icon, size: 16, color: NrispBrand.orange),
+                const SizedBox(width: 9),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      color: NrispBrand.text,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const Icon(Icons.chevron_left_rounded,
+                    size: 16, color: NrispBrand.muted),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _serverRow() {
+    final status = stateGlobal.svcStatus.value;
+    final Color dot;
+    final String label;
+    if (status == SvcStatus.ready) {
+      dot = NrispBrand.green;
+      label = 'سرورهای عمومی';
+    } else if (status == SvcStatus.connecting) {
+      dot = NrispBrand.orangeSoft;
+      label = 'در حال آماده‌سازی';
+    } else {
+      dot = NrispBrand.red;
+      label = 'سرویس فعال نیست';
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: NrispBrand.card,
+        borderRadius: BorderRadius.circular(11),
+        border: Border.all(color: NrispBrand.line),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 9,
+            height: 9,
+            decoration: BoxDecoration(color: dot, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 9),
           Expanded(
             child: Text(
-              'برای آنکه پشتیبانی موسسه به این رایانه متصل شود، '
-              'شناسه و رمز بالا را برای ایشان بفرستید. برای اتصال شما به '
-              'دستگاهی دیگر، شناسهٔ آن دستگاه را در کادر «کنترل دسکتاپ میزبان» وارد کنید.',
-              style: TextStyle(fontSize: 11, color: _title, height: 1.65),
+              label,
+              style: const TextStyle(fontSize: 12, color: NrispBrand.text),
+            ),
+          ),
+          Text(
+            'آماده',
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: dot,
             ),
           ),
         ],
@@ -484,18 +417,20 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
     );
   }
 
+  // ------------------------------------------------------------- پابرگ
+
   Widget _footer() {
     return Column(
-      children: [
+      children: const [
         Text(
           nrispCompanyFa,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 10.5, color: _sub, height: 1.5),
+          style: TextStyle(fontSize: 10, color: NrispBrand.muted, height: 1.5),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: 3),
         Text(
           nrispDomain,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 10.5,
             color: NrispBrand.orange,
             fontWeight: FontWeight.w700,

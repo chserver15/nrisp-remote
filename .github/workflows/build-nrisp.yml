@@ -386,6 +386,18 @@ jobs:
           grep -q "nrispAppNameFa" "$SRC_DIR/flutter/lib/nrisp/nrisp_id_panel.dart" \
             && echo "پنل اختصاصی فارسی در جای خود است" \
             || { echo "خطا: پنل اختصاصی جای نگرفت"; exit 1; }
+          grep -q "0xFF181B21" "$SRC_DIR/flutter/lib/common.dart" \
+            && echo "پوستهٔ تیره روی سورس نشست" \
+            || { echo "خطا: پوستهٔ تیره اعمال نشد"; tail -n 40 "$GITHUB_WORKSPACE/branding-log.txt"; exit 1; }
+          grep -q "0xFFFB4201" "$SRC_DIR/flutter/lib/common.dart" \
+            && echo "رنگ نارنجی سازمانی اعمال شد" \
+            || { echo "خطا: رنگ نارنجی اعمال نشد"; exit 1; }
+          grep -q "width: 560," "$SRC_DIR/flutter/lib/desktop/pages/connection_page.dart" \
+            && echo "کارت اتصال بزرگ درسان‌گونه شد" \
+            || { echo "خطا: کارت اتصال بازطراحی نشد"; exit 1; }
+          grep -q "const NrispIdPanel()" "$SRC_DIR/flutter/lib/desktop/pages/desktop_home_page.dart" \
+            && echo "ستون شناسه در جای تازه نشست" \
+            || { echo "خطا: چیدمان دو ستونی اعمال نشد"; exit 1; }
 
       - name: ثبت وضعیت هویت بصری موسسه روی سورس اعمال شد
         continue-on-error: true
