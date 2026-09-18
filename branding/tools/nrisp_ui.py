@@ -598,6 +598,95 @@ def bundle_font(repo: Path):
     ], label='common.dart (فونت پیش‌فرض)')
 
 
+def settings_font(repo: Path):
+    """کوچک‌کردن کمی اندازهٔ نوشته‌های صفحهٔ تنظیمات تا در کادرها جا شوند."""
+    p = repo / 'flutter' / 'lib' / 'desktop' / 'pages' / 'desktop_setting_page.dart'
+    if not p.exists():
+        note(MISS, 'desktop_setting_page.dart', 'فایل نیست')
+        return
+    src = read(p)
+    pairs = [
+        ('const double _kTabHeight = 42;', 'const double _kTabHeight = 44;'),
+        ('const double _kTitleFontSize = 20;', 'const double _kTitleFontSize = 18;'),
+        ('const double _kContentFontSize = 15;', 'const double _kContentFontSize = 14;'),
+    ]
+    hit = 0
+    for old, new in pairs:
+        if old in src:
+            src = src.replace(old, new, 1)
+            hit += 1
+    if hit == 3:
+        write(p, src)
+        note(OK, 'اندازهٔ نوشته‌های صفحهٔ تنظیمات')
+    else:
+        note(SKIP, 'اندازهٔ نوشته‌های صفحهٔ تنظیمات', 'از قبل یا پیدا نشد')
+
+
+def menu_side(repo: Path):
+    """منوی سه‌نقطه باید مثل قبل از نقطهٔ کلیک باز شود؛ در حالت راست‌به‌چپ
+    جهت باز شدن و چیدمان منو برمی‌گشت و به سمت دیگر می‌رفت."""
+    p = repo / 'flutter' / 'lib' / 'desktop' / 'widgets' / 'material_mod_popup_menu.dart'
+    if not p.exists():
+        note(MISS, 'material_mod_popup_menu.dart', 'فایل نیست')
+        return
+    src = read(p)
+    if 'double x = position.left;' in src:
+        note(SKIP, 'منوی سه‌نقطه (جهت باز شدن)', 'از قبل بود')
+        return
+    pairs = [
+        ("""    // Find the ideal horizontal position.
+    double x;
+    // if (position.left > position.right) {
+    //   // Menu button is closer to the right edge, so grow to the left, aligned to the right edge.
+    //   x = size.width - position.right - childSize.width;
+    // } else if (position.left < position.right) {
+    //   // Menu button is closer to the left edge, so grow to the right, aligned to the left edge.
+    //   x = position.left;
+    // } else {
+    // Menu button is equidistant from both edges, so grow in reading direction.
+    switch (textDirection) {
+      case TextDirection.rtl:
+        x = size.width - position.right - childSize.width;
+        break;
+      case TextDirection.ltr:
+        x = position.left;
+        break;
+    }
+    //}""",
+         """    // موقعیت افقی منو همیشه مثل نسخهٔ اصلی برنامه: از نقطهٔ کلیک به سمت راست
+    double x = position.left;"""),
+        ("            child: Align(\n              alignment: AlignmentDirectional.topEnd,",
+         "            child: Align(\n              alignment: Alignment.topLeft,"),
+        ("""          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              vertical: _kMenuVerticalPadding,
+            ),
+            controller: ScrollController(),
+            child: ListBody(children: children),
+          ),""",
+         """          child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                vertical: _kMenuVerticalPadding,
+              ),
+              controller: ScrollController(),
+              child: ListBody(children: children),
+            ),
+          ),"""),
+    ]
+    ok = 0
+    for old, new in pairs:
+        if old in src:
+            src = src.replace(old, new, 1)
+            ok += 1
+        else:
+            note(MISS, 'منوی سه‌نقطه', 'بخشی پیدا نشد')
+    if ok:
+        write(p, src)
+        note(OK, 'منوی سه‌نقطه (جهت باز شدن و چیدمان)')
+
+
 def line_height_fix(repo: Path):
     """ارتفاع خط فونت وزیرمتن بلندتر از فونت‌های لاتین است و متن در کادرهای ثابت
     بریده می‌شد؛ اینجا ارتفاع خط را به اندازهٔ معمول برمی‌گردانیم."""
@@ -1049,6 +1138,8 @@ def main():
     final_tweaks(repo)
     silent_installer(repo)
     bundle_font(repo)
+    menu_side(repo)
+    settings_font(repo)
     line_height_fix(repo)
     bump_version(repo)
     voice_call_hint(repo)
