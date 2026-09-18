@@ -12,7 +12,7 @@ TMP_BODY="$WORK/body.txt"
     tail -n 250 "$NOTE_FILE"
   else
     echo "(فایل گزارش نبود؛ گردآوری مستقیم از لاگ‌ها)"
-    for f in branding-log.txt build-log.txt packaging-log.txt; do
+    for f in branding-log.txt build-log.txt packaging-log.txt android-source-log.txt android-deps-log.txt android-branding-log.txt android-build-log.txt; do
       echo "----- $f -----"
       tail -n 120 "$GITHUB_WORKSPACE/$f" 2>/dev/null || echo "(نیست)"
     done
