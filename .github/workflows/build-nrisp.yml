@@ -36,6 +36,8 @@ env:
   RUSTDESK_REF: "master"
   SRC_DIR: "rustdesk-src"
   DIST_NAME: "NRISP-Remote"
+  ANDROID_FLUTTER_VERSION: "3.24.5"
+  CARGO_NDK_VERSION: "3.1.2"
 
 jobs:
   # -------------------------------------------------------------------------
@@ -640,10 +642,173 @@ jobs:
   # -------------------------------------------------------------------------
   # کار سوم: انتشار فایل نصبی و نسخهٔ پرتابل در بخش Releases همین مخزن
   # -------------------------------------------------------------------------
+  android:
+    name: ساخت نسخهٔ اندروید
+    needs: [bridge]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: آزادکردن فضای دیسک
+        uses: jlumbroso/free-disk-space@main
+        continue-on-error: true
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+
+      - name: گرفتن فایل‌های این مخزن
+        uses: actions/checkout@v4
+
+      - name: خاموش‌کردن تبدیل خطوط
+        run: git config --global core.autocrlf false
+
+      - name: نصب ابزارهای پایه
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nasm ninja-build pkg-config curl unzip zip \
+            clang libclang-dev llvm-dev libssl-dev openjdk-17-jdk-headless tree
+
+      - name: نصب Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.24.5"
+
+      - name: نصب NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r28c
+
+      - name: گرفتن سورس راست‌دسک
+        run: |
+          git clone --depth 1 --branch master https://github.com/rustdesk/rustdesk.git "$SRC_DIR"
+          cd "$SRC_DIR"
+          git submodule update --init --recursive --depth 1
+          echo "سورس راست‌دسک گرفته شد"
+
+      - name: ثبت وضعیت سورس اندروید گرفته شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "سورس اندروید گرفته شد"
+
+      - name: گذاشتن فایل‌های پل در سورس
+        uses: actions/download-artifact@v4
+        with:
+          name: bridge-artifact
+          path: bridge-files
+
+      - name: انتقال فایل‌های پل
+        run: |
+          cp -r bridge-files/bridge_generated "$SRC_DIR/src/" 2>/dev/null || true
+          cp -r bridge-files/* "$SRC_DIR/flutter/lib/generated_bridge.dart" 2>/dev/null || true
+          ls -la "$SRC_DIR/src/bridge_generated" 2>/dev/null | head -3
+          echo "فایل‌های پل منتقل شد"
+
+      - name: نصب Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.75"
+          targets: aarch64-linux-android
+
+      - name: نصب کتابخانه‌های اندروید
+        run: |
+          export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+          git clone --depth 1 https://github.com/microsoft/vcpkg.git "$VCPKG_ROOT" || true
+          git -C "$VCPKG_ROOT" fetch --depth 1 origin "$VCPKG_COMMIT_ID" || true
+          git -C "$VCPKG_ROOT" checkout -q "$VCPKG_COMMIT_ID" || true
+          "$VCPKG_ROOT/bootstrap-vcpkg.sh" -disableMetrics || true
+          cd "$SRC_DIR"
+          bash ./flutter/build_android_deps.sh arm64-v8a || { echo "نصب کتابخانه‌ها ناموفق"; exit 1; }
+          echo "کتابخانه‌های اندروید نصب شد"
+
+      - name: ثبت وضعیت کتابخانه‌های اندروید نصب شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "کتابخانه‌های اندروید نصب شد"
+
+      - name: اعمال هویت بصری موسسه
+        working-directory: ${{ github.workspace }}
+        run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/android-branding-log.txt") 2>&1
+          python3 branding/tools/nrisp_icons.py --repo "$SRC_DIR" || { echo "خطا در ساخت آیکون‌ها"; exit 1; }
+          echo "آیکون‌ها ساخته شد"
+          python3 branding/tools/apply_branding.py --repo "$SRC_DIR" --rename-exe --android-package --ui || { echo "خطا در اعمال برند"; exit 1; }
+          echo "برند اعمال شد"
+          python3 branding/tools/nrisp_ui.py --repo "$SRC_DIR" || { echo "خطا در فارسی‌سازی"; exit 1; }
+          echo "رابط کاربری فارسی و بازطراحی شد"
+
+      - name: ثبت وضعیت هویت بصری اندروید اعمال شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "هویت بصری اندروید اعمال شد"
+
+      - name: کامپایل کتابخانهٔ اندروید
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+          ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/android-build-log.txt") 2>&1
+          cd "$SRC_DIR"
+          export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+          export PATH="$VCPKG_ROOT:$PATH"
+          cargo install cargo-ndk --version 3.1.2 --locked || echo "cargo-ndk از قبل نصب است"
+          ./flutter/ndk_arm64.sh
+          mkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a
+          cp ./target/aarch64-linux-android/release/liblibrustdesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/librustdesk.so
+          cp ${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/
+          echo "کتابخانهٔ اندروید ساخته شد"
+
+      - name: ثبت وضعیت کامپایل اندروید به پایان رسید
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "کتابخانهٔ اندروید ساخته شد"
+
+      - name: ساخت فایل APK
+        run: |
+          exec > >(tee -a "$GITHUB_WORKSPACE/android-build-log.txt") 2>&1
+          cd "$SRC_DIR/flutter"
+          sed -i "s/signingConfigs.release/signingConfigs.debug/g" ./android/app/build.gradle
+          sed -i "s/org.gradle.jvmargs=-Xmx1024M/org.gradle.jvmargs=-Xmx3g/g" ./android/gradle.properties || true
+          flutter build apk --release --target-platform android-arm64 --split-per-abi
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
+             "$GITHUB_WORKSPACE/NRISP-Remote-android-arm64.apk"
+          ls -la "$GITHUB_WORKSPACE/NRISP-Remote-android-arm64.apk"
+
+      - name: ثبت وضعیت فایل اندروید ساخته شد
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "فایل اندروید ساخته شد"
+
+      - name: بارگذاری نسخهٔ اندروید
+        uses: actions/upload-artifact@v4
+        with:
+          name: NRISP-Remote-android
+          path: ${{ github.workspace }}/NRISP-Remote-android-arm64.apk
+
+      - name: آماده‌کردن گزارش خطا
+        if: failure()
+        continue-on-error: true
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_note.sh android
+
+
   publish:
     name: انتشار خروجی ساخت
-    needs: [bridge, windows]
-    if: ${{ needs.windows.result == 'success' }}
+    needs: [bridge, windows, android]
+    if: ${{ always() && needs.windows.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: گرفتن فایل نصبی از ساخت
@@ -656,6 +821,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: NRISP-Remote-portable
+          path: dist
+
+      - name: گرفتن نسخهٔ اندروید از ساخت
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: NRISP-Remote-android
           path: dist
 
       - name: نمایش فایل‌های آماده
@@ -672,6 +844,7 @@ jobs:
 
             - فایل نصبی ویندوز (۶۴ بیتی)
             - نسخهٔ پرتابل بدون نیاز به نصب
+            - نسخهٔ اندروید (arm64)
           files: dist/*
           draft: false
           prerelease: false

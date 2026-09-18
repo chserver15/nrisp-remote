@@ -424,7 +424,6 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
       [Icons.lan_outlined, 'شبکه', SettingsTabKey.network],
       [Icons.monitor_outlined, 'نمایش دادن', SettingsTabKey.display],
       [Icons.print_outlined, 'چاپگر', SettingsTabKey.printer],
-      [Icons.badge_outlined, 'حساب کاربری', SettingsTabKey.account],
       [Icons.info_outline_rounded, 'دربارهٔ برنامه', SettingsTabKey.about],
     ];
     return Column(
@@ -437,12 +436,6 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
             onTap: () =>
                 DesktopTabPage.onAddSetting(initialPage: r[2] as SettingsTabKey),
           ),
-        _menuRow(
-          icon: Icons.language_rounded,
-          title: 'وب‌سایت موسسه',
-          onTap: () =>
-              DesktopTabPage.onAddSetting(initialPage: SettingsTabKey.about),
-        ),
       ],
     );
   }

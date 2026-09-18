@@ -646,6 +646,178 @@ def bump_version(repo: Path):
             note(SKIP, 'Cargo.lock (شمارهٔ نسخه)', 'از قبل')
 
 
+
+def window_buttons(repo: Path):
+    """دکمه‌های کوچک/بزرگ/بستن پنجره را همیشه بالا-راست نگه می‌دارد."""
+    p = repo / 'flutter/lib/desktop/widgets/tabbar_widget.dart'
+    if not p.exists():
+        note(MISS, 'tabbar_widget.dart', 'فایل نیست')
+        return
+    src = read(p)
+    old = """  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Obx(() {
+          if (showTabDowndown() && existingInvisibleTab().isNotEmpty) {"""
+    new = """  @override
+  Widget build(BuildContext context) {
+    // چیدمان چپ‌به‌راست تا دکمه‌های پنجره همیشه سمت راست بمانند
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Obx(() {
+          if (showTabDowndown() && existingInvisibleTab().isNotEmpty) {"""
+    old2 = """                  isClose: true,
+                )
+            ],
+          ),
+      ],
+    );
+  }
+
+  void _toggleMaximize() {"""
+    new2 = """                  isClose: true,
+                )
+            ],
+          ),
+      ],
+      ),
+    );
+  }
+
+  void _toggleMaximize() {"""
+    if old in src and old2 in src:
+        write(p, src.replace(old, new, 1).replace(old2, new2, 1))
+        note(OK, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)')
+    else:
+        note(MISS, 'tabbar_widget.dart (دکمه‌های پنجره)', 'قطعه پیدا نشد')
+
+
+def remove_extras(repo: Path):
+    """حذف شعار، پیوندهای بی‌مصرف و بخش حساب کاربری."""
+    # ۱) شعار «ساخته شده با عشق»
+    p = repo / 'flutter/lib/desktop/pages/desktop_setting_page.dart'
+    src = read(p)
+    old_slogan = """                          Text(
+                            translate('Slogan_tip'),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white),
+                          )"""
+    if old_slogan in src:
+        src = src.replace(old_slogan, """                          const SizedBox.shrink()""", 1)
+        note(OK, 'desktop_setting_page.dart (شعار ساخت با عشق برداشته شد)')
+    else:
+        note(MISS, 'desktop_setting_page.dart', 'شعار پیدا نشد')
+
+    # ۲) پیوندهای حریم خصوصی و وب‌سایت
+    for block in ["""              InkWell(
+                  onTap: () {
+                    launchUrlString('https://nrisp.ac.ir/privacy.html');
+                  },
+                  child: Text(
+                    translate('Privacy Statement'),
+                    style: linkStyle,
+                  ).marginSymmetric(vertical: 4.0)),""",
+                  """              InkWell(
+                  onTap: () {
+                    launchUrlString('https://nrisp.ac.ir');
+                  },
+                  child: Text(
+                    translate('Website'),
+                    style: linkStyle,
+                  ).marginSymmetric(vertical: 4.0)),"""]:
+        if block in src:
+            src = src.replace(block, '', 1)
+            note(OK, 'desktop_setting_page.dart (پیوند برداشته شد)')
+    write(p, src)
+
+    # ۳) بخش حساب کاربری از فهرست تنظیمات
+    src = read(p)
+    old_tab = """              _TabInfo(tab, 'Account', Icons.person_outline, Icons.person));"""
+    if old_tab in src:
+        src = src.replace(old_tab, '              _TabInfo(tab, "\\u200c", Icons.person_outline, Icons.person));', 1)
+    write(p, src)
+    note(OK, 'desktop_setting_page.dart (پیوندها و شعار پاک شد)')
+
+
+
+def disable_account(repo: Path):
+    """بخش حساب کاربری و ورود را کامل از برنامه برمی‌دارد."""
+    p = repo / 'libs/hbb_common/src/config.rs'
+    if not p.exists():
+        note(MISS, 'config.rs (حساب کاربری)', 'فایل نیست')
+        return
+    edit(p, [
+        ("fn is_some_hard_opton(name: &str) -> bool {\n    HARD_SETTINGS\n        .read()\n        .unwrap()\n        .get(name)\n        .map_or(false, |x| x == (\"Y\"))",
+         "fn is_some_hard_opton(name: &str) -> bool {\n    if name == \"disable-account\" || name == \"disable-ab\" {\n        return true;  // حساب کاربری و ورود در این نسخه برداشته شده است\n    }\n    HARD_SETTINGS\n        .read()\n        .unwrap()\n        .get(name)\n        .map_or(false, |x| x == (\"Y\"))"),
+    ], label='config.rs (حساب کاربری خاموش)')
+
+
+def connect_card_fixes(repo: Path):
+    """اصلاح کارت اتصال: کادر هم‌رنگ کارت شناسه، دکمهٔ کنار اتصال قرمز."""
+    import re as _re
+    p = repo / 'flutter/lib/desktop/pages/connection_page.dart'
+    if not p.exists():
+        note(MISS, 'connection_page.dart (کارت اتصال)', 'فایل نیست')
+        return
+    src = read(p)
+    changed = 0
+
+    # ۱) کادر ورودی: رنگ روشن/تیره‌پذیر به‌جای تیرهٔ ثابت
+    new_field = """filled: true,
+                              fillColor: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? const Color(0xFF262B33)
+                                  : const Color(0xFFF5F6F8),
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0xFF98A2B0)
+                                      : const Color(0xFF77808C)),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? const Color(0xFF2C323B)
+                                        : const Color(0xFFE3E7EE)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(
+                                    color: Color(0xFFFB4201), width: 1.4),
+                              ),"""
+    if _re.search(r'fillColor:\s*const Color\(0xFF24282F\)', src):
+        src = _re.sub(r'filled:\s*true,\s*\n\s*fillColor:\s*const Color\(0xFF24282F\),',
+                      new_field, src, count=1)
+        changed += 1
+
+    # ۲) دکمهٔ کنار دکمهٔ اتصال: قرمز به‌جای تیره
+    if _re.search(r'color:\s*const Color\(0xFF24282F\),\s*\n\s*border:\s*Border\.all\(color:\s*const Color\(0xFF2A2F37\)\),', src):
+        src = _re.sub(r'color:\s*const Color\(0xFF24282F\),\s*\n\s*border:\s*Border\.all\(color:\s*const Color\(0xFF2A2F37\)\),',
+                      'color: const Color(0xFFFB4201),\n                    border: Border.all(color: const Color(0xFFFB4201)),',
+                      src, count=1)
+        changed += 1
+
+    # ۳) آیکون آن دکمه: سفید و درشت‌تر
+    n_icon = len(_re.findall(r'Icon\(IconFont\.more, size: 14\)', src))
+    if n_icon:
+        src = src.replace('Icon(IconFont.more, size: 14)',
+                          'Icon(IconFont.more, size: 19, color: Colors.white)')
+        changed += 1
+
+    if changed:
+        write(p, src)
+        note(OK, 'connection_page.dart (کارت اتصال: کادر روشن و دکمهٔ قرمز)', f'{changed} مورد')
+    else:
+        note(SKIP, 'connection_page.dart (کارت اتصال)', 'از قبل')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -667,6 +839,10 @@ def main():
     replace_visible_urls(repo)
     corporate_footer(repo)
     hide_install_card(repo)
+    window_buttons(repo)
+    remove_extras(repo)
+    disable_account(repo)
+    connect_card_fixes(repo)
     bundle_font(repo)
     bump_version(repo)
     voice_call_hint(repo)
