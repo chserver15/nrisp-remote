@@ -1,252 +1,57 @@
-===== خطای ساخت ویندوز | اجرا: 8 | کار: windows | زمان: 2026-09-18 17:07:25 =====
-Downloading packages...
-  _fe_analyzer_shared 72.0.0 (108.0.0 available)
-  analyzer 6.7.0 (14.4.0 available)
-  animations 2.0.11 (3.0.0 available)
-  archive 3.6.1 (4.3.0 available)
-< async 2.11.0 (was 2.13.0) (2.13.1 available)
-  auto_size_text_field 2.2.4 (2.3.0 available)
-  back_button_interceptor 6.0.2 (8.0.4 available)
-< boolean_selector 2.1.1 (was 2.1.2) (2.1.2 available)
-  build 2.4.1 (4.0.11 available)
-  build_cli_annotations 2.1.0 (2.1.1 available)
-  build_config 1.1.1 (1.3.3 available)
-  build_daemon 4.0.2 (4.1.6 available)
-  build_resolvers 2.4.2 (3.0.4 available)
-  build_runner 2.4.13 (2.16.1 available)
-  build_runner_core 7.3.2 (9.3.2 available)
-  built_value 8.10.1 (8.13.0 available)
-  cached_network_image 3.3.1 (4.0.0 available)
-  cached_network_image_platform_interface 4.0.0 (5.0.0 available)
-  cached_network_image_web 1.2.0 (2.0.0 available)
-  characters 1.3.0 (1.4.1 available)
-  checked_yaml 2.0.3 (2.0.4 available)
-  cli_util 0.4.2 (0.6.0 available)
-  clock 1.1.1 (1.1.3 available)
-  code_builder 4.10.1 (4.12.0 available)
-  collection 1.18.0 (1.19.1 available)
-  cross_file 0.3.4+2 (0.3.5+5 available)
-  crypto 3.0.6 (3.0.7 available)
-  dart_style 2.3.7 (3.1.13 available)
-  dbus 0.7.11 (0.8.0 available)
-  desktop_drop 0.4.4 (0.8.4 available)
-  device_info_plus 9.1.2 (13.2.0 available)
-  device_info_plus_platform_interface 7.0.2 (8.1.0 available)
-  dropdown_button2 2.3.9 (3.1.0 available)
-  equatable 2.0.7 (3.0.0 available)
-  extended_text 14.0.0 (15.0.2 available)
-+ fake_async 1.3.1 (1.3.3 available)
-  ffi 2.1.3 (2.2.0 available)
-  ffigen 8.0.2 (22.0.0 available)
-  file 6.1.4 (7.0.1 available)
-  file_picker 5.5.0 (13.1.0 available)
-  file_selector_linux 0.9.3+2 (0.9.4+1 available)
-  file_selector_macos 0.9.4+2 (0.9.5+1 available)
-  file_selector_platform_interface 2.6.2 (2.7.0 available)
-  file_selector_windows 0.9.3+4 (0.9.3+6 available)
-  flex_color_picker 3.6.0 (4.0.0 available)
-  flex_seed_scheme 3.4.1 (5.0.1 available)
-  flutter_cache_manager 3.3.1 (3.4.3 available)
-  flutter_keyboard_visibility 5.4.1 (7.0.1 available)
-  flutter_keyboard_visibility_linux 1.0.0 (2.0.0 available)
-  flutter_keyboard_visibility_macos 1.0.0 (2.0.0 available)
-  flutter_keyboard_visibility_platform_interface 2.0.0 (3.0.0 available)
-  flutter_keyboard_visibility_web 2.0.0 (3.0.0 available)
-  flutter_keyboard_visibility_windows 1.0.0 (2.0.0 available)
-  flutter_launcher_icons 0.13.1 (0.14.4 available)
-  flutter_lints 2.0.3 (6.0.0 available)
-! flutter_plugin_android_lifecycle 2.0.17 (overridden) (2.0.35 available)
-  flutter_rust_bridge 1.80.1 (2.13.0 available)
-  flutter_svg 2.1.0 (2.3.0 available)
-+ flutter_test 0.0.0 from sdk flutter
-  freezed 2.5.7 (4.0.1 available)
-  freezed_annotation 2.4.4 (3.1.0 available)
-  get 4.7.2 (4.7.3 available)
-  glob 2.1.3 (2.2.0 available)
-  google_fonts 6.2.1 (8.2.1 available)
-  html 0.15.6 (0.15.7 available)
-  http 1.4.0 (1.6.0 available)
-  http_parser 4.0.2 (4.1.2 available)
-  icons_launcher 2.1.7 (3.1.0 available)
-  image 4.3.0 (4.10.1 available)
-  image_picker 1.1.2 (1.2.3 available)
-  image_picker_android 0.8.12+21 (0.8.13+23 available)
-  image_picker_for_web 3.0.6 (3.1.1 available)
-  image_picker_ios 0.8.12+2 (0.8.13+7 available)
-  image_picker_linux 0.2.1+2 (0.2.2 available)
-  image_picker_macos 0.2.1+2 (0.2.2+1 available)
-  image_picker_platform_interface 2.10.1 (2.11.1 available)
-  image_picker_windows 0.2.1+1 (0.2.2 available)
-! intl 0.19.0 (overridden) (0.20.3 available)
-  io 1.0.5 (1.1.0 available)
-  js 0.6.7 (0.7.2 available)
-  json_annotation 4.9.0 (4.12.0 available)
-+ leak_tracker 10.0.5 (11.0.2 available)
-+ leak_tracker_flutter_testing 3.0.5 (3.0.10 available)
-+ leak_tracker_testing 3.0.1 (3.0.2 available)
-  lints 2.1.1 (6.1.0 available)
-  macros 0.1.2-main.4 (0.1.3-main.0 available)
-< matcher 0.12.16+1 (was 0.12.17) (0.12.20 available)
-  material_color_utilities 0.11.1 (0.13.1 available)
-  meta 1.15.0 (1.19.0 available)
-  mime 2.0.0 (2.1.0 available)
-  package_config 2.2.0 (3.0.0 available)
-  package_info_plus 4.2.0 (10.2.1 available)
-  package_info_plus_platform_interface 2.0.1 (4.1.0 available)
-  path 1.9.0 (1.9.1 available)
-  path_provider 2.1.5 (2.1.6 available)
-  path_provider_android 2.2.15 (2.3.1 available)
-  path_provider_foundation 2.4.1 (2.6.0 available)
-  path_provider_linux 2.2.1 (2.2.2 available)
-  path_provider_platform_interface 2.1.2 (2.1.3 available)
-  petitparser 6.0.2 (7.0.2 available)
-  platform 3.1.6 (3.2.0 available)
-  pool 1.5.1 (1.5.3 available)
-  provider 6.1.5 (6.1.5+1 available)
-  pub_semver 2.2.0 (2.2.1 available)
-  pubspec_parse 1.4.0 (1.6.0 available)
-  pull_down_button 0.9.4 (discontinued replaced by cupertino_ui)
-  puppeteer 3.16.0 (3.26.0 available)
-  qr 3.0.2 (4.0.0 available)
-  rxdart 0.27.7 (0.28.0 available)
-  screen_retriever 0.1.9 (0.2.2 available)
-  scroll_pos 0.4.0 (0.5.0 available)
-  settings_ui 2.0.2 (3.0.1 available)
-  shelf 1.4.1 (1.4.2 available)
-  shelf_web_socket 1.0.4 (3.0.0 available)
-  source_gen 1.5.0 (4.3.0 available)
-< source_span 1.10.0 (was 1.10.1) (1.10.2 available)
-  sqflite 2.2.0 (2.4.4 available)
-  sqflite_common 2.5.4+6 (2.5.13 available)
-< stack_trace 1.11.1 (was 1.12.1) (1.12.2 available)
-< stream_channel 2.1.2 (was 2.1.4) (2.1.4 available)
-  stream_transform 2.1.1 (2.1.2 available)
-< string_scanner 1.2.0 (was 1.4.1) (1.4.1 available)
-  synchronized 3.3.0+3 (3.4.2 available)
-< term_glyph 1.2.1 (was 1.2.2) (1.2.2 available)
-< test_api 0.7.2 (was 0.7.6) (0.7.14 available)
-  uni_links_desktop 0.1.7 (0.2.0 available)
-  universal_io 2.2.2 (2.3.1 available)
-  url_launcher 6.3.1 (6.3.2 available)
-  url_launcher_android 6.3.14 (6.3.33 available)
-  url_launcher_ios 6.3.3 (6.4.2 available)
-  url_launcher_linux 3.2.1 (3.2.3 available)
-  url_launcher_macos 3.2.2 (3.2.6 available)
-  url_launcher_web 2.3.3 (2.4.3 available)
-  url_launcher_windows 3.1.4 (3.1.6 available)
-  uuid 3.0.7 (4.6.0 available)
-  vector_graphics 1.1.18 (1.2.3 available)
-  vector_graphics_compiler 1.1.16 (1.3.0 available)
-  vector_math 2.1.4 (from transitive dependency to direct dependency) (2.4.2 available)
-  video_player 2.9.5 (2.14.0 available)
-  video_player_android 2.7.16 (2.12.2 available)
-  video_player_avfoundation 2.7.1 (2.12.0 available)
-  video_player_platform_interface 6.3.0 (6.9.0 available)
-  video_player_web 2.3.5 (2.4.0 available)
-+ vm_service 14.2.5 (15.3.0 available)
-  wakelock_plus 1.2.1 (1.8.0 available)
-  wakelock_plus_platform_interface 1.2.3 (1.7.0 available)
-  watcher 1.1.2 (1.2.1 available)
-  web 0.5.1 (1.1.1 available)
-  web_socket_channel 2.4.5 (3.0.3 available)
-  win32 5.10.1 (6.4.0 available)
-  win32_registry 1.1.5 (3.0.3 available)
-  xml 6.5.0 (7.0.1 available)
-  yaml 3.1.3 (3.1.4 available)
-  yaml_edit 2.2.2 (2.2.4 available)
-Changed 16 dependencies!
-1 package is discontinued.
-153 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-
-Building Windows application...                                 
-lib/common.dart(412,5): error G94307FCF: Duplicated named argument 'cardColor'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
-lib/desktop/widgets/tabbar_widget.dart(649,42): error GC9768DF9: Undefined name 'NrispBrand'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
-lib/nrisp/nrisp_id_panel.dart(444,24): error GE5CFE876: The method 'launchUrlString' isn't defined for the class '_NrispIdPanelState'. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\CMakeFiles\eeaf6422a1b300cef7f2c682a18c3eac\flutter_windows.dll.rule;D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\CMakeFiles\973d68ab045e56c57739510c701a79d4\flutter_assemble.rule;D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\windows\flutter\CMakeLists.txt' exited with code 1. [D:\a\nrisp-remote\nrisp-remote\rustdesk-src\flutter\build\windows\x64\flutter\flutter_assemble.vcxproj]
-Building Windows application...                                    53.0s
-Build process failed.
-Error occurred when executing: `flutter build windows --release`. Exiting.
-features: ['hwcodec', 'vram', 'flutter']
-False
-===== پایان گزارش بسته‌بندی =====
-گزارش بسته‌بندی ذخیره نشد
-===== فهرست ریشهٔ کار =====
-total 62197
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 17:07 .
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 ..
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 .git
--rw-r--r-- 1 runneradmin 197121        8 Sep 18 16:32 .gitattributes
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 .github
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:36 969f6665-88a2-4c98-938e-ca9259871fec
--rw-r--r-- 1 runneradmin 197121    10112 Sep 18 16:32 README.md
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:39 branding
--rw-r--r-- 1 runneradmin 197121    16385 Sep 18 16:39 branding-log.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:33 bridge-files
--rw-r--r-- 1 runneradmin 197121   245890 Sep 18 17:07 build-log.txt
--rw-r--r-- 1 runneradmin 197121    43865 Sep 18 17:07 ci-failure-windows.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 docs
--rwxr-xr-x 1 runneradmin 197121     1397 Sep 18 16:32 run.sh
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:42 rustdesk-src
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 server
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 tools
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:32 ui
--rw-r--r-- 1 runneradmin 197121     3475 Sep 18 16:39 vcpkg-log.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 18 16:38 windows-x64-release
--rw-r--r-- 1 runneradmin 197121 63301215 Sep 18 16:38 windows-x64-release.zip
-===== فهرست خروجی ساخت =====
-پوشهٔ خروجی ساخت نیست
-===== فایل‌های اجرایی بسته‌بند =====
-===== پوشهٔ هدف ریشه =====
--rw-r--r-- 1 runneradmin 197121         0 Sep 18 16:42 .cargo-lock
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:49 .fingerprint
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:49 build
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 17:06 deps
--rw-r--r-- 1 runneradmin 197121      2275 Sep 18 16:48 dylib_virtual_display.d
--rwxr-xr-x 2 runneradmin 197121    309760 Sep 18 16:48 dylib_virtual_display.dll
--rw-r--r-- 2 runneradmin 197121      2068 Sep 18 16:48 dylib_virtual_display.dll.exp
--rw-r--r-- 2 runneradmin 197121      4010 Sep 18 16:48 dylib_virtual_display.dll.lib
--rw-r--r-- 2 runneradmin 197121  88159368 Sep 18 16:48 dylib_virtual_display.lib
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:42 examples
-drwxr-xr-x 1 runneradmin 197121         0 Sep 18 16:42 incremental
--rw-r--r-- 1 runneradmin 197121      2279 Sep 18 16:48 libdylib_virtual_display.d
--rw-r--r-- 2 runneradmin 197121    313502 Sep 18 16:48 libdylib_virtual_display.rlib
--rw-r--r-- 1 runneradmin 197121     14814 Sep 18 17:06 liblibrustdesk.d
--rw-r--r-- 2 runneradmin 197121  86243392 Sep 18 17:06 liblibrustdesk.rlib
--rw-r--r-- 1 runneradmin 197121     14810 Sep 18 17:06 librustdesk.d
--rwxr-xr-x 2 runneradmin 197121  40547840 Sep 18 17:06 librustdesk.dll
--rw-r--r-- 2 runneradmin 197121     54482 Sep 18 17:06 librustdesk.dll.exp
--rw-r--r-- 2 runneradmin 197121     91478 Sep 18 17:06 librustdesk.dll.lib
--rw-r--r-- 2 runneradmin 197121 431785322 Sep 18 17:06 librustdesk.lib
-===== فهرست پوشهٔ سورس =====
-total 465
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:42 .
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 17:07 ..
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 .cargo
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 .git
--rw-r--r-- 1 runneradmin 197121     12 Sep 18 16:33 .gitattributes
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 .github
--rw-r--r-- 1 runneradmin 197121   1018 Sep 18 16:33 .gitignore
--rw-r--r-- 1 runneradmin 197121    100 Sep 18 16:33 .gitmodules
--rw-r--r-- 1 runneradmin 197121   9595 Sep 18 16:33 AGENTS.md
--rw-r--r-- 1 runneradmin 197121     11 Sep 18 16:33 CLAUDE.md
--rw-r--r-- 1 runneradmin 197121 269210 Sep 18 16:33 Cargo.lock
--rw-r--r-- 1 runneradmin 197121  10587 Sep 18 16:39 Cargo.toml
--rw-r--r-- 1 runneradmin 197121   1753 Sep 18 16:33 Dockerfile
--rw-r--r-- 1 runneradmin 197121     10 Sep 18 16:33 GEMINI.md
--rw-r--r-- 1 runneradmin 197121  34523 Sep 18 16:33 LICENCE
--rw-r--r-- 1 runneradmin 197121   9916 Sep 18 16:33 README.md
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 appimage
--rwxr-xr-x 1 runneradmin 197121  57991 Sep 18 16:39 build.py
--rw-r--r-- 1 runneradmin 197121   3511 Sep 18 16:33 build.rs
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 docs
--rwxr-xr-x 1 runneradmin 197121    657 Sep 18 16:33 entrypoint.sh
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 examples
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 fastlane
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 flatpak
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 17:06 flutter
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 libs
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:33 res
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 17:02 src
-drwxr-xr-x 1 runneradmin 197121      0 Sep 18 16:48 target
+===== گزارش خطا | اجرا: 11 | کار: android | زمان: 2026-09-18 19:33:11 =====
+(فایل گزارش نبود؛ گردآوری مستقیم از لاگ‌ها)
+----- branding-log.txt -----
+(نیست)
+----- build-log.txt -----
+(نیست)
+----- packaging-log.txt -----
+(نیست)
+----- فهرست فضای کار -----
+total 68
+drwxr-xr-x 12 runner runner  4096 Sep 18 19:33 .
+drwxr-xr-x  3 runner runner  4096 Sep 18 19:29 ..
+drwxr-xr-x  7 runner runner  4096 Sep 18 19:31 .git
+-rw-r--r--  1 runner runner     8 Sep 18 19:31 .gitattributes
+drwxr-xr-x  3 runner runner  4096 Sep 18 19:31 .github
+-rw-r--r--  1 runner runner 10112 Sep 18 19:31 README.md
+drwxr-xr-x  5 runner runner  4096 Sep 18 19:31 branding
+drwxr-xr-x  2 runner runner  4096 Sep 18 19:32 bridge-files
+drwxr-xr-x  2 runner runner  4096 Sep 18 19:31 docs
+-rw-r--r--  1 runner runner  1397 Sep 18 19:31 run.sh
+drwxr-xr-x 14 runner runner  4096 Sep 18 19:32 rustdesk-src
+drwxr-xr-x  2 runner runner  4096 Sep 18 19:31 server
+drwxr-xr-x  2 runner runner  4096 Sep 18 19:31 tools
+drwxr-xr-x  3 runner runner  4096 Sep 18 19:31 ui
+drwxr-xr-x 14 runner runner  4096 Sep 18 19:33 vcpkg
+----- پوشهٔ سورس -----
+total 488
+drwxr-xr-x 14 runner runner   4096 Sep 18 19:32 .
+drwxr-xr-x 12 runner runner   4096 Sep 18 19:33 ..
+drwxr-xr-x  2 runner runner   4096 Sep 18 19:32 .cargo
+drwxr-xr-x  8 runner runner   4096 Sep 18 19:32 .git
+-rw-r--r--  1 runner runner     12 Sep 18 19:32 .gitattributes
+drwxr-xr-x  6 runner runner   4096 Sep 18 19:32 .github
+-rw-r--r--  1 runner runner   1018 Sep 18 19:32 .gitignore
+-rw-r--r--  1 runner runner    100 Sep 18 19:32 .gitmodules
+-rw-r--r--  1 runner runner   9595 Sep 18 19:32 AGENTS.md
+-rw-r--r--  1 runner runner     11 Sep 18 19:32 CLAUDE.md
+-rw-r--r--  1 runner runner 269210 Sep 18 19:32 Cargo.lock
+-rw-r--r--  1 runner runner  10551 Sep 18 19:32 Cargo.toml
+-rw-r--r--  1 runner runner   1753 Sep 18 19:32 Dockerfile
+-rw-r--r--  1 runner runner     10 Sep 18 19:32 GEMINI.md
+-rw-r--r--  1 runner runner  34523 Sep 18 19:32 LICENCE
+-rw-r--r--  1 runner runner   9916 Sep 18 19:32 README.md
+drwxr-xr-x  2 runner runner   4096 Sep 18 19:32 appimage
+-rwxr-xr-x  1 runner runner  57896 Sep 18 19:32 build.py
+-rw-r--r--  1 runner runner   3511 Sep 18 19:32 build.rs
+drwxr-xr-x  2 runner runner   4096 Sep 18 19:32 docs
+-rwxr-xr-x  1 runner runner    657 Sep 18 19:32 entrypoint.sh
+drwxr-xr-x  2 runner runner   4096 Sep 18 19:32 examples
+drwxr-xr-x  3 runner runner   4096 Sep 18 19:32 fastlane
+drwxr-xr-x  2 runner runner   4096 Sep 18 19:32 flatpak
+drwxr-xr-x 10 runner runner   4096 Sep 18 19:32 flutter
+drwxr-xr-x 11 runner runner   4096 Sep 18 19:32 libs
+drwxr-xr-x  7 runner runner   4096 Sep 18 19:32 res
+drwxr-xr-x 12 runner runner   4096 Sep 18 19:32 src
+-rw-r--r--  1 runner runner   2043 Sep 18 19:32 vcpkg.json
 
