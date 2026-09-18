@@ -1,0 +1,16 @@
+name: آزمون اجرای ساخت
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ثبت نشانه
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash branding/tools/ci_mark.sh "آزمون اجرای ساخت"
