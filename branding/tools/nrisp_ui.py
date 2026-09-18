@@ -912,6 +912,27 @@ def final_tweaks(repo: Path):
         else:
             note(MISS, 'connection_page.dart (خوانایی)', 'لنگر پیدا نشد')
 
+
+def silent_installer(repo: Path):
+    """نصب‌کننده بدون صفحهٔ پرسش: با دوبار کلیک، خودش نصب می‌کند (فقط تأیید مدیریت ویندوز)."""
+    p = repo / 'libs/portable/src/main.rs'
+    if not p.exists():
+        note(MISS, 'libs/portable/src/main.rs', 'فایل نیست')
+        return
+    s = read(p)
+    old = """        if click_setup {
+            args = vec!["--install".to_owned()];"""
+    new = """        if click_setup {
+            // نصب مستقیم و بی‌صفحه: کاربر فقط تأیید مدیریت را می‌زند
+            args = vec!["--silent-install".to_owned()];"""
+    if old in s:
+        s = s.replace(old, new, 1)
+        write(p, s)
+        note(OK, 'libs/portable/src/main.rs (نصب بی‌صفحه)')
+    else:
+        note(SKIP, 'libs/portable/src/main.rs', 'از قبل یا پیدا نشد')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -938,6 +959,7 @@ def main():
     disable_account(repo)
     connect_card_fixes(repo)
     final_tweaks(repo)
+    silent_installer(repo)
     bundle_font(repo)
     bump_version(repo)
     voice_call_hint(repo)
