@@ -1,58 +1,32 @@
-===== گزارش خطای ساخت اندروید | اجرا: 5 | کار: android | زمان: 2026-09-19 15:26:32 =====
+===== گزارش خطای ساخت اندروید | اجرا: 6 | کار: android | زمان: 2026-09-19 16:03:16 =====
 مرحلهٔ خطا: ساخت فایل APK
-lib/generated_bridge.dart:1673:29: Error: Type '_$EventToUI' not found.
-lib/generated_bridge.dart:1676:7: Error: Redirection constructor target not found: 'EventToUI_Event'
-lib/generated_bridge.dart:1679:7: Error: Redirection constructor target not found: 'EventToUI_Rgba'
- 'EventToUI_Event'.
-  ) = EventToUI_Event;
-      ^
-lib/generated_bridge.dart:1679:7: Error: Couldn't find constructor 'EventToUI_Rgba'.
-  ) = EventToUI_Rgba;
-      ^
-lib/generated_bridge.dart:1683:7: Error: Couldn't find constructor 'EventToUI_Texture'.
-  ) = EventToUI_Texture;
-      ^
-lib/generated_bridge.dart:1676:7: Error: Redirection constructor target not found: 'EventToUI_Event'
-  ) = EventToUI_Event;
-      ^
-lib/generated_bridge.dart:1679:7: Error: Redirection constructor target not found: 'EventToUI_Rgba'
-  ) = EventToUI_Rgba;
-      ^
-lib/generated_bridge.dart:1683:7: Error: Redirection constructor target not found: 'EventToUI_Texture'
-  ) = EventToUI_Texture;
-      ^
-lib/models/model.dart:4037:24: Error: 'EventToUI_Event' isn't a type.
-        if (message is EventToUI_Event) {
-                       ^^^^^^^^^^^^^^^
-lib/models/model.dart:4053:31: Error: 'EventToUI_Rgba' isn't a type.
-        } else if (message is EventToUI_Rgba) {
-                              ^^^^^^^^^^^^^^
-lib/models/model.dart:4068:31: Error: 'EventToUI_Texture' isn't a type.
-        } else if (message is EventToUI_Texture) {
-                              ^^^^^^^^^^^^^^^^^
-lib/generated_bridge.dart:7749:16: Error: The method 'EventToUI_Event' isn't defined for the class 'RustdeskImpl'.
- - 'RustdeskImpl' is from 'package:flutter_hbb/generated_bridge.dart' ('lib/generated_bridge.dart').
-Try correcting the name to the name of an existing method, or defining a method named 'EventToUI_Event'.
-        return EventToUI_Event(
-               ^^^^^^^^^^^^^^^
-lib/generated_bridge.dart:7753:16: Error: The method 'EventToUI_Rgba' isn't defined for the class 'RustdeskImpl'.
- - 'RustdeskImpl' is from 'package:flutter_hbb/generated_bridge.dart' ('lib/generated_bridge.dart').
-Try correcting the name to the name of an existing method, or defining a method named 'EventToUI_Rgba'.
-        return EventToUI_Rgba(
-               ^^^^^^^^^^^^^^
-lib/generated_bridge.dart:7757:16: Error: The method 'EventToUI_Texture' isn't defined for the class 'RustdeskImpl'.
- - 'RustdeskImpl' is from 'package:flutter_hbb/generated_bridge.dart' ('lib/generated_bridge.dart').
-Try correcting the name to the name of an existing method, or defining a method named 'EventToUI_Texture'.
-        return EventToUI_Texture(
-               ^^^^^^^^^^^^^^^^^
-Target kernel_snapshot_program failed: Exception
-
+FAILURE: Build failed with an exception.
+* What went wrong:
+es
+License for package Android SDK Platform 32 accepted.
+Preparing "Install Android SDK Platform 32 (revision 1)".
+"Install Android SDK Platform 32 (revision 1)" ready.
+Installing Android SDK Platform 32 in /usr/local/lib/android/sdk/platforms/android-32
+"Install Android SDK Platform 32 (revision 1)" complete.
+"Install Android SDK Platform 32 (revision 1)" finished.
+[=========                              ] 25%                                   
+[=========                              ] 25% Fetch remote repository...        
+[=======================================] 100% Fetch remote repository...       
+Expected to find fonts for (MaterialIcons, AddressBook, DeviceGroup, ..., gestureicons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons, Tabbar, AddressBook, DeviceGroup, More). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 23260 bytes (98.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Note: /home/runner/.pub-cache/git/uni_links-f416118d843a7e9ed117c7bb7bdc2deda5a9e86f/uni_links/android/src/main/java/name/avioli/unilinks/UniLinksPlugin.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Incorrect package="com.carriez.flutter_hbb" found in source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported.
+Recommendation: remove package="com.carriez.flutter_hbb" from the source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:compileFlutterBuildRelease'.
-> Process 'command '/opt/hostedtoolcache/flutter/stable-3.24.5-x64/flutter/bin/flutter'' finished with non-zero exit value 1
+Execution failed for task ':app:processReleaseMainManifest'.
+> Incorrect package="com.carriez.flutter_hbb" found in source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
+  Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported.
+  Recommendation: remove package="com.carriez.flutter_hbb" from the source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -60,8 +34,8 @@ Execution failed for task ':app:compileFlutterBuildRelease'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 3m 15s
-Running Gradle task 'assembleRelease'...                          196.4s
+BUILD FAILED in 4m 45s
+Running Gradle task 'assembleRelease'...                          285.9s
 Gradle task assembleRelease failed with exit code 1
 !!! apk build failed
 
