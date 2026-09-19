@@ -144,6 +144,7 @@ jobs:
       id: setup-ndk
       with:
         ndk-version: r28c
+        add-to-path: true
     - name: گرفتن سورس راست‌دسک
       shell: bash
       run: 'exec > >(tee -a "$GITHUB_WORKSPACE/android-source-log.txt") 2>&1
@@ -243,7 +244,7 @@ jobs:
       env:
         ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
-      run: "set -o pipefail\ncd \"$SRC_DIR\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\necho \"=== cargo-ndk ===\" | tee -a \"$LOG\"\ncargo install cargo-ndk --version \"$CARGO_NDK_VERSION\" --locked 2>&1 | tee -a \"$LOG\" || echo \"cargo-ndk already installed\" | tee -a \"$LOG\"\necho \"=== rust target ===\" | tee -a \"$LOG\"\nrustup target add aarch64-linux-android 2>&1 | tee -a \"$LOG\"\nexport CARGO_BUILD_JOBS=2\necho \"=== build lib (2 jobs) ===\" | tee -a \"$LOG\"\nif ! ./flutter/ndk_arm64.sh 2>&1 | tee -a \"$LOG\"; then\n  echo \"!!! android lib build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\nmkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a\ncp ./target/aarch64-linux-android/release/liblibrustdesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/librustdesk.so\ncp \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so\" ./flutter/android/app/src/main/jniLibs/arm64-v8a/\necho \"=== android lib built ===\" | tee -a \"$LOG\""
+      run: "set -o pipefail\ncd \"$SRC_DIR\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\necho \"=== cargo-ndk ===\" | tee -a \"$LOG\"\ncargo install cargo-ndk --version \"$CARGO_NDK_VERSION\" --locked 2>&1 | tee -a \"$LOG\" || echo \"cargo-ndk already installed\" | tee -a \"$LOG\"\necho \"=== rust target ===\" | tee -a \"$LOG\"\nrustup target add aarch64-linux-android 2>&1 | tee -a \"$LOG\"\nexport CARGO_BUILD_JOBS=2\n# --- تنظیم دقیق ابزار اندروید برای bindgen و cc (علت خطای قبلی) ---\nPRE=\"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64\"\nexport PATH=\"$PRE/bin:$PATH\"\nLC=$(find \"$PRE\" -name 'libclang.so*' 2>/dev/null | head -1); [ -n \"$LC\" ] && export LIBCLANG_PATH=\"$(dirname \"$LC\")\"\nCLANG_BIN=\"$PRE/bin/aarch64-linux-android21-clang\"; [ -x \"$CLANG_BIN\" ] || CLANG_BIN=\"$PRE/bin/aarch64-linux-android-clang\"\nexport CC_aarch64_linux_android=\"$CLANG_BIN\"\nexport CXX_aarch64_linux_android=\"${CLANG_BIN}++\"\nexport AR_aarch64_linux_android=\"$PRE/bin/llvm-ar\"\nexport BINDGEN_EXTRA_CLANG_ARGS=\"--sysroot=$PRE/sysroot -D__ANDROID_API__=21\"\necho \"NDK: $PRE | libclang: $LIBCLANG_PATH\" | tee -a \"$LOG\"\necho \"=== build lib (2 jobs) ===\" | tee -a \"$LOG\"\nif ! ./flutter/ndk_arm64.sh 2>&1 | tee -a \"$LOG\"; then\n  echo \"!!! android lib build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\nmkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a\ncp ./target/aarch64-linux-android/release/liblibrustdesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/librustdesk.so\ncp \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so\" ./flutter/android/app/src/main/jniLibs/arm64-v8a/\necho \"=== android lib built ===\" | tee -a \"$LOG\""
     - name: ثبت وضعیت کامپایل اندروید به پایان رسید
       continue-on-error: true
       shell: bash
