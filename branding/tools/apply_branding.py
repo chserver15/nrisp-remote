@@ -361,6 +361,16 @@ def apply_mobile(repo: Path, brand, android_package: bool):
             REPORT.add(DONE, "android kotlin package folder")
         else:
             REPORT.add(MISS, "android kotlin package folder", str(old_dir))
+        # اندروید ۸ دیگر صفت package را در مانیفست قبول نمی‌کند؛ باید برداشته شود
+        for man in repo.glob("flutter/android/app/src/*/AndroidManifest.xml"):
+            m_txt = read_text(man)
+            m_new = re.sub(r'\s+package="[^"]*"', '', m_txt, count=1)
+            if m_new != m_txt:
+                write_text(man, m_new)
+                REPORT.add(OK, "android manifest package attribute removed", str(man.relative_to(repo)))
+            else:
+                REPORT.add(DONE, "android manifest package attribute", str(man.relative_to(repo)))
+
         # شناسه‌ی بسته در آی‌اواس
         pbx = repo / "flutter/ios/Runner.xcodeproj/project.pbxproj"
         if pbx.exists():
