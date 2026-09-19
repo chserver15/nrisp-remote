@@ -270,8 +270,20 @@ jobs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: 'cat "$GITHUB_WORKSPACE"/android-*.log > "$GITHUB_WORKSPACE/android-log.txt" 2>/dev/null || true
+      run: 'mkdir -p "$GITHUB_WORKSPACE/full"
+
+        cp "$GITHUB_WORKSPACE"/android-*.log "$GITHUB_WORKSPACE/full/" 2>/dev/null || true
+
+        grep -nE "error|Error|error\[|failed|panicked|not found|No space|cannot|E0" "$GITHUB_WORKSPACE/full/"*.log > "$GITHUB_WORKSPACE/android-log.txt" 2>/dev/null || true
+
+        head -c 20000 "$GITHUB_WORKSPACE/android-build-log.txt" >> "$GITHUB_WORKSPACE/android-log.txt" 2>/dev/null || true
 
         bash branding/tools/ci_note.sh "$GITHUB_WORKSPACE/android-log.txt" "گزارش خطای ساخت اندروید"
 
         '
+    - name: بارگذاری لاگ‌های ساخت
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-logs
+        path: ${{ github.workspace }}/android-*.log
