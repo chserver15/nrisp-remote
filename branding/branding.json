@@ -1,6 +1,7 @@
 {
   "_راهنما": "این تنها فایلی است که باید ویرایش شود. پس از تغییر، run.sh را اجرا کنید.",
   "app_name_en": "NRISP Remote Access",
+  "app_name_safe": "NRISP-Remote",
   "file_description": "NRISP Remote Access — دسترسی راه دور",
   "app_name_fa": "دسترسی راه دور موسسه",
   "exe_name": "nrisp-remote",

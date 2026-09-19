@@ -622,6 +622,22 @@ def settings_font(repo: Path):
         note(SKIP, 'اندازهٔ نوشته‌های صفحهٔ تنظیمات', 'از قبل یا پیدا نشد')
 
 
+def window_title(repo: Path):
+    """عنوان پنجره در نوار وظیفه، نام کامل و زیبا باشد."""
+    p = repo / 'flutter' / 'lib' / 'main.dart'
+    if not p.exists():
+        note(MISS, 'main.dart', 'فایل نیست')
+        return
+    src = read(p)
+    old = "              : bind.mainGetAppNameSync(),"
+    new = "              : 'NRISP Remote Access',"
+    if old in src:
+        write(p, src.replace(old, new, 1))
+        note(OK, 'main.dart (عنوان پنجره)')
+    else:
+        note(SKIP, 'main.dart (عنوان پنجره)', 'از قبل یا پیدا نشد')
+
+
 def menu_side(repo: Path):
     """منوی سه‌نقطه باید مثل قبل از نقطهٔ کلیک باز شود؛ در حالت راست‌به‌چپ
     جهت باز شدن و چیدمان منو برمی‌گشت و به سمت دیگر می‌رفت."""
@@ -1151,6 +1167,7 @@ def main():
     final_tweaks(repo)
     silent_installer(repo)
     bundle_font(repo)
+    window_title(repo)
     menu_side(repo)
     settings_font(repo)
     line_height_fix(repo)

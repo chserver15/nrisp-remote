@@ -185,6 +185,8 @@ def apply_assets(repo: Path):
 def apply_metadata(repo: Path, brand, rename_exe: bool):
     print("\n== app metadata ==")
     app = brand["app_name_en"]
+    # نام نصب‌شوندگی: نصب‌کننده فقط [a-zA-Z0-9-] را می‌پذیرد، پس نام بدون فاصله لازم است
+    safe = brand.get("app_name_safe") or app
     exe = brand["exe_name"]
     scheme = brand.get("url_scheme") or exe
     company = brand["company_en"]
@@ -195,14 +197,14 @@ def apply_metadata(repo: Path, brand, rename_exe: bool):
     # Cargo.toml
     edit(repo / "Cargo.toml", [
         ('name = "RustDesk"\nidentifier = "com.carriez.rustdesk"',
-         f'name = "{app}"\nidentifier = "{brand["app_identifier"]}"'),
+         f'name = "{safe}"\nidentifier = "{brand["app_identifier"]}"'),
         ('description = "RustDesk Remote Desktop"', f'description = "{desc}"'),
     ])
 
     # نام نمایشی برنامه (سراسری در کد راست)
     cfg = repo / "libs/hbb_common/src/config.rs"
     rx_edit(cfg, r'APP_NAME: RwLock<String> = RwLock::new\("[^"]*"\.to_owned\(\)\)',
-            f'APP_NAME: RwLock<String> = RwLock::new("{app}".to_owned())',
+            f'APP_NAME: RwLock<String> = RwLock::new("{safe}".to_owned())',
             label="config.rs (APP_NAME)")
 
     # سرور و کلید عمومی
@@ -225,7 +227,7 @@ def apply_metadata(repo: Path, brand, rename_exe: bool):
     if app.isascii():
         edit(repo / "flutter/windows/runner/main.cpp",
              [('std::wstring app_name = L"RustDesk";',
-               f'std::wstring app_name = L"{app}";')])
+               f'std::wstring app_name = L"{safe}";')])
     else:
         REPORT.add(SKIP, "main.cpp", "app_name_en must be ASCII")
 
