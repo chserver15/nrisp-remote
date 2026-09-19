@@ -177,7 +177,21 @@ jobs:
 
         cp bridge-files/generated_bridge.dart  "$SRC_DIR/flutter/lib/"
 
-        ls -la "$SRC_DIR/flutter/lib" | grep generated_bridge
+        cp bridge-files/generated_bridge.freezed.dart "$SRC_DIR/flutter/lib/" 2>/dev/null || true
+
+        mkdir -p "$SRC_DIR/flutter/macos/Runner" "$SRC_DIR/flutter/ios/Runner"
+
+        cp bridge-files/bridge_generated.h "$SRC_DIR/flutter/macos/Runner/" 2>/dev/null || true
+
+        cp bridge-files/bridge_generated.h "$SRC_DIR/flutter/ios/Runner/" 2>/dev/null || true
+
+        echo "--- فایل‌های پل در سورس اندروید: ---"
+
+        ls -la "$SRC_DIR/flutter/lib" | grep -E "generated_bridge" || true
+
+        ls -la "$SRC_DIR/src" | grep -E "bridge_generated" || true
+
+        test -s "$SRC_DIR/flutter/lib/generated_bridge.freezed.dart" || { echo "خطا: فایل freezed پل منتقل نشد"; exit 1; }
 
         '
     - name: اعمال وصلهٔ فلاتر
