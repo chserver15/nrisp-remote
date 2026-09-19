@@ -244,16 +244,27 @@ jobs:
       env:
         ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
-      run: "set -o pipefail\ncd \"$SRC_DIR\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\necho \"=== cargo-ndk ===\" | tee -a \"$LOG\"\ncargo install cargo-ndk --version \"$CARGO_NDK_VERSION\" --locked 2>&1 | tee -a \"$LOG\" || echo \"cargo-ndk already installed\" | tee -a \"$LOG\"\necho \"=== rust target ===\" | tee -a \"$LOG\"\nrustup target add aarch64-linux-android 2>&1 | tee -a \"$LOG\"\nexport CARGO_BUILD_JOBS=2\n# --- تنظیم دقیق ابزار اندروید برای bindgen و cc (علت خطای قبلی) ---\nPRE=\"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64\"\nexport PATH=\"$PRE/bin:$PATH\"\nLC=$(find \"$PRE\" -name 'libclang.so*' 2>/dev/null | head -1); [ -n \"$LC\" ] && export LIBCLANG_PATH=\"$(dirname \"$LC\")\"\nCLANG_BIN=\"$PRE/bin/aarch64-linux-android21-clang\"; [ -x \"$CLANG_BIN\" ] || CLANG_BIN=\"$PRE/bin/aarch64-linux-android-clang\"\nexport CC_aarch64_linux_android=\"$CLANG_BIN\"\nexport CXX_aarch64_linux_android=\"${CLANG_BIN}++\"\nexport AR_aarch64_linux_android=\"$PRE/bin/llvm-ar\"\nexport BINDGEN_EXTRA_CLANG_ARGS=\"--sysroot=$PRE/sysroot -D__ANDROID_API__=21\"\necho \"NDK: $PRE | libclang: $LIBCLANG_PATH\" | tee -a \"$LOG\"\necho \"=== build lib (2 jobs) ===\" | tee -a \"$LOG\"\nif ! ./flutter/ndk_arm64.sh 2>&1 | tee -a \"$LOG\"; then\n  echo \"!!! android lib build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\nmkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a\ncp ./target/aarch64-linux-android/release/liblibrustdesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/librustdesk.so\ncp \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so\" ./flutter/android/app/src/main/jniLibs/arm64-v8a/\necho \"=== android lib built ===\" | tee -a \"$LOG\""
+      run: "set -o pipefail\ncd \"$SRC_DIR\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\necho \"=== cargo-ndk ===\" | tee -a \"$LOG\"\ncargo install cargo-ndk --version \"$CARGO_NDK_VERSION\" --locked 2>&1 | tee -a \"$LOG\" || echo \"cargo-ndk already installed\" | tee -a \"$LOG\"\necho \"=== rust target ===\" | tee -a \"$LOG\"\nrustup target add aarch64-linux-android 2>&1 | tee -a \"$LOG\"\nexport CARGO_BUILD_JOBS=2\n# --- تنظیم دقیق ابزار اندروید برای bindgen و cc (علت خطای قبلی) ---\nPRE=\"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64\"\nexport PATH=\"$PRE/bin:$PATH\"\nLC=$(find \"$PRE\" -name 'libclang.so*' 2>/dev/null | head -1); [ -n \"$LC\" ] && export LIBCLANG_PATH=\"$(dirname \"$LC\")\"\nCLANG_BIN=\"$PRE/bin/aarch64-linux-android21-clang\"; [ -x \"$CLANG_BIN\" ] || CLANG_BIN=\"$PRE/bin/aarch64-linux-android-clang\"\nexport CC_aarch64_linux_android=\"$CLANG_BIN\"\nexport CXX_aarch64_linux_android=\"${CLANG_BIN}++\"\nexport AR_aarch64_linux_android=\"$PRE/bin/llvm-ar\"\nexport BINDGEN_EXTRA_CLANG_ARGS=\"--sysroot=$PRE/sysroot -D__ANDROID_API__=21\"\necho \"NDK: $PRE | libclang: $LIBCLANG_PATH\" | tee -a \"$LOG\"\necho \"=== build lib (2 jobs) ===\" | tee -a \"$LOG\"\nif ! ./flutter/ndk_arm64.sh 2>&1 | tee -a \"$LOG\"; then\n  echo \"مرحلهٔ خطا: کامپایل کتابخانه\" > \"$GITHUB_WORKSPACE/android-fail.txt\"; echo \"!!! android lib build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\nmkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a\ncp ./target/aarch64-linux-android/release/liblibrustdesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/librustdesk.so\ncp \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so\" ./flutter/android/app/src/main/jniLibs/arm64-v8a/\necho \"=== android lib built ===\" | tee -a \"$LOG\""
     - name: ثبت وضعیت کامپایل اندروید به پایان رسید
       continue-on-error: true
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: bash branding/tools/ci_mark.sh "کتابخانهٔ اندروید ساخته شد"
+    - name: نصب Java 17 برای ساخت APK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+    - name: معرفی Java 17 به ساخت
+      run: 'echo "JAVA_HOME=$JAVA_HOME" >> "$GITHUB_ENV"
+
+        java -version 2>&1 | head -3
+
+        '
     - name: ساخت فایل APK
       shell: bash
-      run: "set -o pipefail\ncd \"$SRC_DIR/flutter\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\nsed -i \"s/signingConfigs.release/signingConfigs.debug/g\" ./android/app/build.gradle\nsed -i \"s/org.gradle.jvmargs=-Xmx1024M/org.gradle.jvmargs=-Xmx3g/g\" ./android/gradle.properties || true\nif ! flutter build apk --release --target-platform android-arm64 --split-per-abi 2>&1 | tee -a \"$LOG\"; then\n  echo \"!!! apk build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\ncp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \"$GITHUB_WORKSPACE/NRISP-Remote-android-arm64.apk\"\nls -la \"$GITHUB_WORKSPACE/NRISP-Remote-android-arm64.apk\" | tee -a \"$LOG\""
+      run: "set -o pipefail\ncd \"$SRC_DIR/flutter\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\nsed -i \"s/signingConfigs.release/signingConfigs.debug/g\" ./android/app/build.gradle\nsed -i \"s/org.gradle.jvmargs=-Xmx1024M/org.gradle.jvmargs=-Xmx3g/g\" ./android/gradle.properties || true\nif ! flutter build apk --release --target-platform android-arm64 --split-per-abi 2>&1 | tee -a \"$LOG\"; then\n  echo \"مرحلهٔ خطا: ساخت فایل APK\" > \"$GITHUB_WORKSPACE/android-fail.txt\"; grep -m3 -E \"What went wrong|error\\[|error:|FAILURE:|Caused by|Required|not found|Exception\" \"$LOG\" >> \"$GITHUB_WORKSPACE/android-fail.txt\" 2>/dev/null || true; echo \"!!! apk build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\ncp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \"$GITHUB_WORKSPACE/NRISP-Remote-android-arm64.apk\"\nls -la \"$GITHUB_WORKSPACE/NRISP-Remote-android-arm64.apk\" | tee -a \"$LOG\""
     - name: ثبت وضعیت فایل اندروید ساخته شد
       continue-on-error: true
       shell: bash
@@ -271,13 +282,11 @@ jobs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: 'mkdir -p "$GITHUB_WORKSPACE/full"
+      run: 'cat "$GITHUB_WORKSPACE/android-fail.txt" > "$GITHUB_WORKSPACE/android-log.txt" 2>/dev/null || true
 
-        cp "$GITHUB_WORKSPACE"/android-*.log "$GITHUB_WORKSPACE/full/" 2>/dev/null || true
+        C=$(grep -cE "What went wrong|Required|error|Solution" "$GITHUB_WORKSPACE/android-build-log.txt" 2>/dev/null || echo 0)
 
-        grep -nE "error|Error|error\[|failed|panicked|not found|No space|cannot|E0" "$GITHUB_WORKSPACE/full/"*.log > "$GITHUB_WORKSPACE/android-log.txt" 2>/dev/null || true
-
-        head -c 20000 "$GITHUB_WORKSPACE/android-build-log.txt" >> "$GITHUB_WORKSPACE/android-log.txt" 2>/dev/null || true
+        { tail -c 3000 "$GITHUB_WORKSPACE/android-build-log.txt" 2>/dev/null; } >> "$GITHUB_WORKSPACE/android-log.txt"
 
         bash branding/tools/ci_note.sh "$GITHUB_WORKSPACE/android-log.txt" "گزارش خطای ساخت اندروید"
 
