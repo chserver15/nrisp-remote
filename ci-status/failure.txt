@@ -1,8 +1,13 @@
-===== گزارش خطای ساخت اندروید | اجرا: 6 | کار: android | زمان: 2026-09-19 16:03:16 =====
+===== گزارش خطای ساخت اندروید | اجرا: 8 | کار: android | زمان: 2026-09-19 18:47:22 =====
 مرحلهٔ خطا: ساخت فایل APK
 FAILURE: Build failed with an exception.
 * What went wrong:
-es
+te.
+"Install Android SDK Platform 31 (revision 1)" finished.
+[=========                              ] 25%                                   
+[=========                              ] 25% Fetch remote repository...        
+[=======================================] 100% Fetch remote repository...       
+Checking the license for package Android SDK Platform 32 in /usr/local/lib/android/sdk/licenses
 License for package Android SDK Platform 32 accepted.
 Preparing "Install Android SDK Platform 32 (revision 1)".
 "Install Android SDK Platform 32 (revision 1)" ready.
@@ -16,17 +21,16 @@ Expected to find fonts for (MaterialIcons, AddressBook, DeviceGroup, ..., gestur
 Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 23260 bytes (98.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
 Note: /home/runner/.pub-cache/git/uni_links-f416118d843a7e9ed117c7bb7bdc2deda5a9e86f/uni_links/android/src/main/java/name/avioli/unilinks/UniLinksPlugin.java uses or overrides a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
-Incorrect package="com.carriez.flutter_hbb" found in source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
-Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported.
-Recommendation: remove package="com.carriez.flutter_hbb" from the source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
+Caught exception: Already watching path: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android
+e: file:///home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/kotlin/ffi.kt:8:12 Unresolved reference 'carriez'.
+e: file:///home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/kotlin/ffi.kt:17:56 Unresolved reference 'RdClipboardManager'.
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:processReleaseMainManifest'.
-> Incorrect package="com.carriez.flutter_hbb" found in source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
-  Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported.
-  Recommendation: remove package="com.carriez.flutter_hbb" from the source AndroidManifest.xml: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml.
+Execution failed for task ':app:compileReleaseKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -34,8 +38,8 @@ Execution failed for task ':app:processReleaseMainManifest'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 4m 45s
-Running Gradle task 'assembleRelease'...                          285.9s
+BUILD FAILED in 4m 16s
+Running Gradle task 'assembleRelease'...                          256.7s
 Gradle task assembleRelease failed with exit code 1
 !!! apk build failed
 
