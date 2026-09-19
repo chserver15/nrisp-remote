@@ -1,251 +1,67 @@
-===== گزارش خطای ساخت اندروید | اجرا: 4 | کار: android | زمان: 2026-09-19 14:04:19 =====
- * [new tag]         0.1.2      -> 0.1.2
- * [new tag]         0.1.3      -> 0.1.3
- * [new tag]         0.2.0      -> 0.2.0
- * [new tag]         0.3.0      -> 0.3.0
- * [new tag]         0.3.1      -> 0.3.1
- * [new tag]         0.3.2      -> 0.3.2
- * [new tag]         0.3.3      -> 0.3.3
- * [new tag]         0.4.0      -> 0.4.0
- * [new tag]         0.4.10     -> 0.4.10
- * [new tag]         0.4.11     -> 0.4.11
- * [new tag]         0.4.12     -> 0.4.12
- * [new tag]         0.4.13     -> 0.4.13
- * [new tag]         0.4.14     -> 0.4.14
- * [new tag]         0.4.15     -> 0.4.15
- * [new tag]         0.4.16     -> 0.4.16
- * [new tag]         0.4.17     -> 0.4.17
- * [new tag]         0.4.18     -> 0.4.18
- * [new tag]         0.4.2      -> 0.4.2
- * [new tag]         0.4.3      -> 0.4.3
- * [new tag]         0.4.5      -> 0.4.5
- * [new tag]         0.4.7      -> 0.4.7
- * [new tag]         0.4.8      -> 0.4.8
- * [new tag]         0.4.9      -> 0.4.9
- * [new tag]         0.5.0      -> 0.5.0
-[1m[32m    Updating[0m git submodule `https://github.com/rustdesk-org/externals.git`
-From https://github.com/rustdesk-org/externals
- * [new ref]         8903740a1f47884906a6e347ad3d8d56304d9771 -> refs/commit/8903740a1f47884906a6e347ad3d8d56304d9771
-[1m[32m    Updating[0m crates.io index
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/rust-webm`
-From https://github.com/rustdesk-org/rust-webm
- * [new ref]         d2c4d3ac133c7b0e4c0f656da710b48391981e64 -> refs/commit/d2c4d3ac133c7b0e4c0f656da710b48391981e64
-[1m[32m    Updating[0m git submodule `https://chromium.googlesource.com/webm/libwebm`
-From https://chromium.googlesource.com/webm/libwebm
- * [new branch]      m148-7778        -> origin/m148-7778
- * [new branch]      main             -> origin/main
- * [new branch]      sandbox/matthewjheaney/issue_399 -> origin/sandbox/matthewjheaney/issue_399
- * [new branch]      sandbox/matthewjheaney/mkvstream -> origin/sandbox/matthewjheaney/mkvstream
- * [new branch]      sandbox/matthewjheaney/webvtt_parser -> origin/sandbox/matthewjheaney/webvtt_parser
- * [new ref]         HEAD             -> origin/HEAD
- * [new tag]         libwebm-1.0.0.10 -> libwebm-1.0.0.10
- * [new tag]         libwebm-1.0.0.11 -> libwebm-1.0.0.11
- * [new tag]         libwebm-1.0.0.12 -> libwebm-1.0.0.12
- * [new tag]         libwebm-1.0.0.13 -> libwebm-1.0.0.13
- * [new tag]         libwebm-1.0.0.14 -> libwebm-1.0.0.14
- * [new tag]         libwebm-1.0.0.15 -> libwebm-1.0.0.15
- * [new tag]         libwebm-1.0.0.16 -> libwebm-1.0.0.16
- * [new tag]         libwebm-1.0.0.17 -> libwebm-1.0.0.17
- * [new tag]         libwebm-1.0.0.18 -> libwebm-1.0.0.18
- * [new tag]         libwebm-1.0.0.19 -> libwebm-1.0.0.19
- * [new tag]         libwebm-1.0.0.2  -> libwebm-1.0.0.2
- * [new tag]         libwebm-1.0.0.20 -> libwebm-1.0.0.20
- * [new tag]         libwebm-1.0.0.21 -> libwebm-1.0.0.21
- * [new tag]         libwebm-1.0.0.22 -> libwebm-1.0.0.22
- * [new tag]         libwebm-1.0.0.23 -> libwebm-1.0.0.23
- * [new tag]         libwebm-1.0.0.24 -> libwebm-1.0.0.24
- * [new tag]         libwebm-1.0.0.25 -> libwebm-1.0.0.25
- * [new tag]         libwebm-1.0.0.26 -> libwebm-1.0.0.26
- * [new tag]         libwebm-1.0.0.27 -> libwebm-1.0.0.27
- * [new tag]         libwebm-1.0.0.28 -> libwebm-1.0.0.28
- * [new tag]         libwebm-1.0.0.29 -> libwebm-1.0.0.29
- * [new tag]         libwebm-1.0.0.3  -> libwebm-1.0.0.3
- * [new tag]         libwebm-1.0.0.30 -> libwebm-1.0.0.30
- * [new tag]         libwebm-1.0.0.31 -> libwebm-1.0.0.31
- * [new tag]         libwebm-1.0.0.32 -> libwebm-1.0.0.32
- * [new tag]         libwebm-1.0.0.4  -> libwebm-1.0.0.4
- * [new tag]         libwebm-1.0.0.5  -> libwebm-1.0.0.5
- * [new tag]         libwebm-1.0.0.6  -> libwebm-1.0.0.6
- * [new tag]         libwebm-1.0.0.7  -> libwebm-1.0.0.7
- * [new tag]         libwebm-1.0.0.8  -> libwebm-1.0.0.8
- * [new tag]         libwebm-1.0.0.9  -> libwebm-1.0.0.9
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/nokhwa.git`
-From https://github.com/rustdesk-org/nokhwa
- * [new ref]         c2f74662b6ce117f7f94301693fdfadc0b1ec91a -> refs/commit/c2f74662b6ce117f7f94301693fdfadc0b1ec91a
- * [new tag]         0.10.0     -> 0.10.0
- * [new tag]         0.10.0-rc1 -> 0.10.0-rc1
- * [new tag]         0.10.0-rc2 -> 0.10.0-rc2
- * [new tag]         0.10.0-rc3 -> 0.10.0-rc3
- * [new tag]         0.10.0-rc4 -> 0.10.0-rc4
- * [new tag]         0.10.0-rc6 -> 0.10.0-rc6
- * [new tag]         0.10.1     -> 0.10.1
- * [new tag]         0.10.2     -> 0.10.2
- * [new tag]         0.10.3     -> 0.10.3
- * [new tag]         0.10.5     -> 0.10.5
- * [new tag]         0.10.6     -> 0.10.6
- * [new tag]         0.10.7     -> 0.10.7
- * [new tag]         0.3.0      -> 0.3.0
- * [new tag]         0.3.1      -> 0.3.1
- * [new tag]         0.4.3      -> 0.4.3
- * [new tag]         0.5.0      -> 0.5.0
- * [new tag]         0.6        -> 0.6
- * [new tag]         0.7.0      -> 0.7.0
- * [new tag]         0.8.0      -> 0.8.0
- * [new tag]         0.9.0      -> 0.9.0
- * [new tag]         0.9.1      -> 0.9.1
- * [new tag]         0.9.4      -> 0.9.4
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/confy`
-From https://github.com/rustdesk-org/confy
- * [new ref]         83db9ec19a2f97e9718aef69e4fc5611bb382479 -> refs/commit/83db9ec19a2f97e9718aef69e4fc5611bb382479
- * [new tag]         0.3.0      -> 0.3.0
- * [new tag]         0.3.1      -> 0.3.1
- * [new tag]         0.4        -> 0.4
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/sysinfo`
-From https://github.com/rustdesk-org/sysinfo
- * [new ref]         90b1705d909a4902dbbbdea37ee64db17841077d -> refs/commit/90b1705d909a4902dbbbdea37ee64db17841077d
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/tokio-socks`
-From https://github.com/rustdesk-org/tokio-socks
- * [new ref]         bdb9aa3de5bac41602d0742b8ef6bbc6bfebd127 -> refs/commit/bdb9aa3de5bac41602d0742b8ef6bbc6bfebd127
- * [new tag]         0.1.0      -> 0.1.0
- * [new tag]         0.1.1      -> 0.1.1
- * [new tag]         0.1.2      -> 0.1.2
- * [new tag]         v0.1.3     -> v0.1.3
- * [new tag]         v0.2.0     -> v0.2.0
- * [new tag]         v0.2.2     -> v0.2.2
- * [new tag]         v0.3.0     -> v0.3.0
- * [new tag]         v0.4.0     -> v0.4.0
- * [new tag]         v0.5.0     -> v0.5.0
- * [new tag]         v0.5.1     -> v0.5.1
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/tokio-tungstenite`
-From https://github.com/rustdesk-org/tokio-tungstenite
- * [new ref]         9c320de8e7c546cb654b017b7f4cbb4a5cc09cd9 -> refs/commit/9c320de8e7c546cb654b017b7f4cbb4a5cc09cd9
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/default_net`
-From https://github.com/rustdesk-org/default_net
- * [new ref]         78f8f70cd85151a3a2c4a3230d80d5272703c02e -> refs/commit/78f8f70cd85151a3a2c4a3230d80d5272703c02e
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/machine-uid`
-From https://github.com/rustdesk-org/machine-uid
- * [new ref]         381ff579c1dc3a6c54db9dfec47c44bcb0246542 -> refs/commit/381ff579c1dc3a6c54db9dfec47c44bcb0246542
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/rdev`
-From https://github.com/rustdesk-org/rdev
- * [new ref]         a361d86a8b0245f3618a9efb375c149530a6b599 -> refs/commit/a361d86a8b0245f3618a9efb375c149530a6b599
- * [new tag]         usbmmidd_v2 -> usbmmidd_v2
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/The-Fat-Controller`
-From https://github.com/rustdesk-org/The-Fat-Controller
- * [new ref]         78bb80a8e596e4c14ae57c8448f5fca75f91f2b0 -> refs/commit/78bb80a8e596e4c14ae57c8448f5fca75f91f2b0
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/fuser`
-From https://github.com/rustdesk-org/fuser
- * [new ref]         a3c0babe4a533f8dbcff5bce59ae7f2424b8d877 -> refs/commit/a3c0babe4a533f8dbcff5bce59ae7f2424b8d877
-[1m[32m    Updating[0m git repository `https://github.com/clslaid/x11-clipboard`
-From https://github.com/clslaid/x11-clipboard
- * [new ref]         5fc2e73bc01ada3681159b34cf3ea8f0d14cd904 -> refs/commit/5fc2e73bc01ada3681159b34cf3ea8f0d14cd904
-[1m[32m    Updating[0m git repository `https://github.com/clslaid/cacao`
-From https://github.com/clslaid/cacao
- * [new ref]         05e1536b0b43aaae308ec72c0eed703e875b7b95 -> refs/commit/05e1536b0b43aaae308ec72c0eed703e875b7b95
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/kcp-sys`
-From https://github.com/rustdesk-org/kcp-sys
- * [new ref]         938eda3e5e9757a612385503af7a6cb1189b2cdd -> refs/commit/938eda3e5e9757a612385503af7a6cb1189b2cdd
-[1m[32m    Updating[0m git submodule `https://github.com/skywind3000/kcp`
-From https://github.com/skywind3000/kcp
- * [new ref]         32da082e529a26730aea3eb19922f80634ee6dea -> refs/commit/32da082e529a26730aea3eb19922f80634ee6dea
- * [new tag]         2.0.0      -> 2.0.0
- * [new tag]         1.0        -> 1.0
- * [new tag]         1.1        -> 1.1
- * [new tag]         1.2        -> 1.2
- * [new tag]         1.3        -> 1.3
- * [new tag]         1.4        -> 1.4
- * [new tag]         1.5        -> 1.5
- * [new tag]         1.6        -> 1.6
- * [new tag]         1.7        -> 1.7
- * [new tag]         1.7.1      -> 1.7.1
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/magnum-opus`
-From https://github.com/rustdesk-org/magnum-opus
- * [new ref]         588c6e1f9ed50c3a01fa64f3bd3e7cdb0378a114 -> refs/commit/588c6e1f9ed50c3a01fa64f3bd3e7cdb0378a114
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/parity-tokio-ipc`
-From https://github.com/rustdesk-org/parity-tokio-ipc
- * [new ref]         d0ae39bffe5d5a3e8d82a1b6bcb1ca5a9b2f1c01 -> refs/commit/d0ae39bffe5d5a3e8d82a1b6bcb1ca5a9b2f1c01
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/keepawake-rs`
-From https://github.com/rustdesk-org/keepawake-rs
- * [new ref]         64d568586dd16551d02120e19668d2b0fec8e3c9 -> refs/commit/64d568586dd16551d02120e19668d2b0fec8e3c9
-[1m[32m    Updating[0m git repository `https://github.com/rustdesk-org/tao`
-From https://github.com/rustdesk-org/tao
- * [new ref]           288c219cb0527e509590c2b2d8e7072aa9feb2d3 -> refs/commit/288c219cb0527e509590c2b2d8e7072aa9feb2d3
- * [new tag]           tao-macros-v0 -> tao-macros-v0
- * [new tag]           tao-macros-v0.1 -> tao-macros-v0.1
- * [new tag]           tao-macros-v0.1.0 -> tao-macros-v0.1.0
- * [new tag]           tao-macros-v0.1.1 -> tao-macros-v0.1.1
- * [new tag]           tao-v0.10  -> tao-v0.10
- * [new tag]           tao-v0.10.0 -> tao-v0.10.0
- * [new tag]           tao-v0.11  -> tao-v0.11
- * [new tag]           tao-v0.11.0 -> tao-v0.11.0
- * [new tag]           tao-v0.11.1 -> tao-v0.11.1
- * [new tag]           tao-v0.11.2 -> tao-v0.11.2
- * [new tag]           tao-v0.12  -> tao-v0.12
- * [new tag]           tao-v0.12.0 -> tao-v0.12.0
- * [new tag]           tao-v0.12.1 -> tao-v0.12.1
- * [new tag]           tao-v0.12.2 -> tao-v0.12.2
- * [new tag]           tao-v0.13  -> tao-v0.13
- * [new tag]           tao-v0.13.0 -> tao-v0.13.0
- * [new tag]           tao-v0.13.1 -> tao-v0.13.1
- * [new tag]           tao-v0.13.2 -> tao-v0.13.2
- * [new tag]           tao-v0.13.3 -> tao-v0.13.3
- * [new tag]           tao-v0.14  -> tao-v0.14
- * [new tag]           tao-v0.14.0 -> tao-v0.14.0
- * [new tag]           tao-v0.15  -> tao-v0.15
- * [new tag]           tao-v0.15.0 -> tao-v0.15.0
- * [new tag]           tao-v0.15.1 -> tao-v0.15.1
- * [new tag]           tao-v0.15.2 -> tao-v0.15.2
- * [new tag]           tao-v0.15.3 -> tao-v0.15.3
- * [new tag]           tao-v0.15.4 -> tao-v0.15.4
- * [new tag]           tao-v0.15.5 -> tao-v0.15.5
- * [new tag]           tao-v0.15.6 -> tao-v0.15.6
- * [new tag]           tao-v0.15.7 -> tao-v0.15.7
- * [new tag]           tao-v0.15.8 -> tao-v0.15.8
- * [new tag]           tao-v0.15.9 -> tao-v0.15.9
- * [new tag]           tao-v0.16.0 -> tao-v0.16.0
- * [new tag]           tao-v0.17  -> tao-v0.17
- * [new tag]           tao-v0.17.0 -> tao-v0.17.0
- * [new tag]           tao-v0.18  -> tao-v0.18
- * [new tag]           tao-v0.18.0 -> tao-v0.18.0
- * [new tag]           tao-v0.18.1 -> tao-v0.18.1
- * [new tag]           tao-v0.18.2 -> tao-v0.18.2
- * [new tag]           tao-v0.18.3 -> tao-v0.18.3
- * [new tag]           tao-v0.19  -> tao-v0.19
- * [new tag]           tao-v0.19.0 -> tao-v0.19.0
- * [new tag]           tao-v0.19.1 -> tao-v0.19.1
- * [new tag]           tao-v0.2   -> tao-v0.2
- * [new tag]           tao-v0.2.0 -> tao-v0.2.0
- * [new tag]           tao-v0.2.1 -> tao-v0.2.1
- * [new tag]           tao-v0.2.2 -> tao-v0.2.2
- * [new tag]           tao-v0.2.3 -> tao-v0.2.3
- * [new tag]           tao-v0.2.4 -> tao-v0.2.4
- * [new tag]           tao-v0.2.5 -> tao-v0.2.5
- * [new tag]           tao-v0.2.6 -> tao-v0.2.6
- * [new tag]           tao-v0.20  -> tao-v0.20
- * [new tag]           tao-v0.20.0 -> tao-v0.20.0
- * [new tag]           tao-v0.3   -> tao-v0.3
- * [new tag]           tao-v0.3.0 -> tao-v0.3.0
- * [new tag]           tao-v0.3.1 -> tao-v0.3.1
- * [new tag]           tao-v0.4   -> tao-v0.4
- * [new tag]           tao-v0.4.0 -> tao-v0.4.0
- * [new tag]           tao-v0.5   -> tao-v0.5
- * [new tag]           tao-v0.5.0 -> tao-v0.5.0
- * [new tag]           tao-v0.5.1 -> tao-v0.5.1
- * [new tag]           tao-v0.5.2 -> tao-v0.5.2
- * [new tag]           tao-v0.6   -> tao-v0.6
- * [new tag]           tao-v0.6.0 -> tao-v0.6.0
- * [new tag]           tao-v0.6.1 -> tao-v0.6.1
- * [new tag]           tao-v0.6.2 -> tao-v0.6.2
- * [new tag]           tao-v0.6.3 -> tao-v0.6.3
- * [new tag]           tao-v0.6.4 -> tao-v0.6.4
- * [new tag]           tao-v0.7   -> tao-v0.7
- * [new tag]           tao-v0.7.0 -> tao-v0.7.0
- * [new tag]           tao-v0.8   -> tao-v0.8
- * [new tag]           tao-v0.8.0 -> tao-v0.8.0
- * [new tag]           tao-v0.8.1 -> tao-v0.8.1
- * [new tag]           tao-v0.8.2 -> tao-v0.8.2
- * [new tag]           tao-v0.8.3 -> tao-v0.8.3
- * [new tag]           tao-v0.8.4 -> tao-v0.8.4
- * [new tag]           tao-v0.8.5 -> tao-v0.8.5
- * [new tag]           tao-v0.9   -> tao-v0.9
- * [new tag]           tao-v0.9.0 -> tao-v0.9.0
- * [new tag]           tao-v0.9
+===== گزارش خطای ساخت اندروید | اجرا: 5 | کار: android | زمان: 2026-09-19 15:26:32 =====
+مرحلهٔ خطا: ساخت فایل APK
+lib/generated_bridge.dart:1673:29: Error: Type '_$EventToUI' not found.
+lib/generated_bridge.dart:1676:7: Error: Redirection constructor target not found: 'EventToUI_Event'
+lib/generated_bridge.dart:1679:7: Error: Redirection constructor target not found: 'EventToUI_Rgba'
+ 'EventToUI_Event'.
+  ) = EventToUI_Event;
+      ^
+lib/generated_bridge.dart:1679:7: Error: Couldn't find constructor 'EventToUI_Rgba'.
+  ) = EventToUI_Rgba;
+      ^
+lib/generated_bridge.dart:1683:7: Error: Couldn't find constructor 'EventToUI_Texture'.
+  ) = EventToUI_Texture;
+      ^
+lib/generated_bridge.dart:1676:7: Error: Redirection constructor target not found: 'EventToUI_Event'
+  ) = EventToUI_Event;
+      ^
+lib/generated_bridge.dart:1679:7: Error: Redirection constructor target not found: 'EventToUI_Rgba'
+  ) = EventToUI_Rgba;
+      ^
+lib/generated_bridge.dart:1683:7: Error: Redirection constructor target not found: 'EventToUI_Texture'
+  ) = EventToUI_Texture;
+      ^
+lib/models/model.dart:4037:24: Error: 'EventToUI_Event' isn't a type.
+        if (message is EventToUI_Event) {
+                       ^^^^^^^^^^^^^^^
+lib/models/model.dart:4053:31: Error: 'EventToUI_Rgba' isn't a type.
+        } else if (message is EventToUI_Rgba) {
+                              ^^^^^^^^^^^^^^
+lib/models/model.dart:4068:31: Error: 'EventToUI_Texture' isn't a type.
+        } else if (message is EventToUI_Texture) {
+                              ^^^^^^^^^^^^^^^^^
+lib/generated_bridge.dart:7749:16: Error: The method 'EventToUI_Event' isn't defined for the class 'RustdeskImpl'.
+ - 'RustdeskImpl' is from 'package:flutter_hbb/generated_bridge.dart' ('lib/generated_bridge.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'EventToUI_Event'.
+        return EventToUI_Event(
+               ^^^^^^^^^^^^^^^
+lib/generated_bridge.dart:7753:16: Error: The method 'EventToUI_Rgba' isn't defined for the class 'RustdeskImpl'.
+ - 'RustdeskImpl' is from 'package:flutter_hbb/generated_bridge.dart' ('lib/generated_bridge.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'EventToUI_Rgba'.
+        return EventToUI_Rgba(
+               ^^^^^^^^^^^^^^
+lib/generated_bridge.dart:7757:16: Error: The method 'EventToUI_Texture' isn't defined for the class 'RustdeskImpl'.
+ - 'RustdeskImpl' is from 'package:flutter_hbb/generated_bridge.dart' ('lib/generated_bridge.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'EventToUI_Texture'.
+        return EventToUI_Texture(
+               ^^^^^^^^^^^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildRelease'.
+> Process 'command '/opt/hostedtoolcache/flutter/stable-3.24.5-x64/flutter/bin/flutter'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3m 15s
+Running Gradle task 'assembleRelease'...                          196.4s
+Gradle task assembleRelease failed with exit code 1
+!!! apk build failed
+
