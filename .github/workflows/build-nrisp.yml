@@ -298,8 +298,31 @@ jobs:
         run: |
           cd "$SRC_DIR"
           set -o pipefail
-          if ! "$VCPKG_ROOT/vcpkg" install --triplet x64-windows-static \
-               --x-install-root="$VCPKG_ROOT/installed" 2>&1 | tee "$GITHUB_WORKSPACE/vcpkg-log.txt"; then
+          # پیش‌بارگیری ابزار کمکی cmake تا اگر شبکه یک‌بار قطع شد، ساخت شکست نخورد
+          CM_DEST="$VCPKG_ROOT/downloads/tools/cmake-4.4.0-windows"
+          CM_URL="https://github.com/Kitware/CMake/releases/download/v4.4.0/cmake-4.4.0-windows-x86_64.zip"
+          mkdir -p "$CM_DEST"
+          for i in 1 2 3 4 5 6; do
+            if curl -L --retry 5 --retry-delay 4 --retry-all-errors -C - \
+                 -o "$CM_DEST/cmake-4.4.0-windows-x86_64.zip" "$CM_URL"; then
+              echo "ابزار cmake پیش‌بارگیری شد"
+              break
+            fi
+            echo "تلاش $i برای گرفتن cmake ناموفق بود؛ دوباره..."
+            sleep 8
+          done
+          ok=0
+          for attempt in 1 2 3; do
+            if "$VCPKG_ROOT/vcpkg" install --triplet x64-windows-static \
+                 --x-install-root="$VCPKG_ROOT/installed" 2>&1 | tee "$GITHUB_WORKSPACE/vcpkg-log.txt"; then
+              ok=1
+              break
+            fi
+            echo "تلاش $attempt برای نصب کتابخانه‌ها ناموفق بود؛ دوباره..."
+            rm -rf "$VCPKG_ROOT/buildtrees"
+            sleep 10
+          done
+          if [ "$ok" != "1" ]; then
             find "${VCPKG_ROOT}/" -name "*.log" | while read -r f; do echo "== $f"; cat "$f"; done
             exit 1
           fi
