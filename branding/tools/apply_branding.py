@@ -361,6 +361,17 @@ def apply_mobile(repo: Path, brand, android_package: bool):
             REPORT.add(DONE, "android kotlin package folder")
         else:
             REPORT.add(MISS, "android kotlin package folder", str(old_dir))
+        # هر ارجاع دیگری به نام بستهٔ قدیمی در بخش اندروید (مانند ffi.kt که بیرون پوشه است)
+        exts = {".kt", ".java", ".xml", ".gradle", ".properties", ".pro"}
+        fixed = 0
+        for f in repo.glob("flutter/android/**/*"):
+            if f.is_file() and f.suffix in exts:
+                txt = read_text(f)
+                if "com.carriez.flutter_hbb" in txt:
+                    write_text(f, txt.replace("com.carriez.flutter_hbb", pkg))
+                    fixed += 1
+        REPORT.add(OK if fixed else DONE, "android old package references", str(fixed))
+
         # اندروید ۸ دیگر صفت package را در مانیفست قبول نمی‌کند؛ باید برداشته شود
         for man in repo.glob("flutter/android/app/src/*/AndroidManifest.xml"):
             m_txt = read_text(man)
