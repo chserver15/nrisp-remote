@@ -1139,6 +1139,41 @@ def silent_installer(repo: Path):
             note(SKIP, 'src/ui_interface.rs', 'از قبل یا پیدا نشد')
 
 
+def error_hook(repo: Path):
+    """اگر خطایی در ساخت صفحه رخ داد، به جای صفحهٔ خاکستری متن خطا نشان داده شود"""
+    m = repo / 'flutter/lib/main.dart'
+    s = read(m)
+    if 'nrispErrorHook' in s:
+        note(SKIP, 'main.dart', 'قلاب خطا از قبل هست')
+        return
+    fn = """
+// NRISP: نمایش متن خطا به جای صفحهٔ خاکستری
+void nrispErrorHook() {
+  ErrorWidget.builder = (FlutterErrorDetails details) => Material(
+        color: const Color(0xFFFFFFFF),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(14),
+            child: Text(
+              'NRISP-ERROR\\n${details.exception}\\n\\n${details.stack ?? ''}',
+              style: const TextStyle(color: Color(0xFFC0392B), fontSize: 12),
+            ),
+          ),
+        ),
+      );
+}
+
+"""
+    s = s.replace('Future<void> main(List<String> args) async {',
+                  fn + 'Future<void> main(List<String> args) async {\n  nrispErrorHook();', 1)
+    if 'nrispErrorHook();' not in s:
+        note(MISS, 'main.dart', 'جای تابع main پیدا نشد')
+        return
+    write(m, s)
+    note(OK, 'main.dart', 'قلاب نمایش خطا اضافه شد')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -1173,6 +1208,7 @@ def main():
     line_height_fix(repo)
     bump_version(repo)
     voice_call_hint(repo)
+    error_hook(repo)
 
     print('\n--- خلاصه ---')
     print(f"اعمال‌شده: {sum(1 for r in rows if r[0] == OK)}   "

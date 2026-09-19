@@ -311,3 +311,141 @@ jobs:
       with:
         name: android-logs
         path: ${{ github.workspace }}/android-*.log
+  android_stock:
+    name: ساخت آزمون بدون برند
+    needs:
+    - bridge
+    runs-on: ubuntu-22.04
+    env:
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_DEFAULT_HOST_TRIPLET: x64-linux
+      ANDROID_TARGET: arm64-v8a
+      CARGO_BUILD_JOBS: '2'
+    steps:
+    - name: آزادکردن فضای دیسک
+      uses: jlumbroso/free-disk-space@main
+      continue-on-error: true
+      with:
+        tool-cache: false
+        android: false
+        dotnet: true
+        haskell: true
+    - name: گرفتن فایل‌های این مخزن
+      uses: actions/checkout@v4
+    - name: خاموش‌کردن تبدیل خطوط
+      run: git config --global core.autocrlf false
+    - name: نصب ابزارهای پایه
+      continue-on-error: true
+      run: 'sudo apt-get update -qq || true
+
+        sudo apt-get install -y -qq nasm ninja-build pkg-config curl unzip zip clang libclang-dev llvm-dev libssl-dev openjdk-17-jdk-headless tree || true'
+    - name: نصب Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: ${{ env.ANDROID_FLUTTER_VERSION }}
+    - name: نصب NDK
+      uses: nttld/setup-ndk@v1
+      id: setup-ndk
+      with:
+        ndk-version: r28c
+        add-to-path: true
+    - name: گرفتن سورس راست‌دسک
+      shell: bash
+      run: 'exec > >(tee -a "$GITHUB_WORKSPACE/android-source-log.txt") 2>&1
+
+        git clone --depth 1 --branch "$RUSTDESK_REF" "$RUSTDESK_REPO" "$SRC_DIR"
+
+        cd "$SRC_DIR"
+
+        git submodule update --init --recursive --depth 1
+
+        echo "سورس راست‌دسک گرفته شد"'
+    - name: ثبت وضعیت سورس اندروید گرفته شد
+      continue-on-error: true
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: bash branding/tools/ci_mark.sh "سورس اندروید گرفته شد"
+    - name: گذاشتن فایل پل در سورس
+      uses: actions/download-artifact@v4
+      with:
+        name: bridge-artifact
+        path: bridge-files
+    - name: انتقال فایل‌های پل
+      shell: bash
+      run: 'cp bridge-files/bridge_generated.rs    "$SRC_DIR/src/" 2>/dev/null || true
+
+        cp bridge-files/bridge_generated.io.rs "$SRC_DIR/src/" 2>/dev/null || true
+
+        cp bridge-files/generated_bridge.dart  "$SRC_DIR/flutter/lib/"
+
+        cp bridge-files/generated_bridge.freezed.dart "$SRC_DIR/flutter/lib/" 2>/dev/null || true
+
+        mkdir -p "$SRC_DIR/flutter/macos/Runner" "$SRC_DIR/flutter/ios/Runner"
+
+        cp bridge-files/bridge_generated.h "$SRC_DIR/flutter/macos/Runner/" 2>/dev/null || true
+
+        cp bridge-files/bridge_generated.h "$SRC_DIR/flutter/ios/Runner/" 2>/dev/null || true
+
+        echo "--- فایل‌های پل در سورس اندروید: ---"
+
+        ls -la "$SRC_DIR/flutter/lib" | grep -E "generated_bridge" || true
+
+        ls -la "$SRC_DIR/src" | grep -E "bridge_generated" || true
+
+        test -s "$SRC_DIR/flutter/lib/generated_bridge.freezed.dart" || { echo "خطا: فایل freezed پل منتقل نشد"; exit 1; }'
+    - name: اعمال وصلهٔ فلاتر
+      shell: bash
+      run: "FLUTTER_BIN_DIR=$(dirname $(dirname $(which flutter)))\ncp \"$SRC_DIR/.github/patches/flutter_3.24.4_dropdown_menu_enableFilter.diff\" \"$FLUTTER_BIN_DIR/\" || true\ncd \"$FLUTTER_BIN_DIR\"\nif [ -f flutter_3.24.4_dropdown_menu_enableFilter.diff ]; then\n  git apply flutter_3.24.4_dropdown_menu_enableFilter.diff && echo \"وصله اعمال شد\" || echo \"وصله از قبل اعمال شده\"\nfi"
+    - name: آماده‌سازی vcpkg
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgDirectory: ${{ github.workspace }}/vcpkg
+        vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
+    - name: نصب Rust
+      uses: dtolnay/rust-toolchain@v1
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        targets: aarch64-linux-android
+    - name: نصب کتابخانه‌های اندروید
+      shell: bash
+      env:
+        ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
+      run: "exec > >(tee -a \"$GITHUB_WORKSPACE/android-deps-log.txt\") 2>&1\ncd \"$SRC_DIR\"\nbash ./flutter/build_android_deps.sh \"$ANDROID_TARGET\" || {\n  echo \"نصب کتابخانه‌های اندروید ناموفق بود\";\n  find \"$VCPKG_ROOT\" -name \"*.log\" -newermt \"-2 hours\" | head -20 || true;\n  exit 1;\n}\necho \"کتابخانه‌های اندروید نصب شد\"\n"
+    - name: ثبت وضعیت کتابخانه‌های اندروید نصب شد
+      continue-on-error: true
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: bash branding/tools/ci_mark.sh "کتابخانه‌های اندروید نصب شد"
+    - name: کامپایل کتابخانهٔ اندروید
+      shell: bash
+      env:
+        ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
+      run: "set -o pipefail\ncd \"$SRC_DIR\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\necho \"=== cargo-ndk ===\" | tee -a \"$LOG\"\ncargo install cargo-ndk --version \"$CARGO_NDK_VERSION\" --locked 2>&1 | tee -a \"$LOG\" || echo \"cargo-ndk already installed\" | tee -a \"$LOG\"\necho \"=== rust target ===\" | tee -a \"$LOG\"\nrustup target add aarch64-linux-android 2>&1 | tee -a \"$LOG\"\nexport CARGO_BUILD_JOBS=2\n# --- تنظیم دقیق ابزار اندروید برای bindgen و cc (علت خطای قبلی) ---\nPRE=\"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64\"\nexport PATH=\"$PRE/bin:$PATH\"\nLC=$(find \"$PRE\" -name 'libclang.so*' 2>/dev/null | head -1); [ -n \"$LC\" ] && export LIBCLANG_PATH=\"$(dirname \"$LC\")\" || true\nCLANG_BIN=\"$PRE/bin/aarch64-linux-android21-clang\"; [ -x \"$CLANG_BIN\" ] || CLANG_BIN=\"$PRE/bin/aarch64-linux-android-clang\"\nexport CC_aarch64_linux_android=\"$CLANG_BIN\"\nexport CXX_aarch64_linux_android=\"${CLANG_BIN}++\"\nexport AR_aarch64_linux_android=\"$PRE/bin/llvm-ar\"\nexport BINDGEN_EXTRA_CLANG_ARGS=\"--sysroot=$PRE/sysroot -D__ANDROID_API__=21\"\necho \"NDK: $PRE | libclang: $LIBCLANG_PATH\" | tee -a \"$LOG\"\necho \"=== build lib (2 jobs) ===\" | tee -a \"$LOG\"\nif ! ./flutter/ndk_arm64.sh 2>&1 | tee -a \"$LOG\"; then\n  echo \"مرحلهٔ خطا: کامپایل کتابخانه\" > \"$GITHUB_WORKSPACE/android-fail.txt\"; echo \"!!! android lib build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\nmkdir -p ./flutter/android/app/src/main/jniLibs/arm64-v8a\ncp ./target/aarch64-linux-android/release/liblibrustdesk.so ./flutter/android/app/src/main/jniLibs/arm64-v8a/librustdesk.so\ncp \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so\" ./flutter/android/app/src/main/jniLibs/arm64-v8a/\necho \"=== android lib built ===\" | tee -a \"$LOG\""
+    - name: ثبت وضعیت کامپایل اندروید به پایان رسید
+      continue-on-error: true
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: bash branding/tools/ci_mark.sh "کتابخانهٔ اندروید ساخته شد"
+    - name: نصب Java 17 برای ساخت APK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+    - name: معرفی Java 17 به ساخت
+      run: 'echo "JAVA_HOME=$JAVA_HOME" >> "$GITHUB_ENV"
+
+        java -version 2>&1 | head -3 || true'
+    - name: ساخت فایل APK
+      shell: bash
+      run: "set -o pipefail\ncd \"$SRC_DIR/flutter\"\nLOG=\"$GITHUB_WORKSPACE/android-build-log.txt\"\n# قانون اندروید ۸: صفت package نباید در مانیفست باشد (namespace در build.gradle است)\nMAN=./android/app/src/main/AndroidManifest.xml\nsed -i 's/ package=\"[^\"]*\"//' \"$MAN\" || true\necho \"--- نگهبان مانیفست ---\" | tee -a \"$LOG\"\ngrep -n \"package=\" \"$MAN\" | head -3 | tee -a \"$LOG\" || true\ngrep -n \"namespace\" ./android/app/build.gradle | head -3 | tee -a \"$LOG\" || true\nsed -i \"s/signingConfigs.release/signingConfigs.debug/g\" ./android/app/build.gradle\n# --- تضمین امضای بسته (اگر روش قبلی نگرفت، کلید آزمایشی ساخته میشود) ---\nif ! grep -q \"signingConfigs.debug\" ./android/app/build.gradle; then\n  echo \"--- امضای آزمایشی ساخته می‌شود ---\" | tee -a \"$LOG\"\n  keytool -genkeypair -v -keystore ./android/app/nrisp-debug.keystore -storepass android \\\n    -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 \\\n    -dname \"CN=NRISP Remote, O=NRISP\" >/dev/null 2>&1 || true\n  printf 'storePassword=android\\nkeyPassword=android\\nkeyAlias=androiddebugkey\\nstoreFile=nrisp-debug.keystore\\n' > ./android/key.properties\nfi\ngrep -n \"signingConfigs\" ./android/app/build.gradle | head -4 | tee -a \"$LOG\" || true\nsed -i \"s/org.gradle.jvmargs=-Xmx1024M/org.gradle.jvmargs=-Xmx3g/g\" ./android/gradle.properties || true\nif ! flutter build apk --release --target-platform android-arm64 --split-per-abi 2>&1 | tee -a \"$LOG\"; then\n  echo \"مرحلهٔ خطا: ساخت فایل APK\" > \"$GITHUB_WORKSPACE/android-fail.txt\"; grep -m3 -E \"What went wrong|error\\[|error:|FAILURE:|Caused by|Required|not found|Exception\" \"$LOG\" >> \"$GITHUB_WORKSPACE/android-fail.txt\" 2>/dev/null || true; echo \"!!! apk build failed\" | tee -a \"$LOG\"\n  exit 1\nfi\ncp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \"$GITHUB_WORKSPACE/NRISP-Remote-android-stocktest.apk\"\nls -la \"$GITHUB_WORKSPACE/NRISP-Remote-android-stocktest.apk\" | tee -a \"$LOG\""
+    - name: بارگذاری نسخهٔ اندروید
+      uses: actions/upload-artifact@v4
+      with:
+        name: NRISP-Remote-android-stocktest
+        path: ${{ github.workspace }}/NRISP-Remote-android-stocktest.apk
