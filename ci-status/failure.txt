@@ -1,4 +1,4 @@
-===== گزارش خطای ساخت اندروید | اجرا: 8 | کار: android | زمان: 2026-09-19 18:47:22 =====
+===== گزارش خطای ساخت اندروید | اجرا: 9 | کار: android | زمان: 2026-09-19 19:08:32 =====
 مرحلهٔ خطا: ساخت فایل APK
 FAILURE: Build failed with an exception.
 * What went wrong:
@@ -38,8 +38,8 @@ Execution failed for task ':app:compileReleaseKotlin'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 4m 16s
-Running Gradle task 'assembleRelease'...                          256.7s
+BUILD FAILED in 5m 46s
+Running Gradle task 'assembleRelease'...                          347.1s
 Gradle task assembleRelease failed with exit code 1
 !!! apk build failed
 
