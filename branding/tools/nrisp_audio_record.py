@@ -64,6 +64,16 @@ PAIRS = [
                 return created;
             }''',
      'ui_interface.rs (مسیر ضبط در ویندوز)'),
+    # ---- ۴) رکورد خودکار (بدون کار دستی) ----
+    ('src/client/io_loop.rs',
+     '            let auto_record = LocalConfig::get_bool_option(keys::OPTION_ALLOW_AUTO_RECORD_OUTGOING);',
+     '''            // NRISP: رکورد جلسه به‌صورت خودکار فعال است (بدون کار دستی کاربر).
+            // اگر کاربر خودش گزینه را خاموش کرده باشد، همان مقدار رعایت می‌شود.
+            let auto_record = match LocalConfig::get_option(keys::OPTION_ALLOW_AUTO_RECORD_OUTGOING) {
+                v if v.is_empty() => true,
+                _ => LocalConfig::get_bool_option(keys::OPTION_ALLOW_AUTO_RECORD_OUTGOING),
+            };''',
+     'io_loop.rs (رکورد خودکار جلسه‌های خروجی)'),
 ]
 
 
