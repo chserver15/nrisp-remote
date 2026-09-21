@@ -1139,6 +1139,46 @@ def silent_installer(repo: Path):
             note(SKIP, 'src/ui_interface.rs', 'از قبل یا پیدا نشد')
 
 
+
+def id_fields_ltr(repo: Path):
+    """کادر شناسهٔ راه‌دور چپ‌به‌راست شود؛ وگرنه تایپ عدد در رابط راست‌به‌چپ برعکس دیده می‌شود."""
+    cases = [
+        (
+            repo / 'flutter' / 'lib' / 'mobile' / 'pages' / 'connection_page.dart',
+            "                      return AutoSizeTextField(\n"
+            "                        controller: fieldTextEditingController,\n",
+            "                      return AutoSizeTextField(\n"
+            "                        textDirection: TextDirection.ltr,\n"
+            "                        textAlign: TextAlign.left,\n"
+            "                        controller: fieldTextEditingController,\n",
+            'کادر شناسهٔ گوشی (چپ‌به‌راست)',
+        ),
+        (
+            repo / 'flutter' / 'lib' / 'desktop' / 'pages' / 'connection_page.dart',
+            "                          controller: fieldTextEditingController,\n"
+            "                          inputFormatters: [IDTextInputFormatter()],\n",
+            "                          textDirection: TextDirection.ltr,\n"
+            "                          textAlign: TextAlign.left,\n"
+            "                          controller: fieldTextEditingController,\n"
+            "                          inputFormatters: [IDTextInputFormatter()],\n",
+            'کادر شناسهٔ ویندوز (چپ‌به‌راست)',
+        ),
+    ]
+    for path, old, new, label in cases:
+        if not path.exists():
+            note(MISS, label, f'فایل موجود نیست: {path}')
+            continue
+        t = read(path)
+        if new in t:
+            note(SKIP, label, 'از قبل اعمال شده')
+            continue
+        if old not in t:
+            note(MISS, label, 'جای کادر شناسه پیدا نشد')
+            continue
+        write(path, t.replace(old, new, 1))
+        note(OK, label, '1 تغییر')
+
+
 def error_hook(repo: Path):
     """اگر خطایی در ساخت صفحه رخ داد، به جای صفحهٔ خاکستری متن خطا نشان داده شود"""
     m = repo / 'flutter/lib/main.dart'
@@ -1208,6 +1248,7 @@ def main():
     line_height_fix(repo)
     bump_version(repo)
     voice_call_hint(repo)
+    id_fields_ltr(repo)
     error_hook(repo)
 
     print('\n--- خلاصه ---')
