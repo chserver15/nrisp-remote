@@ -673,23 +673,6 @@ def menu_side(repo: Path):
     double x = position.left;"""),
         ("            child: Align(\n              alignment: AlignmentDirectional.topEnd,",
          "            child: Align(\n              alignment: Alignment.topLeft,"),
-        ("""          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              vertical: _kMenuVerticalPadding,
-            ),
-            controller: ScrollController(),
-            child: ListBody(children: children),
-          ),""",
-         """          child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                vertical: _kMenuVerticalPadding,
-              ),
-              controller: ScrollController(),
-              child: ListBody(children: children),
-            ),
-          ),"""),
     ]
     ok = 0
     for old, new in pairs:
@@ -1158,49 +1141,6 @@ void nrispErrorHook() {
 
 
 
-def ltr_layout(repo: Path):
-    """چیدمان برنامه همیشه چپ‌به‌راست می‌ماند.
-
-    در حالت راست‌به‌چپ، متن‌های لاتین داخل جملهٔ فارسی (عددها، نسخه، شناسه،
-    کلیدهای میان‌بر) جابه‌جا و به‌هم‌ریخته دیده می‌شوند. با ثابت‌کردن جهت
-    چیدمان، متن فارسی درست شکل می‌گیرد و هیچ نوشته‌ای جابه‌جا نمی‌شود.
-    """
-    p = repo / 'flutter' / 'lib' / 'main.dart'
-    if not p.exists():
-        note(MISS, 'main.dart', 'فایل نیست')
-        return
-    src = read(p)
-    old = """Widget _keepScaleBuilder(BuildContext context, Widget? child) {
-  return MediaQuery(
-    data: MediaQuery.of(context).copyWith(
-      textScaler: TextScaler.linear(1.0),
-    ),
-    child: child ?? Container(),
-  );
-}"""
-    new = """Widget _keepScaleBuilder(BuildContext context, Widget? child) {
-  return Directionality(
-    // NRISP: چیدمان همیشه چپ‌به‌راست می‌ماند تا نوشته‌های منوها، عددها و
-    // شناسه‌ها در حالت فارسی جابه‌جا نشوند.
-    textDirection: TextDirection.ltr,
-    child: MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        textScaler: TextScaler.linear(1.0),
-      ),
-      child: child ?? Container(),
-    ),
-  );
-}"""
-    if new in src:
-        note(SKIP, 'main.dart (جهت چیدمان)', 'از قبل بود')
-        return
-    if old not in src:
-        note(MISS, 'main.dart (جهت چیدمان)', 'جای تابع پیدا نشد')
-        return
-    write(p, src.replace(old, new, 1))
-    note(OK, 'main.dart (جهت چیدمان چپ‌به‌راست)')
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -1233,7 +1173,6 @@ def main():
     silent_installer(repo)
     bundle_font(repo)
     window_title(repo)
-    ltr_layout(repo)
     menu_side(repo)
     settings_font(repo)
     line_height_fix(repo)

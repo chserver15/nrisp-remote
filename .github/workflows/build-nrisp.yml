@@ -420,9 +420,14 @@ jobs:
           grep -qi "NRISP" "$SRC_DIR/src/common.rs" \
             && echo "نام برنامه در سورس راست تنظیم شد" \
             || echo "هشدار: رشتهٔ نام در src/common.rs یافت نشد (اشکالی ندارد)";
-          grep -q "locale: const Locale('fa')" "$SRC_DIR/flutter/lib/main.dart" \
-            && echo "زبان پیش‌فرض فارسی تنظیم شد" \
-            || { echo "خطا: زبان پیش‌فرض فارسی تنظیم نشد"; exit 1; }
+          if grep -q "locale: const Locale('fa')" "$SRC_DIR/flutter/lib/main.dart"; then
+            echo "خطا: وصلهٔ زبان اجباری برگشته است (متن منوها را به‌هم می‌ریزد)"; exit 1
+          else
+            echo "زبان اجباری برداشته شد — متن منوها سالم می‌ماند"
+          fi
+          grep -q "fontFamilyFallback: const \['Vazirmatn'\]," "$SRC_DIR/flutter/lib/common.dart" \
+            && echo "فونت فارسی فقط پشتیبان است (فونت‌های اصلی برنامه دست‌نخورده)" \
+            || { echo "خطا: پشتیبان فونت تنظیم نشد"; exit 1; }
           grep -q "nrispAppNameFa" "$SRC_DIR/flutter/lib/desktop/widgets/tabbar_widget.dart" \
             && echo "نام نرم‌افزار در نوار بالا تنظیم شد" \
             || { echo "خطا: نام نرم‌افزار در نوار بالا تنظیم نشد"; exit 1; }
@@ -447,9 +452,6 @@ jobs:
           grep -q "cardColor: Colors.white," "$SRC_DIR/flutter/lib/common.dart" \
             && echo "پوستهٔ روشن بازسازی شد" \
             || { echo "خطا: پوستهٔ روشن اعمال نشد"; exit 1; }
-          grep -q "fontFamily: 'Vazirmatn'," "$SRC_DIR/flutter/lib/common.dart" \
-            && echo "فونت فارسی روی برنامه نشست" \
-            || { echo "خطا: فونت فارسی اعمال نشد"; exit 1; }
           test -f "$SRC_DIR/flutter/assets/Vazirmatn-Regular.ttf" \
             && echo "فایل فونت همراه برنامه بسته‌بندی شد" \
             || { echo "خطا: فایل فونت پیدا نشد"; exit 1; }
