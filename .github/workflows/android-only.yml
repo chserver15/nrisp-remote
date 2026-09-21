@@ -243,20 +243,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: bash branding/tools/ci_mark.sh "هویت بصری اندروید اعمال شد"
-    - name: اعمال پیش‌فرض‌های خود برنامه (تصویر مطمئن)
-      run: 'exec > >(tee -a "$GITHUB_WORKSPACE/android-appfix-log.txt") 2>&1
-
-        python3 branding/tools/nrisp_appfix.py "$SRC_DIR"
-
-        grep -n -A8 "fn nrisp_default_option" "$SRC_DIR/libs/hbb_common/src/config.rs" | head -14
-
-        echo "پیش‌فرض‌های اندروید اعمال شد"'
-    - name: ثبت وضعیت پیش‌فرض‌های اندروید
-      continue-on-error: true
-      shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: bash branding/tools/ci_mark.sh "پیش‌فرض‌های تصویر اندروید اعمال شد"
     - name: کامپایل کتابخانهٔ اندروید
       shell: bash
       env:
