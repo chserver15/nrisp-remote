@@ -751,51 +751,32 @@ def bump_version(repo: Path):
 
 
 def window_buttons(repo: Path):
-    """دکمه‌های کوچک/بزرگ/بستن پنجره را همیشه بالا-راست نگه می‌دارد."""
+    """دکمه‌های کوچک/بزرگ/بستن پنجره همیشه بالا-راست می‌مانند.
+
+    فقط «ردیف دکمه‌های پنجره» چپ‌به‌راست می‌شود؛ جهت پایهٔ متن صفحه دست‌نخورده
+    می‌ماند تا جمله‌های فارسی همه راست‌به‌چپ بمانند.
+    """
     p = repo / 'flutter/lib/desktop/widgets/tabbar_widget.dart'
     if not p.exists():
         note(MISS, 'tabbar_widget.dart', 'فایل نیست')
         return
     src = read(p)
-    old = """  @override
-  Widget build(BuildContext context) {
+    marker = """  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Obx(() {
-          if (showTabDowndown() && existingInvisibleTab().isNotEmpty) {"""
-    new = """  @override
-  Widget build(BuildContext context) {
-    // چیدمان چپ‌به‌راست تا دکمه‌های پنجره همیشه سمت راست بمانند
-    return Directionality(
+      children: ["""
+    new = """  Widget build(BuildContext context) {
+    // NRISP: فقط ردیف دکمه‌های پنجره چپ‌به‌راست است تا بالا-راست بمانند
+    return Row(
       textDirection: TextDirection.ltr,
-      child: Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Obx(() {
-          if (showTabDowndown() && existingInvisibleTab().isNotEmpty) {"""
-    old2 = """                  isClose: true,
-                )
-            ],
-          ),
-      ],
-    );
-  }
-
-  void _toggleMaximize() {"""
-    new2 = """                  isClose: true,
-                )
-            ],
-          ),
-      ],
-      ),
-    );
-  }
-
-  void _toggleMaximize() {"""
-    if old in src and old2 in src:
-        write(p, src.replace(old, new, 1).replace(old2, new2, 1))
+      children: ["""
+    if marker in src:
+        src = src.replace(marker, new, 1)
+        write(p, src)
         note(OK, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)')
+    elif new in src:
+        note(SKIP, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)', 'از قبل اعمال شده')
     else:
         note(MISS, 'tabbar_widget.dart (دکمه‌های پنجره)', 'قطعه پیدا نشد')
 
@@ -924,37 +905,9 @@ def connect_card_fixes(repo: Path):
 
 def final_tweaks(repo: Path):
     """اصلاحات نهایی: دکمه‌های پنجره سمت راست، متن‌های خوانا، برداشتن متن‌های پایین صفحه."""
-    # ۱) دکمه‌های پنجره سمت راست: چیدمان چپ‌به‌راست روی نوار بالا (_buildBar)
-    p = repo / 'flutter/lib/desktop/widgets/tabbar_widget.dart'
-    if p.exists():
-        s2 = read(p)
-        old = """  Widget _buildBar() {
-    final isIncomingHomePage = bind.isIncomingOnly() && isInHomePage();
-    return Row(
-      children: ["""
-        new = """  Widget _buildBar() {
-    final isIncomingHomePage = bind.isIncomingOnly() && isInHomePage();
-    // چیدمان چپ‌به‌راست نوار بالا: دکمه‌های پنجره همیشه سمت راست بمانند
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Row(
-      children: ["""
-        oldc = """        ).paddingOnly(left: 10)
-      ],
-    );
-  }
-}"""
-        newc = """        ).paddingOnly(left: 10)
-      ],
-    ));
-  }
-}"""
-        if old in s2 and oldc in s2:
-            s2 = s2.replace(old, new, 1).replace(oldc, newc, 1)
-            write(p, s2)
-            note(OK, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)')
-        else:
-            note(MISS, 'tabbar_widget.dart (_buildBar)', 'لنگر پیدا نشد')
+    # ۱) دکمه‌های پنجره: در تابع window_buttons با جهت چپ‌به‌راستِ همان ردیف
+    #    درست شده‌اند؛ اینجا دیگر چیزی به نوار بالای صفحه تحمیل نمی‌شود.
+    note(SKIP, 'tabbar_widget.dart (_buildBar)', 'لازم نیست (فقط ردیف دکمه‌ها)')
 
     # ۲) عنوان کارت: رنگ خوانا در هر دو پوسته
     p = repo / 'flutter/lib/common/widgets/connection_page_title.dart'
@@ -1154,21 +1107,21 @@ void nrispErrorHook() {
 
 
 HELP_LTR = (
-    "// NRISP: جهت پایهٔ متن همیشه چپ‌به‌راست تا نوشته‌های انگلیسی منوها برعکس نشوند\n"
-    "Widget nrispLtrBase(Widget? child) => Directionality(\n"
-    "      textDirection: TextDirection.ltr,\n"
+    "// NRISP: جهت پایهٔ متن راست‌به‌چپ (فارسی) است تا جمله‌های فارسی درست بچینند.\n"
+    "// نوشته‌های انگلیسی داخل جمله‌ها با الگوریتم دوجهتهٔ استاندارد درست نشان داده می‌شوند.\n"
+    "Widget nrispTextBase(Widget? child) => Directionality(\n"
+    "      textDirection: TextDirection.rtl,\n"
     "      child: child ?? Container(),\n"
     "    );\n\n"
 )
 
 
 def ltr_text_base(repo: Path):
-    """پایهٔ متن برنامه همیشه چپ‌به‌راست می‌ماند.
+    """پایهٔ جهت متن برنامه راست‌به‌چپ (فارسی) می‌شود.
 
-    در ویندوزی که زبان سیستمش فارسی است، جهت پایه راست‌به‌چپ می‌شد؛ در نتیجه
-    نوشته‌های انگلیسی داخل کادرها و صفحهٔ تنظیمات جابه‌جا و برعکس دیده می‌شدند.
-    با ثابت‌کردن جهت پایه روی چپ‌به‌راست، متن فارسی همچنان درست (از راست به چپ)
-    شکل می‌گیرد ولی هیچ نوشتهٔ انگلیسی برعکس نمی‌شود.
+    چپ‌چین‌کردن کل برنامه اشتباه بود و جمله‌های فارسی را به سمت چپ می‌برد.
+    اکنون پایه روی راست‌به‌چپ است و تنها متن‌های لاتینِ تک‌واژه‌ای (شناسه و
+    مانند آن) جهت چپ‌به‌راست خودشان را نگه می‌دارند.
     """
     path = repo / 'flutter' / 'lib' / 'main.dart'
     if not path.exists():
@@ -1176,18 +1129,18 @@ def ltr_text_base(repo: Path):
         return
     src = read(path)
     helper = HELP_LTR
-    if 'nrispLtrBase' in src:
-        note(SKIP, 'main.dart (پایهٔ متن چپ‌به‌راست)', 'از قبل بود')
+    if 'nrispTextBase' in src:
+        note(SKIP, 'main.dart (پایهٔ متن راست‌به‌چپ)', 'از قبل بود')
         return
     pairs = [
         ('Future<void> main(List<String> args) async {',
          helper + 'Future<void> main(List<String> args) async {'),
         ('        child = botToastBuilder(context, child);\n        return child;',
-         '        child = botToastBuilder(context, child);\n        return nrispLtrBase(child);'),
+         '        child = botToastBuilder(context, child);\n        return nrispTextBase(child);'),
         ('                  if (isLinux) {\n                    return buildVirtualWindowFrame(context, child);\n                  } else {\n                    return workaroundWindowBorder(context, child);\n                  }',
-         '                  if (isLinux) {\n                    return nrispLtrBase(buildVirtualWindowFrame(context, child));\n                  } else {\n                    return nrispLtrBase(workaroundWindowBorder(context, child));\n                  }'),
+         '                  if (isLinux) {\n                    return nrispTextBase(buildVirtualWindowFrame(context, child));\n                  } else {\n                    return nrispTextBase(workaroundWindowBorder(context, child));\n                  }'),
         ('    child: child ?? Container(),\n  );\n}\n\n_registerEventHandler() {',
-         '    child: nrispLtrBase(child),\n  );\n}\n\n_registerEventHandler() {'),
+         '    child: nrispTextBase(child),\n  );\n}\n\n_registerEventHandler() {'),
     ]
     hits = 0
     for old, new in pairs:
@@ -1198,7 +1151,7 @@ def ltr_text_base(repo: Path):
             note(MISS, 'main.dart (پایهٔ متن)', 'بخشی پیدا نشد')
     write(path, src)
     note(OK if hits == len(pairs) else MISS,
-         'main.dart (پایهٔ متن چپ‌به‌راست)', '%d از %d' % (hits, len(pairs)))
+         'main.dart (پایهٔ متن راست‌به‌چپ)', '%d از %d' % (hits, len(pairs)))
 
 
 def main():
