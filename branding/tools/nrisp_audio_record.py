@@ -22,6 +22,33 @@ rows = []
 
 PAIRS = [
     # ---- ۱) تماس صوتی روی اندروید قدیمی‌تر ----
+    # تماس صوتی: مجوز میکروفون همان لحظه از کاربر گرفته می‌شود (بدون تنظیم دستی)
+    ('flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainActivity.kt',
+     '''    private fun onVoiceCallStarted() {
+        var ok = false''',
+     '''    private fun onVoiceCallStarted() {
+        // NRISP: اگر مجوز میکروفون داده نشده باشد، همان لحظه گرفته می‌شود؛
+        // کاربر نباید برای تماس صوتی چیزی را دستی فعال کند.
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            XXPermissions.with(this)
+                .permission(Manifest.permission.RECORD_AUDIO)
+                .request { _, all ->
+                    if (all) {
+                        Handler(Looper.getMainLooper()).post { onVoiceCallStarted() }
+                    }
+                }
+            return
+        }
+        var ok = false''',
+     'MainActivity.kt (مجوز میکروفون خودکار برای تماس صوتی)'),
+    ('flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/MainActivity.kt',
+     'import android.content.Context\n',
+     'import android.Manifest\nimport android.content.Context\nimport android.content.pm.PackageManager\nimport android.os.Handler\nimport android.os.Looper\nimport androidx.core.app.ActivityCompat\n',
+     'MainActivity.kt (واردکردن ابزارهای لازم)'),
     ('flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/AudioRecordHandle.kt',
      '''        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             return false

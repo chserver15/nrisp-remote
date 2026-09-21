@@ -439,6 +439,29 @@ def replace_links(repo: Path):
 
 FA_APP_NAME = 'دسترسی راه دور موسسه'
 
+# متن‌هایی که ترجمهٔ اصلی راست‌دسک در فارسی جابه‌جا/نادرست است و مستقیم اصلاح می‌شوند
+FA_TEXT_OVERRIDES = {
+    'About RustDesk': 'دربارهٔ دسترسی راه دور موسسه',
+    'Show RustDesk': 'نمایش پنجرهٔ برنامه',
+    'Keep RustDesk background service': 'سرویس دسترسی راه دور در پس‌زمینه فعال بماند',
+    'floating_window_tip': 'به فعال‌ماندن سرویس در پس‌زمینه کمک می‌کند',
+    'config_acc': 'برای کنترل دسکتاپ از راه دور، باید به برنامه مجوز «access» بدهید.',
+    'config_screen': 'برای کنترل دسکتاپ از راه دور، باید به برنامه مجوز «screenshot» بدهید.',
+    'config_input': 'برای کنترل دسکتاپ با صفحه‌کلید، باید به برنامه مجوز «Input Monitoring» بدهید.',
+    'config_microphone': 'برای صحبت در تماس صوتی، باید به برنامه مجوز «Record Audio» بدهید.',
+    'install_tip': 'برای راحتی استفاده، برنامه را نصب کنید و پنجرهٔ UAC را تأیید کنید.',
+    'still_click_uac_tip': 'کاربر سمت راه دور همچنان باید روی OK در پنجرهٔ UAC کلیک کند.',
+    'verify_rustdesk_password_tip': 'رمز عبور برنامه را تأیید کنید',
+    'allow-only-conn-window-open-tip': 'اتصال فقط زمانی برقرار می‌شود که این پنجره باز باشد',
+    'server-oss-not-support-tip': 'توجه: سرور عمومی این ویژگی را ندارد.',
+    'android_input_permission_tip1': 'برای اینکه دستگاه از راه دور با ماوس یا لمس کنترل شود، باید به برنامه اجازهٔ «Accessibility» بدهید.',
+    'android_input_permission_tip2': 'در تنظیمات اندروید به بخش «Accessibility» بروید، «Installed Services» را باز کنید و «NRISP Input» را روشن کنید.',
+    'upgrade_remote_rustdesk_client_t': 'لطفاً برنامه را در سمت راه دور به نسخهٔ {} یا جدیدتر ارتقا دهید',
+    'RustDesk cannot reach the desktop session': 'برنامه نمی‌تواند به نشست میزکار دستگاه راه دور دسترسی پیدا کند؛ بررسی کنید که نشست میزکار در حال اجرا باشد.',
+    'RustDesk could not obtain a usable desktop': 'برنامه نتوانست از XDG Desktop Portal صفحهٔ قابل استفاده بگیرد؛ ممکن است کتابخانهٔ PipeWire نصب نباشد.',
+    'RustDesk could not load a GStreamer': 'برنامه نتوانست مؤلفهٔ GStreamer لازم برای ضبط صفحه را بارگذاری کند.',
+}
+
 
 def fa_brand_cleanup(repo: Path):
     """نام برند اصلی را از متن ترجمه‌های فارسی برمی‌دارد (فقط مقدار، نه کلید)."""
@@ -455,6 +478,10 @@ def fa_brand_cleanup(repo: Path):
         key, val = m.group(1), m.group(2)
         if key == 'powered_by_me' or key.startswith('upgrade_rustdesk_server_pro'):
             return m.group(0)
+        if key in FA_TEXT_OVERRIDES:
+            counter['n'] += 1
+            fixed = FA_TEXT_OVERRIDES[key].replace('"', '\\"')
+            return m.group(0).replace('"' + val + '"', '"' + fixed + '"', 1)
         if 'RustDesk' not in val:
             return m.group(0)
         counter['n'] += 1
@@ -599,27 +626,12 @@ def bundle_font(repo: Path):
 
 
 def settings_font(repo: Path):
-    """کوچک‌کردن کمی اندازهٔ نوشته‌های صفحهٔ تنظیمات تا در کادرها جا شوند."""
-    p = repo / 'flutter' / 'lib' / 'desktop' / 'pages' / 'desktop_setting_page.dart'
-    if not p.exists():
-        note(MISS, 'desktop_setting_page.dart', 'فایل نیست')
-        return
-    src = read(p)
-    pairs = [
-        ('const double _kTabHeight = 42;', 'const double _kTabHeight = 44;'),
-        ('const double _kTitleFontSize = 20;', 'const double _kTitleFontSize = 18;'),
-        ('const double _kContentFontSize = 15;', 'const double _kContentFontSize = 14;'),
-    ]
-    hit = 0
-    for old, new in pairs:
-        if old in src:
-            src = src.replace(old, new, 1)
-            hit += 1
-    if hit == 3:
-        write(p, src)
-        note(OK, 'اندازهٔ نوشته‌های صفحهٔ تنظیمات')
-    else:
-        note(SKIP, 'اندازهٔ نوشته‌های صفحهٔ تنظیمات', 'از قبل یا پیدا نشد')
+    """اندازهٔ نوشته‌های صفحهٔ تنظیمات دست‌نخورده می‌ماند.
+
+    کوچک/بزرگ‌کردن اندازه‌ها باعث می‌شد برچسب زبانه‌ها (مثل «تنظیمات») در
+    کادر خودش جا نشود و بریده شود؛ پس همان اندازهٔ اصلی برنامه حفظ می‌شود.
+    """
+    note(SKIP, 'settings_font', 'اندازه‌های اصلی حفظ شد')
 
 
 def window_title(repo: Path):
