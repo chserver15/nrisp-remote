@@ -592,9 +592,9 @@ def bundle_font(repo: Path):
     common = repo / 'flutter' / 'lib' / 'common.dart'
     edit(common, [
         ("    useMaterial3: false,\n    brightness: Brightness.light,",
-         "    useMaterial3: false,\n    fontFamily: 'Vazirmatn',\n    brightness: Brightness.light,"),
+         "    useMaterial3: false,\n    fontFamilyFallback: const ['Vazirmatn'],\n    brightness: Brightness.light,"),
         ("    useMaterial3: false,\n    brightness: Brightness.dark,",
-         "    useMaterial3: false,\n    fontFamily: 'Vazirmatn',\n    brightness: Brightness.dark,"),
+         "    useMaterial3: false,\n    fontFamilyFallback: const ['Vazirmatn'],\n    brightness: Brightness.dark,"),
     ], label='common.dart (فونت پیش‌فرض)')
 
 
@@ -704,66 +704,10 @@ def menu_side(repo: Path):
 
 
 def line_height_fix(repo: Path):
-    """ارتفاع خط فونت وزیرمتن بلندتر از فونت‌های لاتین است و متن در کادرهای ثابت
-    بریده می‌شد؛ اینجا ارتفاع خط را به اندازهٔ معمول برمی‌گردانیم."""
-    p = repo / 'flutter' / 'lib' / 'common.dart'
-    if not p.exists():
-        note(MISS, 'common.dart (ارتفاع خط)', 'فایل نیست')
-        return
-    src = read(p)
+    """تغییر ارتفاع خط لازم نیست: فونت وزیرمتن فقط پشتیبان است و ارتفاع خط
+    پیش‌فرض دست‌نخورده می‌ماند (تحمیل ارتفاع، منوها و کادرها را به‌هم می‌ریخت)."""
+    note(SKIP, 'line_height_fix', 'لازم نیست (پشتیبان فونت کافی است)')
 
-    helper = """  // فونت وزیرمتن ارتفاع خط بلندتری دارد (۱٫۵۶ برابر) و در کادرهای با ارتفاع ثابت
-  // متن بریده می‌شد؛ اینجا ارتفاع خط را به اندازهٔ رایج برمی‌گردانیم.
-  static const double _nrispLineHeight = 1.22;
-
-  static ThemeData _nrispTightLines(ThemeData t) {
-    TextStyle? f(TextStyle? s) => s?.copyWith(height: _nrispLineHeight);
-    final tt = t.textTheme;
-    final fixed = tt.copyWith(
-      displayLarge: f(tt.displayLarge),
-      displayMedium: f(tt.displayMedium),
-      displaySmall: f(tt.displaySmall),
-      headlineLarge: f(tt.headlineLarge),
-      headlineMedium: f(tt.headlineMedium),
-      headlineSmall: f(tt.headlineSmall),
-      titleLarge: f(tt.titleLarge),
-      titleMedium: f(tt.titleMedium),
-      titleSmall: f(tt.titleSmall),
-      bodyLarge: f(tt.bodyLarge),
-      bodyMedium: f(tt.bodyMedium),
-      bodySmall: f(tt.bodySmall),
-      labelLarge: f(tt.labelLarge),
-      labelMedium: f(tt.labelMedium),
-      labelSmall: f(tt.labelSmall),
-    );
-    return t.copyWith(textTheme: fixed, primaryTextTheme: fixed);
-  }
-
-"""
-    open_light = '  static ThemeData lightTheme = ThemeData('
-    open_dark = '  static ThemeData darkTheme = ThemeData('
-    if '_nrispTightLines' in src:
-        note(SKIP, 'common.dart (ارتفاع خط)', 'از قبل بود')
-        return
-    if open_light not in src or open_dark not in src:
-        note(MISS, 'common.dart (ارتفاع خط)', 'لنگر پیدا نشد')
-        return
-    src = src.replace(open_light, helper + '  static ThemeData lightTheme = _nrispTightLines(ThemeData(', 1)
-    src = src.replace(open_dark, '  static ThemeData darkTheme = _nrispTightLines(ThemeData(', 1)
-    end_light = '      TabbarTheme.light,\n    ],\n  );'
-    end_dark = '      TabbarTheme.dark,\n    ],\n  );'
-    if end_light in src:
-        src = src.replace(end_light, '      TabbarTheme.light,\n    ],\n  ));', 1)
-    else:
-        note(MISS, 'common.dart (ارتفاع خط)', 'انتهای پوستهٔ روشن پیدا نشد')
-        return
-    if end_dark in src:
-        src = src.replace(end_dark, '      TabbarTheme.dark,\n    ],\n  ));', 1)
-    else:
-        note(MISS, 'common.dart (ارتفاع خط)', 'انتهای پوستهٔ تیره پیدا نشد')
-        return
-    write(p, src)
-    note(OK, 'common.dart (ارتفاع خط فونت)')
 
 
 def voice_call_hint(repo: Path):
