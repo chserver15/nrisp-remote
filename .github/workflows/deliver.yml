@@ -1,5 +1,5 @@
 name: برداشتن خروجی ساخت
-true:
+on:
   push:
     branches:
     - main
