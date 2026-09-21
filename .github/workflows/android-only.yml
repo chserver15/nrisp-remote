@@ -3,6 +3,13 @@ name: ساخت آزمایشی اندروید
   push:
     branches:
     - bisa
+    - bisb
+    - bisc
+    - bisd
+    - bise
+    - fixa
+    - fixb
+    - fixc
   workflow_dispatch: {}
 permissions:
   contents: write
@@ -228,11 +235,11 @@ jobs:
       shell: bash
       run: 'exec > >(tee -a "$GITHUB_WORKSPACE/android-branding-log.txt") 2>&1
 
-        python3 branding/tools/apply_branding.py --repo "$SRC_DIR" --rename-exe --android-package || { echo "خطا در اعمال برند"; exit 1; }
+        python3 branding/tools/apply_branding.py --repo "$SRC_DIR" --rename-exe --android-package --ui || { echo "خطا در اعمال برند"; exit 1; }
 
         echo "برند اعمال شد"
 
-        # python3 branding/tools/nrisp_ui.py --repo "$SRC_DIR" || { echo "خطا در فارسی‌سازی"; exit 1; }
+        python3 branding/tools/nrisp_ui_fixb.py "$SRC_DIR" || { echo "خطا در وصله‌های ظاهر"; exit 1; }
 
         echo "رابط کاربری فارسی و بازطراحی شد"
 
