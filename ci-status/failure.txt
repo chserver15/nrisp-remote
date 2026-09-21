@@ -1,45 +1,52 @@
-===== گزارش خطای ساخت اندروید | اجرا: 9 | کار: android | زمان: 2026-09-19 19:08:32 =====
+===== گزارش خطای ساخت اندروید | اجرا: 1 | کار: android | زمان: 2026-09-21 10:16:38 =====
 مرحلهٔ خطا: ساخت فایل APK
 FAILURE: Build failed with an exception.
 * What went wrong:
-te.
-"Install Android SDK Platform 31 (revision 1)" finished.
-[=========                              ] 25%                                   
-[=========                              ] 25% Fetch remote repository...        
-[=======================================] 100% Fetch remote repository...       
+         > Package Name not found in /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml, and namespace not specified. Please specify a namespace for the generated R and BuildConfig classes via android.namespace in the module's build.gradle file like so:
+rm 33 (revision: 3)" finished.
+Checking the license for package Android SDK Platform 31 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Platform 31 accepted.
+Preparing "Install Android SDK Platform 31 (revision: 1)".
+"Install Android SDK Platform 31 (revision: 1)" ready.
+Installing Android SDK Platform 31 in /usr/local/lib/android/sdk/platforms/android-31
+"Install Android SDK Platform 31 (revision: 1)" complete.
+"Install Android SDK Platform 31 (revision: 1)" finished.
 Checking the license for package Android SDK Platform 32 in /usr/local/lib/android/sdk/licenses
 License for package Android SDK Platform 32 accepted.
-Preparing "Install Android SDK Platform 32 (revision 1)".
-"Install Android SDK Platform 32 (revision 1)" ready.
+Preparing "Install Android SDK Platform 32 (revision: 1)".
+"Install Android SDK Platform 32 (revision: 1)" ready.
 Installing Android SDK Platform 32 in /usr/local/lib/android/sdk/platforms/android-32
-"Install Android SDK Platform 32 (revision 1)" complete.
-"Install Android SDK Platform 32 (revision 1)" finished.
-[=========                              ] 25%                                   
-[=========                              ] 25% Fetch remote repository...        
-[=======================================] 100% Fetch remote repository...       
-Expected to find fonts for (MaterialIcons, AddressBook, DeviceGroup, ..., gestureicons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons, Tabbar, AddressBook, DeviceGroup, More). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 23260 bytes (98.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+"Install Android SDK Platform 32 (revision: 1)" complete.
+"Install Android SDK Platform 32 (revision: 1)" finished.
 Note: /home/runner/.pub-cache/git/uni_links-f416118d843a7e9ed117c7bb7bdc2deda5a9e86f/uni_links/android/src/main/java/name/avioli/unilinks/UniLinksPlugin.java uses or overrides a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
-Caught exception: Already watching path: /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android
-e: file:///home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/kotlin/ffi.kt:8:12 Unresolved reference 'carriez'.
-e: file:///home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/kotlin/ffi.kt:17:56 Unresolved reference 'RdClipboardManager'.
+Expected to find fonts for (MaterialIcons, AddressBook, DeviceGroup, ..., gestureicons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons, Tabbar, AddressBook, DeviceGroup, More). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 23008 bytes (98.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:compileReleaseKotlin'.
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-   > Compilation error. See log for more details
+Execution failed for task ':app:generateReleaseBuildConfig'.
+> Error while evaluating property 'namespace' of task ':app:generateReleaseBuildConfig'.
+   > Failed to calculate the value of task ':app:generateReleaseBuildConfig' property 'namespace'.
+      > Failed to calculate the value of property 'namespace'.
+         > Package Name not found in /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml, and namespace not specified. Please specify a namespace for the generated R and BuildConfig classes via android.namespace in the module's build.gradle file like so:
+
+           android {
+               namespace 'com.example.namespace'
+           }
+
+
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
 > Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights.
-> Get more help at https://help.gradle.org.
 
-BUILD FAILED in 5m 46s
-Running Gradle task 'assembleRelease'...                          347.1s
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 4m 7s
+Running Gradle task 'assembleRelease'...                          248.0s
 Gradle task assembleRelease failed with exit code 1
 !!! apk build failed
 
