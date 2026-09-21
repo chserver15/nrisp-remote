@@ -2,7 +2,7 @@ name: ساخت آزمایشی اندروید
 'on':
   push:
     branches:
-    - android-go
+    - bisa
   workflow_dispatch: {}
 permissions:
   contents: write
