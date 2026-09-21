@@ -3,6 +3,10 @@ name: ساخت آزمایشی اندروید
   push:
     branches:
     - bisa
+    - bisb
+    - bisc
+    - bisd
+    - bise
   workflow_dispatch: {}
 permissions:
   contents: write
