@@ -1,52 +1,57 @@
-===== گزارش خطای ساخت اندروید | اجرا: 1 | کار: android | زمان: 2026-09-21 10:16:38 =====
+===== گزارش خطای ساخت اندروید | اجرا: 21 | کار: android | زمان: 2026-09-21 15:30:15 =====
 مرحلهٔ خطا: ساخت فایل APK
+Target kernel_snapshot_program failed: Exception
 FAILURE: Build failed with an exception.
 * What went wrong:
-         > Package Name not found in /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml, and namespace not specified. Please specify a namespace for the generated R and BuildConfig classes via android.namespace in the module's build.gradle file like so:
-rm 33 (revision: 3)" finished.
+======================] 100% Fetch remote repository...       
 Checking the license for package Android SDK Platform 31 in /usr/local/lib/android/sdk/licenses
 License for package Android SDK Platform 31 accepted.
-Preparing "Install Android SDK Platform 31 (revision: 1)".
-"Install Android SDK Platform 31 (revision: 1)" ready.
+Preparing "Install Android SDK Platform 31 (revision 1)".
+"Install Android SDK Platform 31 (revision 1)" ready.
 Installing Android SDK Platform 31 in /usr/local/lib/android/sdk/platforms/android-31
-"Install Android SDK Platform 31 (revision: 1)" complete.
-"Install Android SDK Platform 31 (revision: 1)" finished.
+"Install Android SDK Platform 31 (revision 1)" complete.
+"Install Android SDK Platform 31 (revision 1)" finished.
+[=========                              ] 25%                                   
+[=========                              ] 25% Fetch remote repository...        
+[=======================================] 100% Fetch remote repository...       
 Checking the license for package Android SDK Platform 32 in /usr/local/lib/android/sdk/licenses
 License for package Android SDK Platform 32 accepted.
-Preparing "Install Android SDK Platform 32 (revision: 1)".
-"Install Android SDK Platform 32 (revision: 1)" ready.
+Preparing "Install Android SDK Platform 32 (revision 1)".
+"Install Android SDK Platform 32 (revision 1)" ready.
 Installing Android SDK Platform 32 in /usr/local/lib/android/sdk/platforms/android-32
-"Install Android SDK Platform 32 (revision: 1)" complete.
-"Install Android SDK Platform 32 (revision: 1)" finished.
-Note: /home/runner/.pub-cache/git/uni_links-f416118d843a7e9ed117c7bb7bdc2deda5a9e86f/uni_links/android/src/main/java/name/avioli/unilinks/UniLinksPlugin.java uses or overrides a deprecated API.
-Note: Recompile with -Xlint:deprecation for details.
-Expected to find fonts for (MaterialIcons, AddressBook, DeviceGroup, ..., gestureicons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons, Tabbar, AddressBook, DeviceGroup, More). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 23008 bytes (98.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+"Install Android SDK Platform 32 (revision 1)" complete.
+"Install Android SDK Platform 32 (revision 1)" finished.
+[=========                              ] 25%                                   
+[=========                              ] 25% Fetch remote repository...        
+[=======================================] 100% Fetch remote repository...       
+lib/desktop/widgets/tabbar_widget.dart:16:8: Error: Error when reading 'lib/nrisp/nrisp_id_panel.dart': No such file or directory
+import 'package:flutter_hbb/nrisp/nrisp_id_panel.dart';
+       ^
+lib/desktop/widgets/tabbar_widget.dart:652:42: Error: Undefined name 'nrispOrange'.
+                                  color: nrispOrange),
+                                         ^^^^^^^^^^^
+lib/desktop/widgets/tabbar_widget.dart:648:31: Error: The getter 'nrispAppNameFa' isn't defined for the class '_DesktopTabState'.
+ - '_DesktopTabState' is from 'package:flutter_hbb/desktop/widgets/tabbar_widget.dart' ('lib/desktop/widgets/tabbar_widget.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'nrispAppNameFa'.
+                              nrispAppNameFa,
+                              ^^^^^^^^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:generateReleaseBuildConfig'.
-> Error while evaluating property 'namespace' of task ':app:generateReleaseBuildConfig'.
-   > Failed to calculate the value of task ':app:generateReleaseBuildConfig' property 'namespace'.
-      > Failed to calculate the value of property 'namespace'.
-         > Package Name not found in /home/runner/work/nrisp-remote/nrisp-remote/rustdesk-src/flutter/android/app/src/main/AndroidManifest.xml, and namespace not specified. Please specify a namespace for the generated R and BuildConfig classes via android.namespace in the module's build.gradle file like so:
-
-           android {
-               namespace 'com.example.namespace'
-           }
-
-
+Execution failed for task ':app:compileFlutterBuildRelease'.
+> Process 'command '/opt/hostedtoolcache/flutter/stable-3.24.5-x64/flutter/bin/flutter'' finished with non-zero exit value 1
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
 > Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
 
-* Get more help at https://help.gradle.org
-
-BUILD FAILED in 4m 7s
-Running Gradle task 'assembleRelease'...                          248.0s
+BUILD FAILED in 3m 21s
+Running Gradle task 'assembleRelease'...                          201.5s
 Gradle task assembleRelease failed with exit code 1
 !!! apk build failed
 
