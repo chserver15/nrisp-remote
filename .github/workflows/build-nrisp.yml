@@ -382,6 +382,10 @@ jobs:
         shell: bash
         run: |
           python branding/tools/nrisp_idltr2.py --repo "$SRC_DIR" || { echo "خطا در نمایش چپ‌به‌راست شناسه‌ها"; exit 1; }
+      - name: خاموش‌کردن مسیر WebRTC (تصویر نیامدن در جلسه)
+        shell: bash
+        run: |
+          python3 branding/tools/nrisp_nowebrtc.py --repo "$SRC_DIR" || { echo "خطا در خاموش‌کردن WebRTC"; exit 1; }
       - name: ثبت وضعیت رابط کاربری فارسی و بازطراحی شد
         continue-on-error: true
         shell: bash
@@ -811,6 +815,10 @@ jobs:
         shell: bash
         run: |
           python3 branding/tools/nrisp_idltr2.py --repo "$SRC_DIR" || { echo "خطا در نمایش چپ‌به‌راست شناسه‌ها"; exit 1; }
+      - name: خاموش‌کردن مسیر WebRTC (تصویر نیامدن در جلسه)
+        shell: bash
+        run: |
+          python3 branding/tools/nrisp_nowebrtc.py --repo "$SRC_DIR" || { echo "خطا در خاموش‌کردن WebRTC"; exit 1; }
       - name: ثبت وضعیت هویت بصری اندروید اعمال شد
         continue-on-error: true
         shell: bash
