@@ -1,68 +1,58 @@
 name: برداشتن خروجی ساخت
-on:
+true:
   push:
-    branches: [main]
-  workflow_dispatch:
-
+    branches:
+    - main
+  workflow_dispatch: null
 permissions:
   actions: read
   contents: write
-
 jobs:
   deliver:
     runs-on: ubuntu-latest
     steps:
-      - name: گرفتن فایل‌های مخزن
-        uses: actions/checkout@v4
+    - name: گرفتن فایل‌های مخزن
+      uses: actions/checkout@v4
+    - name: اجرای برداشت خروجی
+      continue-on-error: true
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: "set -x\nexec > >(tee -a deliver-log.txt) 2>&1\necho \"شروع: $(date -u)\"\necho \"مخزن: $GITHUB_REPOSITORY\"\ncurl -s -H \"Authorization: Bearer $GH_TOKEN\" \\\n  \"https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100\" -o arts.json\npython3 -c \"import json;d=json.load(open('arts.json'));print('تعداد پیوست:',d.get('total_count'));[print(' ',a['id'],a['name'],a['size_in_bytes'],a['expired']) for a in d.get('artifacts',[])]\"\nmkdir -p dist\nfor NAME in NRISP-Remote-installer NRISP-Remote-portable NRISP-Remote-android NRISP-Remote-android-stocktest; do\n  AID=$(python3 -c \"import json;d=json.load(open('arts.json'));c=[a for a in d.get('artifacts',[]) if a['name']=='$NAME' and not a['expired']];c.sort(key=lambda a:a['id'],reverse=True);print(c[0]['id'] if c else '')\")\n  echo \"پیوست $NAME → $AID\"\n  if [ -z \"$AID\" ]; then echo \"پیوست $NAME پیدا نشد\"; continue; fi\n  curl -sL -H \"Authorization: Bearer $GH_TOKEN\" \\\n    \"https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$AID/zip\" -o \"$NAME.zip\"\n  ls -la \"$NAME.zip\"\n  unzip -o -q \"$NAME.zip\" -d dist || echo \"بازکردن ناموفق\"\ndone\necho \"--- محتوای پوشهٔ خروجی ---\"\nls -laR dist\necho \"پایان: $(date -u)\"\n"
+    - name: گذاشتن فایل‌ها روی شاخهٔ dist
+      continue-on-error: true
+      shell: bash
+      run: 'set -x
 
-      - name: اجرای برداشت خروجی
-        continue-on-error: true
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -x
-          exec > >(tee -a deliver-log.txt) 2>&1
-          echo "شروع: $(date -u)"
-          echo "مخزن: $GITHUB_REPOSITORY"
-          curl -s -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" -o arts.json
-          python3 -c "import json;d=json.load(open('arts.json'));print('تعداد پیوست:',d.get('total_count'));[print(' ',a['id'],a['name'],a['size_in_bytes'],a['expired']) for a in d.get('artifacts',[])]"
-          mkdir -p dist
-          for NAME in NRISP-Remote-installer NRISP-Remote-portable; do
-            AID=$(python3 -c "import json;d=json.load(open('arts.json'));c=[a for a in d.get('artifacts',[]) if a['name']=='$NAME' and not a['expired']];c.sort(key=lambda a:a['id'],reverse=True);print(c[0]['id'] if c else '')")
-            echo "پیوست $NAME → $AID"
-            if [ -z "$AID" ]; then echo "پیوست $NAME پیدا نشد"; continue; fi
-            curl -sL -H "Authorization: Bearer $GH_TOKEN" \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$AID/zip" -o "$NAME.zip"
-            ls -la "$NAME.zip"
-            unzip -o -q "$NAME.zip" -d dist || echo "بازکردن ناموفق"
-          done
-          echo "--- محتوای پوشهٔ خروجی ---"
-          ls -laR dist
-          echo "پایان: $(date -u)"
+        git config user.email "nrisp@nrisp.ac.ir"
 
-      - name: گذاشتن فایل‌ها روی شاخهٔ dist
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -x
-          git config user.email "nrisp@nrisp.ac.ir"
-          git config user.name "NRISP Deliver"
-          git checkout --orphan dist
-          git rm -rf --cached . >/dev/null 2>&1 || true
-          git add -f dist
-          git commit -m "خروجی ساخت نرم‌افزار دسترسی راه دور موسسه" || echo "بدون تغییر"
-          git push -f origin dist
+        git config user.name "NRISP Deliver"
 
-      - name: گذاشتن گزارش روی شاخهٔ گزارش
-        if: always()
-        continue-on-error: true
-        shell: bash
-        run: |
-          git config user.email "nrisp@nrisp.ac.ir"
-          git config user.name "NRISP Deliver"
-          git checkout -B deliver-log
-          git add -f deliver-log.txt
-          git commit -m "گزارش برداشت خروجی" || echo "بدون تغییر"
-          git push -f origin deliver-log
+        git checkout --orphan dist
+
+        git rm -rf --cached . >/dev/null 2>&1 || true
+
+        git add -f dist
+
+        git commit -m "خروجی ساخت نرم‌افزار دسترسی راه دور موسسه" || echo "بدون تغییر"
+
+        git push -f origin dist
+
+        '
+    - name: گذاشتن گزارش روی شاخهٔ گزارش
+      if: always()
+      continue-on-error: true
+      shell: bash
+      run: 'git config user.email "nrisp@nrisp.ac.ir"
+
+        git config user.name "NRISP Deliver"
+
+        git checkout -B deliver-log
+
+        git add -f deliver-log.txt
+
+        git commit -m "گزارش برداشت خروجی" || echo "بدون تغییر"
+
+        git push -f origin deliver-log
+
+        '
