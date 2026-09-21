@@ -44,8 +44,14 @@ def main():
     for rel, old, new, label in PAIRS:
         p = repo / rel
         if not p.exists():
-            note(MISS, label, 'فایل نیست: ' + rel)
-            continue
+            # زیرماژول‌ها ممکن است در مسیر دیگری باشند؛ جست‌وجوی جایگزین
+            alt = sorted(repo.glob('**/' + rel.split('/')[-2:][0] + '/' + rel.split('/')[-1])) \
+                if '/' in rel else []
+            if alt:
+                p = alt[0]
+            else:
+                note(MISS, label, 'فایل نیست: ' + rel)
+                continue
         with io.open(p, encoding='utf-8') as f:
             s = f.read()
         if new in s:
