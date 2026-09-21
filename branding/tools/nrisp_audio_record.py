@@ -13,6 +13,7 @@
 """
 import argparse
 import io
+import re
 import sys
 from pathlib import Path
 
@@ -21,18 +22,6 @@ rows = []
 
 PAIRS = [
     # ---- ۱) تماس صوتی روی اندروید قدیمی‌تر ----
-    ('flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/common.kt',
-     '''fun isSupportVoiceCall(): Boolean {
-    // https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_COMMUNICATION
-    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-}''',
-     '''fun isSupportVoiceCall(): Boolean {
-    // NRISP: تماس صوتی از اندروید ۶ به بالا فعال است (پیش‌فرض راست‌دسک فقط
-    // اندروید ۱۱+ را قبول می‌کرد و در گوشی‌های قدیمی‌تر تنها «چت» می‌ماند).
-    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-}''',
-     'common.kt (پشتیبانی تماس صوتی اندروید ۶+)'),
-
     ('flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/AudioRecordHandle.kt',
      '''        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             return false
@@ -78,6 +67,56 @@ PAIRS = [
 ]
 
 
+
+REGEX_RULES = [
+    # تماس صوتی در اندروید به‌صورت پیش‌فرض فعال است؛ پیش‌فرض راست‌دسک فقط
+    # اندروید ۱۱+ را قبول می‌کرد و در بقیهٔ گوشی‌ها فقط «چت» می‌ماند.
+    ('flutter/android/app/src/main/kotlin/com/carriez/flutter_hbb/common.kt',
+     re.compile(r'fun isSupportVoiceCall\(\): Boolean \{[^}]*\}'),
+     'fun isSupportVoiceCall(): Boolean {\n'
+     '    // NRISP: تماس صوتی به‌صورت پیش‌فرض فعال است (بدون توجه به نسخهٔ اندروید);\n'
+     '    // اجازهٔ میکروفون در هنگام تماس از کاربر گرفته می‌شود.\n'
+     '    return true\n'
+     '}',
+     'common.kt (تماس صوتی پیش‌فرض فعال)'),
+]
+
+
+def apply_regex_rules(repo: Path):
+    for rel, rx, new, label in REGEX_RULES:
+        fp = resolve(repo, rel)
+        if not fp.exists():
+            note(MISS, label, 'فایل نیست: ' + rel)
+            continue
+        with io.open(fp, encoding='utf-8') as f:
+            t = f.read()
+        new_t, n = rx.subn(new, t, count=1)
+        if n == 0:
+            if 'NRISP: تماس صوتی به‌صورت پیش‌فرض فعال است' in t:
+                note(SKIP, label, 'از قبل بود')
+            else:
+                note(MISS, label, 'جای تابع پیدا نشد')
+            continue
+        with io.open(fp, 'w', encoding='utf-8', newline='') as f:
+            f.write(new_t)
+        note(OK, label)
+
+
+
+def resolve(repo: Path, rel: str) -> Path:
+    """مسیر پرونده را پیدا می‌کند؛ اگر بستهٔ کاتلین جابه‌جا شده باشد (تغییر نام
+    بسته در برندسازی)، پرونده را از روی نامش پیدا می‌کند."""
+    direct = repo / rel
+    if direct.exists():
+        return direct
+    name = rel.split('/')[-1]
+    hits = sorted(repo.glob('**/' + name))
+    for h in hits:
+        if 'kotlin' in str(h) or 'flutter' in str(h) or str(h).endswith(name):
+            return h
+    return direct
+
+
 def note(kind, where, detail=''):
     rows.append((kind, where, detail))
     print(f'{kind} {where}' + (f'   ->  {detail}' if detail else ''))
@@ -90,7 +129,7 @@ def main():
     repo = Path(a.repo).resolve()
     print(f'سورس: {repo}')
     for rel, old, new, label in PAIRS:
-        p = repo / rel
+        p = resolve(repo, rel)
         if not p.exists():
             note(MISS, label, 'فایل نیست: ' + rel)
             continue
@@ -105,6 +144,7 @@ def main():
         with io.open(p, 'w', encoding='utf-8', newline='') as f:
             f.write(s.replace(old, new, 1))
         note(OK, label)
+    apply_regex_rules(repo)
     print('\n--- خلاصه ---')
     print('اعمال‌شده:', sum(1 for r in rows if r[0] == OK),
           ' از قبل:', sum(1 for r in rows if r[0] == SKIP),

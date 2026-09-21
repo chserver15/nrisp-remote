@@ -1141,6 +1141,54 @@ void nrispErrorHook() {
 
 
 
+HELP_LTR = (
+    "// NRISP: جهت پایهٔ متن همیشه چپ‌به‌راست تا نوشته‌های انگلیسی منوها برعکس نشوند\n"
+    "Widget nrispLtrBase(Widget? child) => Directionality(\n"
+    "      textDirection: TextDirection.ltr,\n"
+    "      child: child ?? Container(),\n"
+    "    );\n\n"
+)
+
+
+def ltr_text_base(repo: Path):
+    """پایهٔ متن برنامه همیشه چپ‌به‌راست می‌ماند.
+
+    در ویندوزی که زبان سیستمش فارسی است، جهت پایه راست‌به‌چپ می‌شد؛ در نتیجه
+    نوشته‌های انگلیسی داخل کادرها و صفحهٔ تنظیمات جابه‌جا و برعکس دیده می‌شدند.
+    با ثابت‌کردن جهت پایه روی چپ‌به‌راست، متن فارسی همچنان درست (از راست به چپ)
+    شکل می‌گیرد ولی هیچ نوشتهٔ انگلیسی برعکس نمی‌شود.
+    """
+    path = repo / 'flutter' / 'lib' / 'main.dart'
+    if not path.exists():
+        note(MISS, 'main.dart', 'فایل نیست')
+        return
+    src = read(path)
+    helper = HELP_LTR
+    if 'nrispLtrBase' in src:
+        note(SKIP, 'main.dart (پایهٔ متن چپ‌به‌راست)', 'از قبل بود')
+        return
+    pairs = [
+        ('Future<void> main(List<String> args) async {',
+         helper + 'Future<void> main(List<String> args) async {'),
+        ('        child = botToastBuilder(context, child);\n        return child;',
+         '        child = botToastBuilder(context, child);\n        return nrispLtrBase(child);'),
+        ('                  if (isLinux) {\n                    return buildVirtualWindowFrame(context, child);\n                  } else {\n                    return workaroundWindowBorder(context, child);\n                  }',
+         '                  if (isLinux) {\n                    return nrispLtrBase(buildVirtualWindowFrame(context, child));\n                  } else {\n                    return nrispLtrBase(workaroundWindowBorder(context, child));\n                  }'),
+        ('    child: child ?? Container(),\n  );\n}\n\n_registerEventHandler() {',
+         '    child: nrispLtrBase(child),\n  );\n}\n\n_registerEventHandler() {'),
+    ]
+    hits = 0
+    for old, new in pairs:
+        if old in src:
+            src = src.replace(old, new, 1)
+            hits += 1
+        else:
+            note(MISS, 'main.dart (پایهٔ متن)', 'بخشی پیدا نشد')
+    write(path, src)
+    note(OK if hits == len(pairs) else MISS,
+         'main.dart (پایهٔ متن چپ‌به‌راست)', '%d از %d' % (hits, len(pairs)))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -1173,6 +1221,7 @@ def main():
     silent_installer(repo)
     bundle_font(repo)
     window_title(repo)
+    ltr_text_base(repo)
     menu_side(repo)
     settings_font(repo)
     line_height_fix(repo)
