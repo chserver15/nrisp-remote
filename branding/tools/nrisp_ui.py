@@ -592,9 +592,9 @@ def bundle_font(repo: Path):
     common = repo / 'flutter' / 'lib' / 'common.dart'
     edit(common, [
         ("    useMaterial3: false,\n    brightness: Brightness.light,",
-         "    useMaterial3: false,\n    fontFamily: 'Vazirmatn',\n    brightness: Brightness.light,"),
+         "    useMaterial3: false,\n    fontFamilyFallback: const ['Vazirmatn'],\n    brightness: Brightness.light,"),
         ("    useMaterial3: false,\n    brightness: Brightness.dark,",
-         "    useMaterial3: false,\n    fontFamily: 'Vazirmatn',\n    brightness: Brightness.dark,"),
+         "    useMaterial3: false,\n    fontFamilyFallback: const ['Vazirmatn'],\n    brightness: Brightness.dark,"),
     ], label='common.dart (فونت پیش‌فرض)')
 
 
@@ -704,66 +704,9 @@ def menu_side(repo: Path):
 
 
 def line_height_fix(repo: Path):
-    """ارتفاع خط فونت وزیرمتن بلندتر از فونت‌های لاتین است و متن در کادرهای ثابت
-    بریده می‌شد؛ اینجا ارتفاع خط را به اندازهٔ معمول برمی‌گردانیم."""
-    p = repo / 'flutter' / 'lib' / 'common.dart'
-    if not p.exists():
-        note(MISS, 'common.dart (ارتفاع خط)', 'فایل نیست')
-        return
-    src = read(p)
-
-    helper = """  // فونت وزیرمتن ارتفاع خط بلندتری دارد (۱٫۵۶ برابر) و در کادرهای با ارتفاع ثابت
-  // متن بریده می‌شد؛ اینجا ارتفاع خط را به اندازهٔ رایج برمی‌گردانیم.
-  static const double _nrispLineHeight = 1.22;
-
-  static ThemeData _nrispTightLines(ThemeData t) {
-    TextStyle? f(TextStyle? s) => s?.copyWith(height: _nrispLineHeight);
-    final tt = t.textTheme;
-    final fixed = tt.copyWith(
-      displayLarge: f(tt.displayLarge),
-      displayMedium: f(tt.displayMedium),
-      displaySmall: f(tt.displaySmall),
-      headlineLarge: f(tt.headlineLarge),
-      headlineMedium: f(tt.headlineMedium),
-      headlineSmall: f(tt.headlineSmall),
-      titleLarge: f(tt.titleLarge),
-      titleMedium: f(tt.titleMedium),
-      titleSmall: f(tt.titleSmall),
-      bodyLarge: f(tt.bodyLarge),
-      bodyMedium: f(tt.bodyMedium),
-      bodySmall: f(tt.bodySmall),
-      labelLarge: f(tt.labelLarge),
-      labelMedium: f(tt.labelMedium),
-      labelSmall: f(tt.labelSmall),
-    );
-    return t.copyWith(textTheme: fixed, primaryTextTheme: fixed);
-  }
-
-"""
-    open_light = '  static ThemeData lightTheme = ThemeData('
-    open_dark = '  static ThemeData darkTheme = ThemeData('
-    if '_nrispTightLines' in src:
-        note(SKIP, 'common.dart (ارتفاع خط)', 'از قبل بود')
-        return
-    if open_light not in src or open_dark not in src:
-        note(MISS, 'common.dart (ارتفاع خط)', 'لنگر پیدا نشد')
-        return
-    src = src.replace(open_light, helper + '  static ThemeData lightTheme = _nrispTightLines(ThemeData(', 1)
-    src = src.replace(open_dark, '  static ThemeData darkTheme = _nrispTightLines(ThemeData(', 1)
-    end_light = '      TabbarTheme.light,\n    ],\n  );'
-    end_dark = '      TabbarTheme.dark,\n    ],\n  );'
-    if end_light in src:
-        src = src.replace(end_light, '      TabbarTheme.light,\n    ],\n  ));', 1)
-    else:
-        note(MISS, 'common.dart (ارتفاع خط)', 'انتهای پوستهٔ روشن پیدا نشد')
-        return
-    if end_dark in src:
-        src = src.replace(end_dark, '      TabbarTheme.dark,\n    ],\n  ));', 1)
-    else:
-        note(MISS, 'common.dart (ارتفاع خط)', 'انتهای پوستهٔ تیره پیدا نشد')
-        return
-    write(p, src)
-    note(OK, 'common.dart (ارتفاع خط فونت)')
+    """تغییر ارتفاع خط لازم نیست: فونت وزیرمتن فقط پشتیبان است و ارتفاع خط
+    پیش‌فرض دست‌نخورده می‌ماند (تحمیل ارتفاع، منوها و کادرها را به‌هم می‌ریخت)."""
+    note(SKIP, 'line_height_fix', 'لازم نیست (پشتیبان فونت کافی است)')
 
 
 def voice_call_hint(repo: Path):
@@ -1214,6 +1157,50 @@ void nrispErrorHook() {
     note(OK, 'main.dart', 'قلاب نمایش خطا اضافه شد')
 
 
+
+def ltr_layout(repo: Path):
+    """چیدمان برنامه همیشه چپ‌به‌راست می‌ماند.
+
+    در حالت راست‌به‌چپ، متن‌های لاتین داخل جملهٔ فارسی (عددها، نسخه، شناسه،
+    کلیدهای میان‌بر) جابه‌جا و به‌هم‌ریخته دیده می‌شوند. با ثابت‌کردن جهت
+    چیدمان، متن فارسی درست شکل می‌گیرد و هیچ نوشته‌ای جابه‌جا نمی‌شود.
+    """
+    p = repo / 'flutter' / 'lib' / 'main.dart'
+    if not p.exists():
+        note(MISS, 'main.dart', 'فایل نیست')
+        return
+    src = read(p)
+    old = """Widget _keepScaleBuilder(BuildContext context, Widget? child) {
+  return MediaQuery(
+    data: MediaQuery.of(context).copyWith(
+      textScaler: TextScaler.linear(1.0),
+    ),
+    child: child ?? Container(),
+  );
+}"""
+    new = """Widget _keepScaleBuilder(BuildContext context, Widget? child) {
+  return Directionality(
+    // NRISP: چیدمان همیشه چپ‌به‌راست می‌ماند تا نوشته‌های منوها، عددها و
+    // شناسه‌ها در حالت فارسی جابه‌جا نشوند.
+    textDirection: TextDirection.ltr,
+    child: MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.linear(1.0),
+      ),
+      child: child ?? Container(),
+    ),
+  );
+}"""
+    if new in src:
+        note(SKIP, 'main.dart (جهت چیدمان)', 'از قبل بود')
+        return
+    if old not in src:
+        note(MISS, 'main.dart (جهت چیدمان)', 'جای تابع پیدا نشد')
+        return
+    write(p, src.replace(old, new, 1))
+    note(OK, 'main.dart (جهت چیدمان چپ‌به‌راست)')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--repo', required=True)
@@ -1224,7 +1211,10 @@ def main():
         sys.exit(2)
 
     print(f'سورس: {repo}')
-    persian_default(repo)
+    # NRISP: وصلهٔ «زبان فارسی اجباری» برداشته شد.
+    # همین وصله (localeName=fa و Locale('fa')) تصویر اندروید را سیاه می‌کرد و در
+    # ویندوز چیدمان راست‌به‌چپ را روی همه‌چیز تحمیل می‌کرد و متن منوها را
+    # به‌هم می‌ریخت. زبان فارسی از سیستم/تنظیمات خود برنامه خوانده می‌شود.
     restyle_theme(repo)
     dorsan_look(repo)
     tabbar_title(repo)
@@ -1243,6 +1233,7 @@ def main():
     silent_installer(repo)
     bundle_font(repo)
     window_title(repo)
+    ltr_layout(repo)
     menu_side(repo)
     settings_font(repo)
     line_height_fix(repo)
