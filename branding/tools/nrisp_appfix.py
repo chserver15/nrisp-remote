@@ -1,77 +1,68 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""پیش‌فرض‌های خودِ برنامه (اندروید) — بدون نیاز به تنظیم دستی:
-   ۱) رمزگشای نرم‌افزاری (رمزگشای سخت‌افزاری روی بعضی گوشی‌ها تصویر خاکستری می‌دهد)
-   ۲) کدک پیش‌فرض VP9 (مطمئن‌ترین کدک روی گوشی)
-   این تنظیم فقط پیش‌فرض است؛ کاربر می‌تواند از تنظیمات عوضش کند.
+"""پیش‌فرض کدک روی گوشی — بدون کار دستی:
+   روی اندروید/آی‌اواس، اگر کدکی انتخاب نشده باشد، برنامه از طرف مقابل
+   کدک VP9 را می‌خواهد؛ راست‌دسک رمزگشای نرم‌افزاری VP9 را همیشه دارد،
+   پس تصویر روی گوشی‌هایی که رمزگشای سخت‌افزاری‌شان مشکل دارد هم می‌آید.
 """
 import io
-import re
 import sys
 from pathlib import Path
 
 REPO = Path(sys.argv[1] if len(sys.argv) > 1 else '.')
-F = REPO / 'libs/hbb_common/src/config.rs'
+F = REPO / 'libs/scrap/src/common/codec.rs'
+MARK = 'nrisp_video_prefer'
 
 HELPER = '''
-// NRISP: پیش‌فرض‌های خودِ برنامه (بدون نیاز به تنظیم دستی)
-fn nrisp_default_option(k: &str) -> String {
+// NRISP: روی گوشی، کدک مطمئن (VP9 نرم‌افزاری) پیش‌فرض شود تا تصویر همیشه بیاید
+fn nrisp_video_prefer() -> PreferCodec {
     #[cfg(any(target_os = "android", target_os = "ios"))]
     {
-        match k {
-            // رمزگشای سخت‌افزاری روی برخی گوشی‌ها فریم را نشان نمی‌دهد (صفحهٔ خاکستری)
-            "enable-hwcodec" => return "N".to_string(),
-            // مطمئن‌ترین کدک برای گوشی
-            "codec-preference" => return "vp9".to_string(),
-            _ => {}
-        }
+        PreferCodec::VP9
     }
-    let _ = k;
-    String::new()
+    #[cfg(not(any(target_os = "android", target_os = "ios")))]
+    {
+        PreferCodec::Auto
+    }
 }
 '''
 
-OLD = '''    pub fn get_option(k: &str) -> String {
-        get_or(
-            &OVERWRITE_LOCAL_SETTINGS,
-            &LOCAL_CONFIG.read().unwrap().options,
-            &DEFAULT_LOCAL_SETTINGS,
-            k,
-        )
-        .unwrap_or_default()
-    }'''
+ANCHOR_EMPTY = '''        if id.is_empty() {
+            return (PreferCodec::Auto, Chroma::I420);
+        }'''
+NEW_EMPTY = '''        if id.is_empty() {
+            return (nrisp_video_prefer(), Chroma::I420);
+        }'''
 
-NEW = '''    pub fn get_option(k: &str) -> String {
-        get_or(
-            &OVERWRITE_LOCAL_SETTINGS,
-            &LOCAL_CONFIG.read().unwrap().options,
-            &DEFAULT_LOCAL_SETTINGS,
-            k,
-        )
-        .unwrap_or_else(|| nrisp_default_option(k))
-    }'''
+ANCHOR_CHROMA = '        let chroma = if options.get("i444") == Some(&"Y".to_string()) {'
+NEW_CHROMA = '''        // NRISP: اگر کدکی انتخاب نشده، کدک مطمئن خودمان (VP9)
+        #[cfg(any(target_os = "android", target_os = "ios"))]
+        let codec = match codec {
+            PreferCodec::Auto => PreferCodec::VP9,
+            other => other,
+        };
+        let chroma = if options.get("i444") == Some(&"Y".to_string()) {'''
 
 
 def main():
     if not F.exists():
-        print('فایل پیدا نشد:', F)
+        print('!!! فایل پیدا نشد:', F)
         return 1
     t = io.open(F, encoding='utf-8').read()
-    if 'nrisp_default_option' in t:
-        print('پیش‌فرض‌ها قبلاً اعمال شده — رد شد')
+    if MARK in t:
+        print('پیش‌فرض کدک قبلاً اعمال شده — رد شد')
         return 0
-    if OLD not in t:
-        print('!!! محل مورد نظر در config.rs پیدا نشد')
+    if ANCHOR_EMPTY not in t:
+        print('!!! محل اول پیدا نشد')
         return 2
-    t = t.replace(OLD, NEW, 1)
-    # تابع کمکی را پیش از impl یا انتهای فایل اضافه کن
-    m = re.search(r'\nimpl Config \{', t)
-    if m:
-        t = t[:m.start()] + '\n' + HELPER + t[m.start():]
-    else:
-        t += '\n' + HELPER
+    t = t.replace(ANCHOR_EMPTY, NEW_EMPTY, 1)
+    if ANCHOR_CHROMA not in t:
+        print('!!! محل دوم پیدا نشد')
+        return 3
+    t = t.replace(ANCHOR_CHROMA, NEW_CHROMA, 1)
+    t = t.rstrip() + '\n' + HELPER
     io.open(F, 'w', encoding='utf-8').write(t)
-    print('پیش‌فرض‌های اندروید اعمال شد: hwcodec=N و codec=vp9')
+    print('پیش‌فرض کدک VP9 برای گوشی اعمال شد')
     return 0
 
 
