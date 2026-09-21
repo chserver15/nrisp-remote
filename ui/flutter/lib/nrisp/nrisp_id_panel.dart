@@ -287,6 +287,8 @@ class _NrispIdPanelState extends State<NrispIdPanel> {
               alignment: Alignment.centerLeft,
               child: Text(
                 value,
+                // شناسه/رمز چپ‌به‌راست دیده شود (محیط صفحه راست‌به‌چپ است)
+                textDirection: TextDirection.ltr,
                 maxLines: 1,
                 style: TextStyle(
                   fontSize: big ? 17 : 14,
