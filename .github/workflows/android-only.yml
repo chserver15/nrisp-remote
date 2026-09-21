@@ -232,7 +232,7 @@ jobs:
 
         echo "برند اعمال شد"
 
-        # python3 branding/tools/nrisp_ui.py --repo "$SRC_DIR" || { echo "خطا در فارسی‌سازی"; exit 1; }
+        python3 branding/tools/nrisp_ui_d.py "$SRC_DIR" || { echo "خطا در وصلهٔ گروهی"; exit 1; }
 
         echo "رابط کاربری فارسی و بازطراحی شد"
 
