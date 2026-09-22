@@ -1,0 +1,163 @@
+++ date -u
++ echo 'شروع: Tue Sep 22 08:13:40 UTC 2026'
+شروع: Tue Sep 22 08:13:40 UTC 2026
++ echo 'مخزن: chserver15/nrisp-remote'
+مخزن: chserver15/nrisp-remote
++ curl -s -H 'Authorization: Bearer ghs_15368_eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRobmQiLCJjdHgiOiJIS2VnallyUDBYYnRwdXF1cGR5NS10c0tQZUlTUlNPSWVCN1RIUXo0NG1ZY2NKQWc1Umo4azVVIiwiZXhwIjoxNzkwMDY4NDE3LCJpYXQiOjE3OTAwNjQ4MTcsImlzcyI6ImdpdGh1YiIsImp0aSI6IjkwM2RlODdlLTUzMzUtNDVjNS05N2JiLWMzYWRlZGI2Yzc5MCIsInZlciI6M30.Gr01BX2jnnZNy3rhYtkGQUOuBdy06fewwMMayKBPrzBhm7e7Yx9790GlO898FlZZ6siGcMwdE88B8PlK8I8Now' 'https://api.github.com/repos/chserver15/nrisp-remote/actions/artifacts?per_page=100' -o arts.json
++ python3 -c 'import json;d=json.load(open('\''arts.json'\''));print('\''تعداد پیوست:'\'',d.get('\''total_count'\''));[print('\'' '\'',a['\''id'\''],a['\''name'\''],a['\''size_in_bytes'\''],a['\''expired'\'']) for a in d.get('\''artifacts'\'',[])]'
+تعداد پیوست: 213
+  10682868587 bridge-artifact 67668 False
+  10662919717 NRISP-Remote-portable 35604713 False
+  10662879843 NRISP-Remote-installer 25678134 False
+  10661884981 bridge-artifact 67668 False
+  10661727926 NRISP-Remote-android 30210909 False
+  10661701789 NRISP-Remote-portable 35607685 False
+  10661042245 NRISP-Remote-installer 25684621 False
+  10660887705 NRISP-Remote-android-stocktest 30038831 False
+  10660570034 NRISP-Remote-android 30210169 False
+  10660337534 bridge-artifact 67668 False
+  10660192303 NRISP-Remote-installer 25678795 False
+  10660162741 bridge-artifact 67668 False
+  10660122324 NRISP-Remote-portable 35608949 False
+  10660036850 NRISP-Remote-android-stocktest 30039090 False
+  10659967535 NRISP-Remote-installer 25680127 False
+  10659891356 NRISP-Remote-installer 25678141 False
+  10659616695 NRISP-Remote-portable 35609298 False
+  10659573961 NRISP-Remote-android 30207347 False
+  10659508049 NRISP-Remote-portable 35609185 False
+  10659497836 NRISP-Remote-portable 35609269 False
+  10659483974 NRISP-Remote-android-stocktest 30037811 False
+  10659422960 NRISP-Remote-installer 25678322 False
+  10659270741 NRISP-Remote-portable 35610535 False
+  10659172963 NRISP-Remote-installer 25680104 False
+  10658861783 bridge-artifact 67668 False
+  10658831817 bridge-artifact 67668 False
+  10658488624 bridge-artifact 67668 False
+  10658464523 bridge-artifact 67668 False
+  10658355560 bridge-artifact 67668 False
+  10658277249 bridge-artifact 67668 False
+  10658105726 NRISP-Remote-android 30214058 False
+  10658008784 bridge-artifact 67668 False
+  10657199565 NRISP-Remote-android-stocktest 30036650 False
+  10656770915 bridge-artifact 67668 False
+  10656714740 bridge-artifact 67668 False
+  10656286823 NRISP-Remote-android 30213772 False
+  10656106700 NRISP-Remote-android-stocktest 30036866 False
+  10655166428 bridge-artifact 67668 False
+  10654211320 NRISP-Remote-android 30208076 False
+  10653786187 NRISP-Remote-android-stocktest 30042139 False
+  10652370688 bridge-artifact 67668 False
+  10652096210 NRISP-Remote-android-stocktest 30034986 False
+  10651951097 NRISP-Remote-android-stocktest 30035641 False
+  10650046237 NRISP-Remote-android 30081124 False
+  10649691398 bridge-artifact 67668 False
+  10649237441 bridge-artifact 67668 False
+  10647620784 bridge-artifact 67668 False
+  10647604094 NRISP-Remote-android-stocktest 30038029 False
+  10647466431 NRISP-Remote-android 30074689 False
+  10647433928 NRISP-Remote-android-stocktest 30037791 False
+  10645269363 bridge-artifact 67668 False
+  10645201273 NRISP-Remote-android-stocktest 30040800 False
+  10645045632 NRISP-Remote-android-stocktest 30037517 False
+  10644989843 bridge-artifact 67668 False
+  10644799858 bridge-artifact 67668 False
+  10644513375 NRISP-Remote-android 30214206 False
+  10644358901 NRISP-Remote-android 30077878 False
+  10642434589 bridge-artifact 67668 False
+  10642143247 bridge-artifact 67668 False
+  10641818744 NRISP-Remote-installer 25680654 False
+  10641724025 NRISP-Remote-android 30212029 False
+  10641563886 NRISP-Remote-portable 35611108 False
+  10641184202 NRISP-Remote-android-stocktest 30038015 False
+  10639408319 bridge-artifact 67668 False
+  10638534416 bridge-artifact 67668 False
+  10636480079 NRISP-Remote-android-stocktest 30038958 False
+  10636293636 NRISP-Remote-android149 28320211 False
+  10636230932 NRISP-Remote-portable 35611406 False
+  10636074237 NRISP-Remote-android 30210437 False
+  10635825175 bridge-artifact 67668 False
+  10635787090 NRISP-Remote-installer 25676413 False
+  10635065440 bridge-artifact 69865 False
+  10634966619 NRISP-Remote-installer 25676193 False
+  10634929822 bridge-artifact 69865 False
+  10634582679 NRISP-Remote-portable 35609470 False
+  10634172787 NRISP-Remote-android149 28320653 False
+  10633929942 bridge-artifact 67668 False
+  10633894993 bridge-artifact 67668 False
+  10633497022 bridge-artifact 67668 False
+  10633070015 bridge-artifact 69865 False
+  10632918172 NRISP-Remote-portable 35612804 False
+  10632798770 NRISP-Remote-android-stocktest 30043572 False
+  10632798260 NRISP-Remote-portable 35612053 False
+  10632559502 bridge-artifact 69865 False
+  10632473696 NRISP-Remote-installer 25680719 False
+  10632200892 bridge-artifact 69865 False
+  10632159565 NRISP-Remote-android 30216911 False
+  10632044812 NRISP-Remote-installer 25680281 False
+  10631876625 NRISP-Remote-android 30216774 False
+  10631692932 bridge-artifact 67668 False
+  10631553181 bridge-artifact 67668 False
+  10631452735 NRISP-Remote-android-stocktest 30039943 False
+  10631368517 bridge-artifact 67668 False
+  10631335603 NRISP-Remote-portable 35612792 False
+  10630758584 NRISP-Remote-installer 25678056 False
+  10630586006 bridge-artifact 67668 False
+  10629881864 bridge-artifact 67668 False
+  10629881848 bridge-artifact 67668 False
+  10629180626 NRISP-Remote-installer 25678912 False
+  10628714635 NRISP-Remote-portable 35612769 False
++ mkdir -p dist
++ for NAME in NRISP-Remote-installer NRISP-Remote-portable NRISP-Remote-android NRISP-Remote-android-stocktest
+++ python3 -c 'import json;d=json.load(open('\''arts.json'\''));c=[a for a in d.get('\''artifacts'\'',[]) if a['\''name'\'']=='\''NRISP-Remote-installer'\'' and not a['\''expired'\'']];c.sort(key=lambda a:a['\''id'\''],reverse=True);print(c[0]['\''id'\''] if c else '\'''\'')'
++ AID=10662879843
++ echo 'پیوست NRISP-Remote-installer → 10662879843'
+پیوست NRISP-Remote-installer → 10662879843
++ '[' -z 10662879843 ']'
++ curl -sL -H 'Authorization: Bearer ghs_15368_eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRobmQiLCJjdHgiOiJIS2VnallyUDBYYnRwdXF1cGR5NS10c0tQZUlTUlNPSWVCN1RIUXo0NG1ZY2NKQWc1Umo4azVVIiwiZXhwIjoxNzkwMDY4NDE3LCJpYXQiOjE3OTAwNjQ4MTcsImlzcyI6ImdpdGh1YiIsImp0aSI6IjkwM2RlODdlLTUzMzUtNDVjNS05N2JiLWMzYWRlZGI2Yzc5MCIsInZlciI6M30.Gr01BX2jnnZNy3rhYtkGQUOuBdy06fewwMMayKBPrzBhm7e7Yx9790GlO898FlZZ6siGcMwdE88B8PlK8I8Now' https://api.github.com/repos/chserver15/nrisp-remote/actions/artifacts/10662879843/zip -o NRISP-Remote-installer.zip
++ ls -la NRISP-Remote-installer.zip
+-rw-r--r-- 1 runner runner 25678134 Sep 22 08:13 NRISP-Remote-installer.zip
++ unzip -o -q NRISP-Remote-installer.zip -d dist
++ for NAME in NRISP-Remote-installer NRISP-Remote-portable NRISP-Remote-android NRISP-Remote-android-stocktest
+++ python3 -c 'import json;d=json.load(open('\''arts.json'\''));c=[a for a in d.get('\''artifacts'\'',[]) if a['\''name'\'']=='\''NRISP-Remote-portable'\'' and not a['\''expired'\'']];c.sort(key=lambda a:a['\''id'\''],reverse=True);print(c[0]['\''id'\''] if c else '\'''\'')'
++ AID=10662919717
++ echo 'پیوست NRISP-Remote-portable → 10662919717'
+پیوست NRISP-Remote-portable → 10662919717
++ '[' -z 10662919717 ']'
++ curl -sL -H 'Authorization: Bearer ghs_15368_eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRobmQiLCJjdHgiOiJIS2VnallyUDBYYnRwdXF1cGR5NS10c0tQZUlTUlNPSWVCN1RIUXo0NG1ZY2NKQWc1Umo4azVVIiwiZXhwIjoxNzkwMDY4NDE3LCJpYXQiOjE3OTAwNjQ4MTcsImlzcyI6ImdpdGh1YiIsImp0aSI6IjkwM2RlODdlLTUzMzUtNDVjNS05N2JiLWMzYWRlZGI2Yzc5MCIsInZlciI6M30.Gr01BX2jnnZNy3rhYtkGQUOuBdy06fewwMMayKBPrzBhm7e7Yx9790GlO898FlZZ6siGcMwdE88B8PlK8I8Now' https://api.github.com/repos/chserver15/nrisp-remote/actions/artifacts/10662919717/zip -o NRISP-Remote-portable.zip
++ ls -la NRISP-Remote-portable.zip
+-rw-r--r-- 1 runner runner 35604713 Sep 22 08:13 NRISP-Remote-portable.zip
++ unzip -o -q NRISP-Remote-portable.zip -d dist
++ for NAME in NRISP-Remote-installer NRISP-Remote-portable NRISP-Remote-android NRISP-Remote-android-stocktest
+++ python3 -c 'import json;d=json.load(open('\''arts.json'\''));c=[a for a in d.get('\''artifacts'\'',[]) if a['\''name'\'']=='\''NRISP-Remote-android'\'' and not a['\''expired'\'']];c.sort(key=lambda a:a['\''id'\''],reverse=True);print(c[0]['\''id'\''] if c else '\'''\'')'
++ AID=10661727926
++ echo 'پیوست NRISP-Remote-android → 10661727926'
+پیوست NRISP-Remote-android → 10661727926
++ '[' -z 10661727926 ']'
++ curl -sL -H 'Authorization: Bearer ghs_15368_eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRobmQiLCJjdHgiOiJIS2VnallyUDBYYnRwdXF1cGR5NS10c0tQZUlTUlNPSWVCN1RIUXo0NG1ZY2NKQWc1Umo4azVVIiwiZXhwIjoxNzkwMDY4NDE3LCJpYXQiOjE3OTAwNjQ4MTcsImlzcyI6ImdpdGh1YiIsImp0aSI6IjkwM2RlODdlLTUzMzUtNDVjNS05N2JiLWMzYWRlZGI2Yzc5MCIsInZlciI6M30.Gr01BX2jnnZNy3rhYtkGQUOuBdy06fewwMMayKBPrzBhm7e7Yx9790GlO898FlZZ6siGcMwdE88B8PlK8I8Now' https://api.github.com/repos/chserver15/nrisp-remote/actions/artifacts/10661727926/zip -o NRISP-Remote-android.zip
++ ls -la NRISP-Remote-android.zip
+-rw-r--r-- 1 runner runner 30210909 Sep 22 08:13 NRISP-Remote-android.zip
++ unzip -o -q NRISP-Remote-android.zip -d dist
++ for NAME in NRISP-Remote-installer NRISP-Remote-portable NRISP-Remote-android NRISP-Remote-android-stocktest
+++ python3 -c 'import json;d=json.load(open('\''arts.json'\''));c=[a for a in d.get('\''artifacts'\'',[]) if a['\''name'\'']=='\''NRISP-Remote-android-stocktest'\'' and not a['\''expired'\'']];c.sort(key=lambda a:a['\''id'\''],reverse=True);print(c[0]['\''id'\''] if c else '\'''\'')'
++ AID=10660887705
++ echo 'پیوست NRISP-Remote-android-stocktest → 10660887705'
+پیوست NRISP-Remote-android-stocktest → 10660887705
++ '[' -z 10660887705 ']'
++ curl -sL -H 'Authorization: Bearer ghs_15368_eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhdXRobmQiLCJjdHgiOiJIS2VnallyUDBYYnRwdXF1cGR5NS10c0tQZUlTUlNPSWVCN1RIUXo0NG1ZY2NKQWc1Umo4azVVIiwiZXhwIjoxNzkwMDY4NDE3LCJpYXQiOjE3OTAwNjQ4MTcsImlzcyI6ImdpdGh1YiIsImp0aSI6IjkwM2RlODdlLTUzMzUtNDVjNS05N2JiLWMzYWRlZGI2Yzc5MCIsInZlciI6M30.Gr01BX2jnnZNy3rhYtkGQUOuBdy06fewwMMayKBPrzBhm7e7Yx9790GlO898FlZZ6siGcMwdE88B8PlK8I8Now' https://api.github.com/repos/chserver15/nrisp-remote/actions/artifacts/10660887705/zip -o NRISP-Remote-android-stocktest.zip
++ ls -la NRISP-Remote-android-stocktest.zip
+-rw-r--r-- 1 runner runner 30038831 Sep 22 08:13 NRISP-Remote-android-stocktest.zip
++ unzip -o -q NRISP-Remote-android-stocktest.zip -d dist
++ echo '--- محتوای پوشهٔ خروجی ---'
+--- محتوای پوشهٔ خروجی ---
++ ls -laR dist
+dist:
+total 120220
+drwxr-xr-x  2 runner runner     4096 Sep 22 08:13 .
+drwxr-xr-x 10 runner runner     4096 Sep 22 08:13 ..
+-rw-rw-rw-  1 runner runner 26066432 Sep 21 21:03 NRISP-Remote-1.5.2-install.exe
+-rw-r--r--  1 runner runner 30750640 Sep 21 20:11 NRISP-Remote-android-arm64.apk
+-rw-r--r--  1 runner runner 30552887 Sep 21 20:08 NRISP-Remote-android-stocktest.apk
+-rw-rw-rw-  1 runner runner 35719143 Sep 21 21:03 NRISP-Remote-portable.zip
+++ date -u
++ echo 'پایان: Tue Sep 22 08:13:50 UTC 2026'
+پایان: Tue Sep 22 08:13:50 UTC 2026
