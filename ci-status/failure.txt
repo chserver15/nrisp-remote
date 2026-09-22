@@ -1,252 +1,252 @@
-===== خطای ساخت ویندوز | اجرا: 48 | کار: windows | زمان: 2026-09-21 18:40:56 =====
-[+] ic_launcher_round.png
-[+] ic_launcher_foreground.png
-[+] ic_stat_logo.png
-[+] ic_launcher.png
-[+] ic_launcher_round.png
-[+] ic_launcher_foreground.png
-[+] ic_stat_logo.png
-[+] ic_launcher.png
-[+] ic_launcher_round.png
-[+] ic_launcher_foreground.png
-[+] ic_stat_logo.png
-[+] ic_launcher.png
-[+] ic_launcher_round.png
-[+] ic_launcher_foreground.png
-[+] ic_stat_logo.png
-[+] Icon-App-1024x1024@1x.png
-[+] Icon-App-20x20@1x.png
-[+] Icon-App-20x20@2x.png
-[+] Icon-App-20x20@3x.png
-[+] Icon-App-29x29@1x.png
-[+] Icon-App-29x29@2x.png
-[+] Icon-App-29x29@3x.png
-[+] Icon-App-40x40@1x.png
-[+] Icon-App-40x40@2x.png
-[+] Icon-App-40x40@3x.png
-[+] Icon-App-60x60@2x.png
-[+] Icon-App-60x60@3x.png
-[+] Icon-App-76x76@1x.png
-[+] Icon-App-76x76@2x.png
-[+] Icon-App-83.5x83.5@2x.png
-[+] mac-tray-dark-x2.png
-[+] mac-tray-light-x2.png
-[+] Cargo.toml  ->  name = "NRISP-Remote" identifier = "ac.ir.nrisp.remote"
-[+] Cargo.toml  ->  description = "NRISP Remote Access — دسترسی راه دور"
-[+] config.rs (APP_NAME)  ->  1 place(s)
-[-] config.rs (server settings)  ->  خالی است → سرورهای عمومی راست‌دسک استفاده می‌شود
-[+] main.cpp  ->  std::wstring app_name = L"NRISP-Remote";
-[+] Runner.rc  ->  VALUE "CompanyName", "NRISP" "\0"
-[+] Runner.rc  ->  VALUE "FileDescription", "NRISP Remote Access — دسترسی راه دو...
-[+] Runner.rc  ->  VALUE "ProductName", "NRISP Remote Access" "\0"
-[+] Runner.rc  ->  VALUE "InternalName", "nrisp-remote" "\0"
-[+] Runner.rc  ->  VALUE "LegalCopyright", "Copyright © 1405 NRISP. All rights r...
-[+] Runner.rc  ->  VALUE "OriginalFilename", "nrisp-remote.exe" "\0"
-[+] my_application.cc  ->  gtk_header_bar_set_title(header_bar, "nrisp-remote");
-[+] my_application.cc  ->  gtk_window_set_title(window, "nrisp-remote");
-[+] my_application.cc  ->  gtk_icon_theme_load_icon(theme, "nrisp-remote",
-[+] rustdesk.desktop  ->  Name=NRISP Remote Access
-[+] rustdesk.desktop  ->  Exec=nrisp-remote %u
-[+] rustdesk.desktop  ->  Icon=nrisp-remote
-[+] rustdesk.desktop  ->  StartupWMClass=nrisp-remote
-[+] rustdesk.service  ->  Description=NRISP Remote Access
-[+] rustdesk-link.desktop  ->  Name=NRISP Remote Access
-[+] rustdesk-link.desktop  ->  MimeType=x-scheme-handler/nrisp;
-[+] rustdesk-link.desktop  ->  TryExec=nrisp-remote
-[+] rustdesk-link.desktop  ->  Exec=nrisp-remote %u
-[+] rustdesk-link.desktop  ->  Icon=nrisp-remote
-[+] rustdesk-link.desktop  ->  StartupWMClass=nrisp-remote
-[+] src/common.rs (URI scheme)  ->  format!("{}://", "nrisp")
-[+] AppInfo.xcconfig  ->  1 place(s)
-[+] AppInfo.xcconfig  ->  1 place(s)
-[+] AppInfo.xcconfig  ->  1 place(s)
-[+] build.py (macOS dmg)  ->  apps/nrisp-remote.png
-[+] build.py (macOS dmg)  ->  apps/nrisp-remote.svg
-[+] build.py (macOS dmg)  ->  --volname \"NRISP Remote Access Installer\"
-[+] build.py (macOS dmg)  ->  --icon NRISP Remote Access.app 200 190 --hide-extension NRISP...
-[+] build.py (macOS dmg)  ->  ./build/macos/Build/Products/Release/NRISP Remote Access.app
-[+] AndroidManifest.xml  ->  android:label="NRISP Remote Access"
-[+] AndroidManifest.xml  ->  android:label="NRISP Remote Access Input"
-[+] AndroidManifest.xml  ->  <data android:scheme="nrisp" />
-[+] Info.plist (DisplayName)  ->  1 place(s)
-[+] Info.plist (BundleName)  ->  1 place(s)
-[+] Info.plist (URL scheme)  ->  1 place(s)
-[+] Info.plist (URL name)  ->  1 place(s)
-[+] android build.gradle  ->  applicationId "ac.ir.nrisp.remote"
-[+] android build.gradle  ->  namespace "ac.ir.nrisp.remote"
-[+] android kotlin package folder  ->  flutter\android\app\src\main\kotlin\ac\ir\nrisp\remote
-[+] kotlin package line: AudioRecordHandle.kt
-[+] kotlin package line: BootReceiver.kt
-[+] kotlin package line: common.kt
-[+] kotlin package line: FloatingWindowService.kt
-[+] kotlin package line: InputService.kt
-[+] kotlin package line: MainActivity.kt
-[+] kotlin package line: MainApplication.kt
-[+] kotlin package line: MainService.kt
-[+] kotlin package line: PermissionRequestTransparentActivity.kt
-[+] kotlin package line: RdClipboardManager.kt
-[+] kotlin package line: VolumeController.kt
-[+] android old package references  ->  5
-[+] android manifest package attribute removed  ->  flutter\android\app\src\debug\AndroidManifest.xml
-[+] android manifest package attribute removed  ->  flutter\android\app\src\main\AndroidManifest.xml
-[+] android manifest package attribute removed  ->  flutter\android\app\src\profile\AndroidManifest.xml
-[+] Runner.xcodeproj  ->  ac.ir.nrisp.remote
-[+] nrisp_id_panel.dart
-[+] desktop_home_page.dart (چیدمان دو ستونی)  ->  import 'package:flutter_hbb/desktop/pages/connection_page.dar...
-[+] desktop_home_page.dart (چیدمان دو ستونی)  ->  // چیدمان سازمان: کارت بزرگ اتصال در سمت چپ، ستون شناسه و تنظ...
-[+] common.dart (theme colors)  ->  static const Color accent = Color(0xFF0E3091);
-[+] common.dart (theme colors)  ->  static const Color accent50 = Color(0x770E3091);
-[+] common.dart (theme colors)  ->  static const Color accent80 = Color(0xAA0E3091);
-[+] common.dart (theme colors)  ->  static const Color idColor = Color(0xFF0E3091);
-[+] common.dart (theme colors)  ->  static const Color button = Color(0xFF0E3091);
-[+] connection_page.dart (connect card)  ->  decoration: BoxDecoration( color: Theme.of(context).scaffoldB...
-[+] CMakeLists.txt  ->  set(BINARY_NAME "nrisp-remote")
-[+] CMakeLists.txt  ->  set(BINARY_NAME "nrisp-remote")
-[-] Cargo.toml (package name)  ->  نام بستهٔ راست دست‌نخورده ماند تا Cargo.lock با --locked معتبر بماند
-[+] build.py (exe name)  ->  hbb_name = 'nrisp-remote'
-[+] build.py (exe name)  ->  -e ../../{flutter_build_dir_2}/nrisp-remote.exe
-[+] build.py (exe name)  ->  -e ../../{res_dir}/nrisp-remote-
+===== خطای ساخت ویندوز | اجرا: 56 | کار: windows | زمان: 2026-09-22 08:12:34 =====
+[1m[32m   Compiling[0m nokhwa-bindings-linux v0.1.1 (https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662)
+[1m[32m   Compiling[0m scrap v0.5.0 (D:\a\nrisp-remote\nrisp-remote\rustdesk-src\libs\scrap)
+[1m[32m   Compiling[0m kcp-sys v0.1.0 (https://github.com/rustdesk-org/kcp-sys?branch=rustdesk-patches#938eda3e)
+[1m[32m   Compiling[0m magnum-opus v0.4.0 (https://github.com/rustdesk-org/magnum-opus#588c6e1f)
+[1m[32m   Compiling[0m http-body-util v0.1.3
+[1m[32m   Compiling[0m dasp_window v0.11.1
+[1m[32m   Compiling[0m os-version v0.2.0
+[1m[32m   Compiling[0m enigo v0.0.14 (D:\a\nrisp-remote\nrisp-remote\rustdesk-src\libs\enigo)
+[1m[32m   Compiling[0m windows-implement v0.52.0
+[1m[32m   Compiling[0m windows-interface v0.52.0
+[1m[32m   Compiling[0m zerocopy-derive v0.7.34
+[1m[32m   Compiling[0m windows-core v0.52.0
+[1m[32m   Compiling[0m impersonate_system v0.1.0 (https://github.com/rustdesk-org/impersonate-system#2f429010)
+[1m[32m   Compiling[0m clipboard v0.1.0 (D:\a\nrisp-remote\nrisp-remote\rustdesk-src\libs\clipboard)
+[1m[32m   Compiling[0m utf8-width v0.1.7
+[1m[32m   Compiling[0m atomic v0.5.3
+[1m[32m   Compiling[0m iri-string v0.7.8
+[1m[32m   Compiling[0m dpi v0.1.1
+[1m[32m   Compiling[0m cpal v0.15.3 (https://github.com/rustdesk-org/cpal?branch=osx-screencapturekit#96d4da12)
+[1m[32m   Compiling[0m md5 v0.7.0
+[1m[32m   Compiling[0m raw-window-handle v0.6.2
+[1m[32m   Compiling[0m arrayref v0.3.9
+[1m[32m   Compiling[0m strum v0.24.1
+[1m[32m   Compiling[0m strict-num v0.1.1
+[1m[32m   Compiling[0m tiny-skia-path v0.11.4
+[1m[32m   Compiling[0m rdev v0.5.0-2 (https://github.com/rustdesk-org/rdev#a361d86a)
+[1m[32m   Compiling[0m tower-http v0.6.6
+[1m[32m   Compiling[0m stun_codec v0.3.5
+[1m[32m   Compiling[0m muda v0.17.1
+[1m[32m   Compiling[0m allo-isolate v0.1.25
+[1m[32m   Compiling[0m html-escape v0.2.13
+[1m[32m   Compiling[0m zerocopy v0.7.34
+[1m[32m   Compiling[0m windows v0.52.0
+[1m[32m   Compiling[0m rustdesk v1.5.2 (D:\a\nrisp-remote\nrisp-remote\rustdesk-src)
+[1m[32m   Compiling[0m dasp_signal v0.11.0
+[1m[32m   Compiling[0m hyper-tls v0.6.0
+[1m[33mwarning[0m[1m:[0m scrap@0.5.0: cargo:rustc-check-cfg requires -Zcheck-cfg flag
+[1m[32m   Compiling[0m nokhwa v0.10.7 (https://github.com/rustdesk-org/nokhwa.git?branch=fix_from_raw_parts#c2f74662)
+[1m[32m   Compiling[0m ttf-parser v0.25.1
+[1m[32m   Compiling[0m windows v0.32.0
+[1m[32m   Compiling[0m nix v0.25.1
+[1m[32m   Compiling[0m webm v1.1.0 (https://github.com/rustdesk-org/rust-webm#d2c4d3ac)
+[1m[32m   Compiling[0m win-sys v0.3.1
+[1m[32m   Compiling[0m serial v0.4.0
+[1m[32m   Compiling[0m windows v0.54.0
+[1m[32m   Compiling[0m async-compression v0.4.32
+[1m[32m   Compiling[0m threadpool v1.8.1
+[1m[32m   Compiling[0m hyper-rustls v0.27.7
+[1m[32m   Compiling[0m clipboard-win v5.4.0
+[1m[32m   Compiling[0m windows-win v3.0.0
+[1m[32m   Compiling[0m windows-sys v0.45.0
+[1m[32m   Compiling[0m windows v0.44.0
+[1m[32m   Compiling[0m windows-numerics v0.2.0
+[1m[32m   Compiling[0m windows-collections v0.2.0
+[1m[32m   Compiling[0m windows-future v0.2.0
+[1m[32m   Compiling[0m dasp_slice v0.11.0
+[1m[32m   Compiling[0m dashmap v6.1.0
+[1m[32m   Compiling[0m serde_urlencoded v0.7.1
+[1m[32m   Compiling[0m windows-strings v0.3.1
+[1m[32m   Compiling[0m shared_library v0.1.9
+[1m[32m   Compiling[0m filedescriptor v0.8.2 (https://github.com/rustdesk-org/wezterm?branch=rustdesk/pty_based_0.8.1#80174f80)
+[1m[32m   Compiling[0m auto_impl v1.3.0
+[1m[32m   Compiling[0m quick-xml v0.30.0
+[1m[32m   Compiling[0m windows-version v0.1.1
+[1m[32m   Compiling[0m instant v0.1.13
+[1m[32m   Compiling[0m downcast-rs v1.2.1
+[1m[32m   Compiling[0m constant_time_eq v0.2.6
+[1m[32m   Compiling[0m memmap2 v0.9.8
+[1m[32m   Compiling[0m flutter_rust_bridge_macros v1.82.6
+[1m[32m   Compiling[0m urlencoding v2.1.3
+[1m[32m   Compiling[0m base32 v0.4.0
+[1m[32m   Compiling[0m qrcodegen v1.8.0
+[1m[32m   Compiling[0m memalloc v0.1.0
+[1m[32m   Compiling[0m debug-helper v0.3.13
+[1m[32m   Compiling[0m shell-words v1.1.0
+[1m[32m   Compiling[0m portable-pty v0.8.1 (https://github.com/rustdesk-org/wezterm?branch=rustdesk/pty_based_0.8.1#80174f80)
+[1m[32m   Compiling[0m cidr-utils v0.5.11
+[1m[32m   Compiling[0m default-net v0.14.1
+[1m[32m   Compiling[0m qrcode-generator v4.1.9
+[1m[32m   Compiling[0m totp-rs v5.5.1
+[1m[32m   Compiling[0m fontdb v0.23.0
+[1m[32m   Compiling[0m tao v0.25.0 (https://github.com/rustdesk-org/tao?branch=dev#288c219c)
+[1m[32m   Compiling[0m tauri-winrt-notification v0.1.3
+[1m[32m   Compiling[0m system_shutdown v4.0.1
+[1m[32m   Compiling[0m remote_printer v0.1.0 (D:\a\nrisp-remote\nrisp-remote\rustdesk-src\libs\remote_printer)
+[1m[32m   Compiling[0m reqwest v0.12.24
+[1m[32m   Compiling[0m dasp v0.11.0
+[1m[32m   Compiling[0m windows v0.61.1
+[1m[32m   Compiling[0m windows-service v0.6.0
+[1m[32m   Compiling[0m clipboard-master v4.0.0-beta.6 (https://github.com/rustdesk-org/clipboard-master#7762d74e)
+[1m[32m   Compiling[0m arboard v3.4.0 (https://github.com/rustdesk-org/arboard#c7d5781f)
+[1m[32m   Compiling[0m shared_memory v0.12.4
+[1m[32m   Compiling[0m tray-icon v0.21.3 (https://github.com/tauri-apps/tray-icon#0a5835b0)
+[1m[32m   Compiling[0m stunclient v0.4.1
+[1m[32m   Compiling[0m tiny-skia v0.11.4
+[1m[32m   Compiling[0m fon v0.6.0
+[1m[32m   Compiling[0m virtual_display v0.1.0 (D:\a\nrisp-remote\nrisp-remote\rustdesk-src\libs\virtual_display)
+[1m[32m   Compiling[0m wallpaper v3.2.0 (https://github.com/rustdesk-org/wallpaper.rs#ce4a0cd3)
+[1m[32m   Compiling[0m parity-tokio-ipc v0.7.3-6 (https://github.com/rustdesk-org/parity-tokio-ipc#d0ae39bf)
+[1m[32m   Compiling[0m repng v0.2.2
+[1m[32m   Compiling[0m ringbuf v0.3.3
+[1m[32m   Compiling[0m sciter-rs v0.5.57 (https://github.com/rustdesk-org/rust-sciter?branch=dyn#5322f3a7)
+[1m[32m   Compiling[0m serde_repr v0.1.19
+[1m[32m   Compiling[0m ctrlc v3.4.4
+[1m[32m   Compiling[0m sys-locale v0.3.1
+[1m[32m   Compiling[0m wol-rs v1.0.1
+[1m[32m   Compiling[0m shutdown_hooks v0.1.0
+[0m[1m[38;5;9merror[0m[0m[1m[38;5;15m: unknown character escape: `\u{6a9}`[0m
+[0m   [0m[0m[1m[38;5;14m--> [0m[0msrc\lang\fa.rs:697:79[0m
+[0m    [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m697[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m[1m[38;5;14m...[0m[0m   ("elevation_username_tip", "نام کاربری را به شکل کامل (کاربر یا دامنه\کاربر) وارد کنید"),[0m
+[0m    [0m[0m[1m[38;5;14m| [0m[0m                                                                            [0m[0m[1m[38;5;9m^[0m[0m [0m[0m[1m[38;5;9munknown character escape[0m
+[0m    [0m[0m[1m[38;5;14m|[0m
+[0m    [0m[0m[1m[38;5;14m= [0m[0m[1m[38;5;15mhelp[0m[0m: for more information, visit <https://doc.rust-lang.org/reference/tokens.html#literals>[0m
+[0m[1m[38;5;14mhelp[0m[0m: if you meant to write a literal backslash (perhaps escaping in a regular expression), consider a raw string literal[0m
+[0m    [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m697[0m[0m [0m[0m[1m[38;5;14m| [0m[0m        ("elevation_username_tip", [0m[0m[38;5;10mr"نام کاربری را به شکل کامل (کاربر یا دامنه\کاربر) وارد کنید"[0m[0m),[0m
+[0m    [0m[0m[1m[38;5;14m|[0m[0m                                    [0m[0m[38;5;10m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
---- summary ---
-applied: 129   already: 0   not found: 0   skipped: 2
+[0m[1m[38;5;11mwarning[0m[0m[1m[38;5;15m: the item `GetLastError` is imported redundantly[0m
+[0m    [0m[0m[1m[38;5;14m--> [0m[0msrc\platform\windows.rs:3248:26[0m
+[0m     [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m41[0m[0m   [0m[0m[1m[38;5;14m|[0m[0m [0m[0m        errhandlingapi::GetLastError,[0m
+[0m     [0m[0m[1m[38;5;14m| [0m[0m        [0m[0m[1m[38;5;14m----------------------------[0m[0m [0m[0m[1m[38;5;14mthe item `GetLastError` is already imported here[0m
+[0m[1m[38;5;14m...[0m
+[0m[1m[38;5;14m3248[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m        errhandlingapi::{GetLastError, SetLastError},[0m
+[0m     [0m[0m[1m[38;5;14m| [0m[0m                         [0m[0m[1m[38;5;11m^^^^^^^^^^^^[0m
+[0m     [0m[0m[1m[38;5;14m|[0m
+[0m     [0m[0m[1m[38;5;14m= [0m[0m[1m[38;5;15mnote[0m[0m: `#[warn(unused_imports)]` on by default[0m
 
-== leftover check (user-visible places only) ==
-  remaining: flutter/windows/runner/main.cpp:26: HINSTANCE hInstance = LoadLibraryA("librustdesk.dll");
-  remaining: flutter/windows/runner/main.cpp:29: std::cout << "Failed to load librustdesk.dll." << std::endl;
-  remaining: flutter/windows/runner/main.cpp:32: FUNC_RUSTDESK_CORE_MAIN rustdesk_core_main =
-  remaining: flutter/windows/runner/main.cpp:33: (FUNC_RUSTDESK_CORE_MAIN)GetProcAddress(hInstance, "rustdesk_core_main_args");
-  remaining: flutter/windows/runner/main.cpp:34: if (!rustdesk_core_main)
-  remaining: flutter/windows/runner/main.cpp:36: std::cout << "Failed to get rustdesk_core_main." << std::endl;
-  remaining: flutter/windows/runner/main.cpp:54: char** c_args = rustdesk_core_main(&args_len);
-  remaining: flutter/windows/runner/main.cpp:61: // std::cout << "RustDesk [" << args_str << "], core returns false, exiting w...
-  remaining: flutter/windows/runner/main.cpp:66: FUNC_RUSTDESK_IS_DISABLE_INSTALLATION rustdesk_is_disable_installation =
-  remaining: flutter/windows/runner/main.cpp:67: (FUNC_RUSTDESK_IS_DISABLE_INSTALLATION)GetProcAddress(hInstance, "rustdesk_is...
-  remaining: flutter/windows/runner/main.cpp:69: rustdesk_is_disable_installation && rustdesk_is_disable_installation() != 0;
-  remaining: flutter/windows/runner/main.cpp:74: // disabled. See: https://github.com/rustdesk/rustdesk-server-pro/issues/991#...
-  remaining: flutter/windows/runner/main.cpp:84: FUNC_RUSTDESK_GET_APP_NAME get_rustdesk_app_name = (FUNC_RUSTDESK_GET_APP_NAM...
-  remaining: flutter/windows/runner/main.cpp:85: if (get_rustdesk_app_name) {
-  remaining: flutter/windows/runner/main.cpp:87: if (get_rustdesk_app_name(app_name_buffer, 512) == 0) {
-  remaining: flutter/linux/my_application.cc:36: static const char* kSideButtonChannelName = "org.rustdesk.rustdesk/side_butto...
-  remaining: flutter/linux/my_application.cc:115: // try setting icon for rustdesk, which uses the system cache
-  remaining: flutter/linux/my_application.cc:185: "org.rustdesk.rustdesk/host",
+[0m[1m[38;5;11mwarning[0m[0m[1m[38;5;15m: the item `System` is imported redundantly[0m
+[0m    [0m[0m[1m[38;5;14m--> [0m[0msrc\platform\windows.rs:4196:9[0m
+[0m     [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m16[0m[0m   [0m[0m[1m[38;5;14m|[0m[0m [0m[0m    sysinfo::{Pid, System},[0m
+[0m     [0m[0m[1m[38;5;14m| [0m[0m                   [0m[0m[1m[38;5;14m------[0m[0m [0m[0m[1m[38;5;14mthe item `System` is already imported here[0m
+[0m[1m[38;5;14m...[0m
+[0m[1m[38;5;14m4196[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m    use hbb_common::sysinfo::System;[0m
+[0m     [0m[0m[1m[38;5;14m| [0m[0m        [0m[0m[1m[38;5;11m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
 
-NOTE: internal identifiers (RustDeskIdd, platform channels, librustdesk, service internals) are intentionally untouched; renaming them breaks the app.
-=== کنترل اعمال برند ===
-0
-total 24
-drwxr-xr-x 1 runneradmin 197121     0 Sep 21 18:40 .
-drwxr-xr-x 1 runneradmin 197121     0 Sep 21 18:40 ..
--rw-r--r-- 1 runneradmin 197121 16961 Sep 21 18:36 nrisp_id_panel.dart
-=== مرحلهٔ فارسی‌سازی و زیباسازی رابط کاربری ===
-سورس: D:\a\nrisp-remote\nrisp-remote\rustdesk-src
-[+] common.dart (پوستهٔ تیرهٔ نارنجی)   ->  21 تغییر
-[+] connection_page.dart (کارت اتصال درسان‌گونه)   ->  6 تغییر
-[+] tabbar_widget.dart (نام نرم‌افزار)   ->  1 تغییر
-[+] tabbar_widget.dart (import)
-[+] tabbar_widget.dart (رنگ نوار بالا)   ->  1 تغییر
-[+] desktop_home_page.dart (حذف نشان سازنده)   ->  1 تغییر
-[+] flutter/lib/desktop/pages/desktop_home_page.dart   ->  نشانی‌ها با نشانی موسسه عوض شد
-[+] flutter/lib/desktop/pages/desktop_setting_page.dart   ->  نشانی‌ها با نشانی موسسه عوض شد
-[+] flutter/lib/mobile/pages/settings_page.dart   ->  نشانی‌ها با نشانی موسسه عوض شد
-[+] src/lang/fa.rs (نام برند در ترجمه‌ها)   ->  23 متن اصلاح شد | باقی‌مانده: 0
-[+] common.dart (نشانی درباره)   ->  1 تغییر
-[+] connection_page.dart (نشانی صفحهٔ ارتقا)   ->  1 تغییر
-[+] install_page.dart (نشانی حریم خصوصی)   ->  1 تغییر
-[+] mobile/connection_page.dart (نشانی دریافت)   ->  1 تغییر
-[+] desktop_setting_page.dart (حق نشر)   ->  1 تغییر
-[+] index.tis (حق نشر)   ->  1 تغییر
-[+] auth_2fa.rs (نام صادرکننده)   ->  1 تغییر
-[-] desktop_home_page.dart (کارت نصب)   ->  از قبل درست
-[+] tabbar_widget.dart (دکمه‌های پنجره سمت راست)
-[+] desktop_setting_page.dart (شعار ساخت با عشق برداشته شد)
-[+] desktop_setting_page.dart (پیوند برداشته شد)
-[+] desktop_setting_page.dart (پیوند برداشته شد)
-[+] desktop_setting_page.dart (پیوندها و شعار پاک شد)
-[+] config.rs (حساب کاربری خاموش)   ->  1 تغییر
-[+] connection_page.dart (کارت اتصال: کادر روشن و دکمهٔ قرمز)   ->  3 مورد
-[+] tabbar_widget.dart (دکمه‌های پنجره سمت راست)
-[+] عنوان کارت اتصال (رنگ خوانا)
-[+] connection_page.dart (خوانایی متن و برداشتن متن پایین)   ->  3 مورد
-[+] libs/portable/src/main.rs (نصب بی‌صفحه)
-[+] libs/portable/src/main.rs (نصب مستقل از نام فایل)
-[+] src/core_main.rs (باز شدن پنجره پس از نصب)
-[+] src/ui_interface.rs (نصب مستقیم از کارت برنامه)
-[+] pubspec.yaml (فونت وزیرمتن)
-[+] common.dart (فونت پیش‌فرض)   ->  2 تغییر
-[+] main.dart (عنوان پنجره)
-[+] main.dart (جهت چیدمان چپ‌به‌راست)
-[+] منوی سه‌نقطه (جهت باز شدن و چیدمان)
-[+] اندازهٔ نوشته‌های صفحهٔ تنظیمات
-[-] line_height_fix   ->  لازم نیست (پشتیبان فونت کافی است)
-[+] Cargo.toml (شمارهٔ نسخه)   ->  1.5.2
-[+] Cargo.lock (شمارهٔ نسخه)   ->  1.5.2
-[+] fa.rs (راهنمای تماس صوتی)
-[+] کادر شناسهٔ گوشی (چپ‌به‌راست)   ->  1 تغییر
-[+] کادر شناسهٔ ویندوز (چپ‌به‌راست)   ->  1 تغییر
-[+] main.dart   ->  قلاب نمایش خطا اضافه شد
+[0m[1m[38;5;11mwarning[0m[0m[1m[38;5;15m: unused import: `is_installed`[0m
+[0m  [0m[0m[1m[38;5;14m--> [0m[0msrc\common.rs:40:69[0m
+[0m   [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m40[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m    ui_interface::{get_api_server as ui_get_api_server, get_option, is_installed, set_option},[0m
+[0m   [0m[0m[1m[38;5;14m| [0m[0m                                                                    [0m[0m[1m[38;5;11m^^^^^^^^^^^^[0m
 
---- خلاصه ---
-اعمال‌شده: 43   از قبل: 2   پیدا نشد: 0
-===== پایان گزارش کامپایل =====
-گزارش کامپایل ذخیره نشد
+[0m[1m[38;5;11mwarning[0m[0m[1m[38;5;15m: the item `Enum` is imported redundantly[0m
+[0m    [0m[0m[1m[38;5;14m--> [0m[0msrc\common.rs:2815:9[0m
+[0m     [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m24[0m[0m   [0m[0m[1m[38;5;14m|[0m[0m [0m[0m    protobuf::{Enum, Message as _},[0m
+[0m     [0m[0m[1m[38;5;14m| [0m[0m               [0m[0m[1m[38;5;14m----[0m[0m [0m[0m[1m[38;5;14mthe item `Enum` is already imported here[0m
+[0m[1m[38;5;14m...[0m
+[0m[1m[38;5;14m2815[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m    use hbb_common::protobuf::Enum;[0m
+[0m     [0m[0m[1m[38;5;14m| [0m[0m        [0m[0m[1m[38;5;11m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+
+[0m[1m[38;5;11mwarning[0m[0m[1m[38;5;15m: unused import: `bail`[0m
+[0m  [0m[0m[1m[38;5;14m--> [0m[0msrc\ui_cm_interface.rs:23:16[0m
+[0m   [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m23[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m    allow_err, bail,[0m
+[0m   [0m[0m[1m[38;5;14m| [0m[0m               [0m[0m[1m[38;5;11m^^^^[0m
+
+[0m[1m[38;5;11mwarning[0m[0m[1m[38;5;15m: use of deprecated function `hbb_common::base64::encode`: Use Engine::encode[0m
+[0m   [0m[0m[1m[38;5;14m--> [0m[0msrc\hbbs_http\sync.rs:188:52[0m
+[0m    [0m[0m[1m[38;5;14m|[0m
+[0m[1m[38;5;14m188[0m[0m [0m[0m[1m[38;5;14m|[0m[0m [0m[0m                        hash = hbb_common::base64::encode(&res[..]);[0m
+[0m    [0m[0m[1m[38;5;14m| [0m[0m                                                   [0m[0m[1m[38;5;11m^^^^^^[0m
+[0m    [0m[0m[1m[38;5;14m|[0m
+[0m    [0m[0m[1m[38;5;14m= [0m[0m[1m[38;5;15mnote[0m[0m: `#[warn(deprecated)]` on by default[0m
+
+[1m[33mwarning[0m[1m:[0m `rustdesk` (lib) generated 6 warnings
+[1m[31merror[0m[1m:[0m could not compile `rustdesk` (lib) due to previous error; 6 warnings emitted
+Error occurred when executing: `cargo build --locked --features hwcodec,vram,flutter --lib --release`. Exiting.
+features: ['hwcodec', 'vram', 'flutter']
+False
 ===== پایان گزارش بسته‌بندی =====
 گزارش بسته‌بندی ذخیره نشد
 ===== فهرست ریشهٔ کار =====
-total 61901
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:40 .
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 ..
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 .git
--rw-r--r-- 1 runneradmin 197121        8 Sep 21 18:36 .gitattributes
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 .github
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:38 969f6665-88a2-4c98-938e-ca9259871fec
--rw-r--r-- 1 runneradmin 197121    10112 Sep 21 18:36 README.md
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:40 branding
--rw-r--r-- 1 runneradmin 197121    18258 Sep 21 18:40 branding-log.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 bridge-files
--rw-r--r-- 1 runneradmin 197121    16064 Sep 21 18:40 ci-failure-windows.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 docs
--rwxr-xr-x 1 runneradmin 197121     1397 Sep 21 18:36 run.sh
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 rustdesk-src
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 server
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 tools
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:36 ui
--rw-r--r-- 1 runneradmin 197121     3475 Sep 21 18:40 vcpkg-log.txt
-drwxr-xr-x 1 runneradmin 197121        0 Sep 21 18:40 windows-x64-release
--rw-r--r-- 1 runneradmin 197121 63301215 Sep 21 18:40 windows-x64-release.zip
+total 62209
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 08:12 .
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 ..
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 .git
+-rw-r--r-- 1 runneradmin 197121        8 Sep 22 07:53 .gitattributes
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 .github
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:55 969f6665-88a2-4c98-938e-ca9259871fec
+-rw-r--r-- 1 runneradmin 197121    10112 Sep 22 07:53 README.md
+-rw-r--r-- 1 runneradmin 197121    11973 Sep 22 07:58 analyze-log.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:57 branding
+-rw-r--r-- 1 runneradmin 197121    18298 Sep 22 07:57 branding-log.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 bridge-files
+-rw-r--r-- 1 runneradmin 197121   234422 Sep 22 08:12 build-log.txt
+-rw-r--r-- 1 runneradmin 197121    45877 Sep 22 08:12 ci-failure-windows.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 docs
+-rwxr-xr-x 1 runneradmin 197121     1397 Sep 22 07:53 run.sh
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:59 rustdesk-src
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 server
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 tools
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:53 ui
+-rw-r--r-- 1 runneradmin 197121     3475 Sep 22 07:57 vcpkg-log.txt
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:56 windows-x64-release
+-rw-r--r-- 1 runneradmin 197121 63301215 Sep 22 07:56 windows-x64-release.zip
 ===== فهرست خروجی ساخت =====
 پوشهٔ خروجی ساخت نیست
 ===== فایل‌های اجرایی بسته‌بند =====
 ===== پوشهٔ هدف ریشه =====
-پوشهٔ هدف ریشه نیست
+total 87800
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 08:03 .
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 08:03 ..
+-rw-r--r-- 1 runneradmin 197121        0 Sep 22 07:59 .cargo-lock
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 08:03 .fingerprint
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 08:03 build
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 08:12 deps
+-rw-r--r-- 1 runneradmin 197121     2275 Sep 22 08:03 dylib_virtual_display.d
+-rwxr-xr-x 2 runneradmin 197121   309760 Sep 22 08:03 dylib_virtual_display.dll
+-rw-r--r-- 2 runneradmin 197121     2068 Sep 22 08:03 dylib_virtual_display.dll.exp
+-rw-r--r-- 2 runneradmin 197121     4010 Sep 22 08:03 dylib_virtual_display.dll.lib
+-rw-r--r-- 2 runneradmin 197121 88160574 Sep 22 08:03 dylib_virtual_display.lib
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:59 examples
+drwxr-xr-x 1 runneradmin 197121        0 Sep 22 07:59 incremental
+-rw-r--r-- 1 runneradmin 197121     2279 Sep 22 08:03 libdylib_virtual_display.d
+-rw-r--r-- 2 runneradmin 197121   313456 Sep 22 08:03 libdylib_virtual_display.rlib
 ===== فهرست پوشهٔ سورس =====
 total 465
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 .
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:40 ..
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 .cargo
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 .git
--rw-r--r-- 1 runneradmin 197121     12 Sep 21 18:36 .gitattributes
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 .github
--rw-r--r-- 1 runneradmin 197121   1018 Sep 21 18:36 .gitignore
--rw-r--r-- 1 runneradmin 197121    100 Sep 21 18:36 .gitmodules
--rw-r--r-- 1 runneradmin 197121   9595 Sep 21 18:36 AGENTS.md
--rw-r--r-- 1 runneradmin 197121     11 Sep 21 18:36 CLAUDE.md
--rw-r--r-- 1 runneradmin 197121 269026 Sep 21 18:40 Cargo.lock
--rw-r--r-- 1 runneradmin 197121  11832 Sep 21 18:40 Cargo.toml
--rw-r--r-- 1 runneradmin 197121   1753 Sep 21 18:36 Dockerfile
--rw-r--r-- 1 runneradmin 197121     10 Sep 21 18:36 GEMINI.md
--rw-r--r-- 1 runneradmin 197121  34523 Sep 21 18:36 LICENCE
--rw-r--r-- 1 runneradmin 197121   9916 Sep 21 18:36 README.md
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 appimage
--rwxr-xr-x 1 runneradmin 197121  57991 Sep 21 18:40 build.py
--rw-r--r-- 1 runneradmin 197121   3511 Sep 21 18:36 build.rs
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 docs
--rwxr-xr-x 1 runneradmin 197121    657 Sep 21 18:36 entrypoint.sh
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 examples
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 fastlane
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 flatpak
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 flutter
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 libs
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 res
-drwxr-xr-x 1 runneradmin 197121      0 Sep 21 18:36 src
--rw-r--r-- 1 runneradmin 197121   2043 Sep 21 18:36 vcpkg.json
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:59 .
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 08:12 ..
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 .cargo
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 .git
+-rw-r--r-- 1 runneradmin 197121     12 Sep 22 07:53 .gitattributes
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 .github
+-rw-r--r-- 1 runneradmin 197121   1018 Sep 22 07:53 .gitignore
+-rw-r--r-- 1 runneradmin 197121    100 Sep 22 07:53 .gitmodules
+-rw-r--r-- 1 runneradmin 197121   9595 Sep 22 07:53 AGENTS.md
+-rw-r--r-- 1 runneradmin 197121     11 Sep 22 07:53 CLAUDE.md
+-rw-r--r-- 1 runneradmin 197121 269026 Sep 22 07:57 Cargo.lock
+-rw-r--r-- 1 runneradmin 197121  11832 Sep 22 07:57 Cargo.toml
+-rw-r--r-- 1 runneradmin 197121   1753 Sep 22 07:53 Dockerfile
+-rw-r--r-- 1 runneradmin 197121     10 Sep 22 07:53 GEMINI.md
+-rw-r--r-- 1 runneradmin 197121  34523 Sep 22 07:53 LICENCE
+-rw-r--r-- 1 runneradmin 197121   9916 Sep 22 07:53 README.md
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 appimage
+-rwxr-xr-x 1 runneradmin 197121  60963 Sep 22 07:57 build.py
+-rw-r--r-- 1 runneradmin 197121   3511 Sep 22 07:53 build.rs
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 docs
+-rwxr-xr-x 1 runneradmin 197121    657 Sep 22 07:53 entrypoint.sh
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 examples
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 fastlane
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 flatpak
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:57 flutter
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 libs
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 07:53 res
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 08:11 src
+drwxr-xr-x 1 runneradmin 197121      0 Sep 22 08:03 target
 
