@@ -441,25 +441,94 @@ FA_APP_NAME = 'دسترسی راه دور موسسه'
 
 # متن‌هایی که ترجمهٔ اصلی راست‌دسک در فارسی جابه‌جا/نادرست است و مستقیم اصلاح می‌شوند
 FA_TEXT_OVERRIDES = {
+    'ID/Relay Server': 'سرور شناسه و رله',
+    'Relay Server': 'سرور رله',
+    'API Server': 'سرور API',
+    'Your new ID': 'شناسهٔ جدید شما',
+    'Socks5 Proxy': 'پروکسی Socks5',
+    'Socks5/Http(s) Proxy': 'پروکسی Socks5/Http',
+    'RDP Settings': 'تنظیمات RDP',
+    'Direct IP Access': 'دسترسی مستقیم',
+    'Enable direct IP access': 'دسترسی مستقیم را فعال کنید',
+    'IP Whitelisting': 'فهرست مجاز',
+    'Use IP Whitelisting': 'استفاده از فهرست مجاز',
+    'Invalid IP': 'نشانی وارد\u200cشده نامعتبر است',
+    'whitelist_tip': 'فقط نشانی\u200cهای فهرست مجاز می\u200cتوانند به این دسکتاپ متصل شوند',
+    'whitelist_cidr_tip': 'نمونهٔ الگوی شبکهٔ مجاز: 192.168.1.0/24',
+    'id_whitelist_caveat_tip': 'شناسه توسط کلاینت متصل\u200cشونده گزارش می\u200cشود',
+    'id_input_tip': 'برای دسترسی به سرورهای عمومی نیازی به کلید نیست؛ نمونه: <id>@public',
+    'TCP tunneling': 'تانل TCP',
+    'Enable TCP tunneling': 'فعال\u200cسازی تانل TCP',
+    'Disable UDP': 'غیرفعال\u200cکردن UDP',
+    'Use WebSocket': 'استفاده از WebSocket',
+    'websocket_tip': 'فقط اتصال از طریق رله پشتیبانی می\u200cشود (WebSocket)',
+    'Enable RDP session sharing': 'فعال\u200cسازی اشتراک\u200cگذاری نشست RDP',
+    'Legacy mode': 'حالت قدیمی',
+    'Map mode': 'حالت نقشهٔ کلید',
+    'Relay Connection': 'اتصال از طریق رله',
+    'Relayed and encrypted connection': 'اتصال از طریق رله و رمزگذاری\u200cشده',
+    'Relayed and unencrypted connection': 'اتصال از طریق رله و بدون رمزگذاری',
+    'Always connect via relay': 'همیشه از طریق رله متصل شو',
+    'Failed to connect to relay server': 'اتصال به سرور رله برقرار نشد',
+    'Failed to connect via relay server': 'اتصال از طریق سرور رله انجام نشد',
+    'Please wait for confirmation of UAC...': 'منتظر تأیید کاربر بمانید…',
+    'wait_accept_uac_tip': 'منتظر بمانید تا کاربر سمت راه دور درخواست دسترسی را بپذیرد.',
+    'accept_and_elevate_btn_tooltip': 'اتصال را بپذیرید و دسترسی مدیر بدهید',
+    'Capture screen using DirectX': 'تصویربرداری از صفحه با DirectX',
+    'Use D3D rendering': 'استفاده از رندر D3D',
+    'd3d_render_tip': 'فعال\u200cکردن رندر D3D برای کارکرد بهتر',
+    'Adaptive bitrate': 'نرخ بیت تطبیقی',
+    'Enable IPv6 P2P connection': 'فعال\u200cسازی اتصال همتا\u200cبه\u200cهمتا IPv6',
+    'Enable WebRTC P2P connection': 'فعال\u200cسازی اتصال همتا\u200cبه\u200cهمتا WebRTC',
+    'Enable UDP hole punching': 'فعال\u200cسازی تکنیک سوراخ\u200cکنی UDP',
+    'Enable TCP hole punching': 'فعال\u200cسازی تکنیک سوراخ\u200cکنی TCP',
+    'API Token': 'توکن API',
+    'Fingerprint': 'اثر انگشت',
+    'HSV Color': 'رنگ HSV',
+    'Remove wallpaper during incoming sessions': 'حذف تصویر پس\u200cزمینه در جلسه\u200cهای ورودی',
+    'Allow insecure TLS fallback': 'اجازهٔ جایگزینی ناامن TLS',
+    'allow-insecure-tls-fallback-tip': 'به\u200cطور پیش\u200cفرض گواهی سرور بررسی می\u200cشود؛ با فعال\u200cکردن این گزینه، در نبود گواهی معتبر اتصال برقرار می\u200cماند.',
+    'disable-udp-tip': 'تعیین می\u200cکند اتصال فقط از طریق TCP انجام شود یا نه.',
+    'default_proxy_tip': 'پیش\u200cفرض، پروکسی Sock5 روی پورت ۱۰۸۰ است',
+    'elevation_username_tip': 'نام کاربری را به شکل کامل (کاربر یا دامنه\\کاربر) وارد کنید',
+    'enable-2fa-desc': 'بارکد را اسکن کنید و کد نمایش\u200cداده\u200cشده در برنامه را وارد کنید',
+       'relay_hint_tip': 'در صورت نیاز شناسه را دستی وارد کنید یا گزینهٔ اتصال همیشگی از طریق رله را فعال کنید',
+    'invalid_http': 'نشانی نامعتبر است؛ نمونه: https://example.com',
+ 'length %min% to %max%': 'طول باید بین %min% و %max% باشد',
+    'config_acc': 'برای کنترل دسکتاپ از راه دور، اجازهٔ دسترس\u200cپذیری را بدهید.',
+    'config_screen': 'برای کنترل دسکتاپ از راه دور، اجازهٔ تصویربرداری از صفحه را بدهید.',
+    'config_input': 'برای کنترل دسکتاپ با صفحه\u200cکلید، اجازهٔ پایش ورودی را بدهید.',
+    'config_microphone': 'برای صحبت در تماس صوتی، اجازهٔ ضبط صدا را بدهید.',
+    'install_tip': 'برای راحتی استفاده، برنامه را نصب کنید و پنجرهٔ تأیید ویندوز را بپذیرید.',
+    'still_click_uac_tip': 'کاربر سمت راه دور همچنان باید پنجرهٔ تأیید را بپذیرد.',
+    'verify_rustdesk_password_tip': 'رمز عبور برنامه را تأیید کنید',
+    'allow-only-conn-window-open-tip': 'اتصال فقط زمانی برقرار می\u200cشود که این پنجره باز باشد',
+    'floating_window_tip': 'به فعال\u200cماندن سرویس در پس\u200cزمینه کمک می\u200cکند',
+    'server-oss-not-support-tip': 'توجه: سرور عمومی این ویژگی را ندارد.',
+    'android_input_permission_tip1': 'برای کنترل دستگاه با ماوس یا لمس، اجازهٔ دسترس\u200cپذیری را به برنامه بدهید.',
+    'android_input_permission_tip2': 'در تنظیمات اندروید به بخش دسترس\u200cپذیری بروید و گزینهٔ ورودی برنامه را روشن کنید.',
+    'android_start_service_tip': 'برای شروع، دکمهٔ شروع سرویس را بزنید و اجازهٔ تصویربرداری از صفحه را بدهید.',
+    'upgrade_remote_rustdesk_client_to_{}_tip': 'لطفاً برنامه را در سمت راه دور به نسخهٔ {} یا جدیدتر ارتقا دهید',
+    'upgrade_rustdesk_server_pro_to_{}_tip': 'لطفاً سرور را به نسخهٔ {} یا جدیدتر ارتقا دهید',
     'About RustDesk': 'دربارهٔ دسترسی راه دور موسسه',
     'Show RustDesk': 'نمایش پنجرهٔ برنامه',
-    'Keep RustDesk background service': 'سرویس دسترسی راه دور در پس‌زمینه فعال بماند',
-    'floating_window_tip': 'به فعال‌ماندن سرویس در پس‌زمینه کمک می‌کند',
-    'config_acc': 'برای کنترل دسکتاپ از راه دور، باید به برنامه مجوز «access» بدهید.',
-    'config_screen': 'برای کنترل دسکتاپ از راه دور، باید به برنامه مجوز «screenshot» بدهید.',
-    'config_input': 'برای کنترل دسکتاپ با صفحه‌کلید، باید به برنامه مجوز «Input Monitoring» بدهید.',
-    'config_microphone': 'برای صحبت در تماس صوتی، باید به برنامه مجوز «Record Audio» بدهید.',
-    'install_tip': 'برای راحتی استفاده، برنامه را نصب کنید و پنجرهٔ UAC را تأیید کنید.',
-    'still_click_uac_tip': 'کاربر سمت راه دور همچنان باید روی OK در پنجرهٔ UAC کلیک کند.',
-    'verify_rustdesk_password_tip': 'رمز عبور برنامه را تأیید کنید',
-    'allow-only-conn-window-open-tip': 'اتصال فقط زمانی برقرار می‌شود که این پنجره باز باشد',
-    'server-oss-not-support-tip': 'توجه: سرور عمومی این ویژگی را ندارد.',
-    'android_input_permission_tip1': 'برای اینکه دستگاه از راه دور با ماوس یا لمس کنترل شود، باید به برنامه اجازهٔ «Accessibility» بدهید.',
-    'android_input_permission_tip2': 'در تنظیمات اندروید به بخش «Accessibility» بروید، «Installed Services» را باز کنید و «NRISP Input» را روشن کنید.',
-    'upgrade_remote_rustdesk_client_t': 'لطفاً برنامه را در سمت راه دور به نسخهٔ {} یا جدیدتر ارتقا دهید',
-    'RustDesk cannot reach the desktop session': 'برنامه نمی‌تواند به نشست میزکار دستگاه راه دور دسترسی پیدا کند؛ بررسی کنید که نشست میزکار در حال اجرا باشد.',
-    'RustDesk could not obtain a usable desktop': 'برنامه نتوانست از XDG Desktop Portal صفحهٔ قابل استفاده بگیرد؛ ممکن است کتابخانهٔ PipeWire نصب نباشد.',
-    'RustDesk could not load a GStreamer': 'برنامه نتوانست مؤلفهٔ GStreamer لازم برای ضبط صفحه را بارگذاری کند.',
+    'Keep RustDesk background service': 'سرویس دسترسی راه دور در پس\u200cزمینه فعال بماند',
+    'RustDesk cannot reach the desktop session on the remote device, check that a desktop session is running and that RustDesk can use it': 'برنامه نمی\u200cتواند به نشست میزکار دستگاه راه دور دسترسی پیدا کند؛ بررسی کنید نشست میزکار در حال اجرا باشد.',
+    'RustDesk could not obtain a usable screen from the XDG Desktop Portal, the PipeWire library may be too old': 'برنامه نتوانست صفحهٔ قابل استفاده\u200cای بگیرد؛ ممکن است سرویس درگاه میزکار نصب یا فعال نباشد.',
+    'RustDesk could not load a GStreamer component needed for screen capture ({})': 'برنامه نتوانست مؤلفهٔ لازم برای ضبط صفحه را بارگذاری کند.',
+    'x11 expected': 'نیازمند X11',
+    'wayland-requires-higher-linux-version': 'نیازمند نسخهٔ بالاتر لینوکس است؛ یا X11 را انتخاب کنید',
+    'xdp-portal-unavailable': 'ضبط صفحه ناموفق بود؛ سرویس درگاه میزکار از کار افتاده است',
+    'wayland_experiment_tip': 'پشتیبانی Wayland آزمایشی است؛ در صورت نیاز به دسترسی بهتر X11 را انتخاب کنید',
+    'software_render_tip': 'اگر کارت گرافیک Nvidia دارید و پنجرهٔ راه دور بسته می\u200cشود، حالت رندر نرم\u200cافزاری را انتخاب کنید',
+    'selinux_tip': 'سرویس امنیتی سیستم روی دستگاه شما فعال است و ممکن است جلوِ کار برنامه را بگیرد',
+    'Clear Wayland screen selection': 'پاک کردن انتخاب صفحه',
+    'Login screen using Wayland is not supported': 'ورود به سیستم با Wayland پشتیبانی نمی\u200cشود',
+    'empty_recent_tip': 'هیچ جلسهٔ اخیری وجود ندارد!\nزمان برنامه\u200cریزی جلسهٔ جدید است',
+    'empty_favorite_tip': 'هنوز همتای مورد علاقه\u200cای ندارید؟\nبیایید فردی را برای ارتباط پیدا کنیم',
+    'Your ip is blocked by the peer': 'نشانی شما توسط طرف مقابل مسدود شده است',
+    'conn-e2ee-unavailable-tip': 'رمزنگاری سرتاسری قابل تأیید نیست.\nممکن است دستگاه راه دور هنوز آماده نشده باشد.',
+    'ubuntu-21-04-required': 'نیازمند نسخهٔ جدیدتر سیستم\u200cعامل است',
 }
 
 
@@ -751,34 +820,73 @@ def bump_version(repo: Path):
 
 
 def window_buttons(repo: Path):
-    """دکمه‌های کوچک/بزرگ/بستن پنجره همیشه بالا-راست می‌مانند.
+    """دکمه‌های کوچک/بزرگ/بستن مثل همهٔ برنامه‌های ویندوز بالا-راست می‌مانند.
 
-    فقط «ردیف دکمه‌های پنجره» چپ‌به‌راست می‌شود؛ جهت پایهٔ متن صفحه دست‌نخورده
-    می‌ماند تا جمله‌های فارسی همه راست‌به‌چپ بمانند.
+    تنها «نوار بالای پنجره» چپ‌به‌راست می‌شود تا دکمه‌ها سمت راست بنشینند؛
+    محتوای صفحه (متن‌ها و تنظیمات) دست‌نخورده و راست‌به‌چپ فارسی می‌ماند.
     """
     p = repo / 'flutter/lib/desktop/widgets/tabbar_widget.dart'
     if not p.exists():
         note(MISS, 'tabbar_widget.dart', 'فایل نیست')
         return
     src = read(p)
+    old = """  Widget _buildBar() {
+    final isIncomingHomePage = bind.isIncomingOnly() && isInHomePage();
+    return Row(
+      children: ["""
+    new = """  Widget _buildBar() {
+    final isIncomingHomePage = bind.isIncomingOnly() && isInHomePage();
+    // NRISP: نوار بالای پنجره چپ‌به‌راست است تا دکمه‌ها بالا-راست بمانند
+    return Row(
+      textDirection: TextDirection.ltr,
+      children: ["""
+    done = 0
+    if old in src:
+        src = src.replace(old, new, 1)
+        done += 1
+    elif 'return Row(\n      textDirection: TextDirection.ltr,\n      children: [' in src:
+        done += 1
+    else:
+        note(MISS, 'tabbar_widget.dart (_buildBar)', 'قطعه پیدا نشد')
+    # ترتیب آیکون‌های داخل ردیف دکمه‌ها هم چپ‌به‌راست استاندارد بماند
+    # داخل ناحیهٔ تب‌ها راست‌به‌چپ بماند (متن تب‌ها مثل بقیهٔ صفحه)
+    t_old = """        Expanded(
+            child: GestureDetector("""
+    t_new = """        Expanded(
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: GestureDetector("""
+    c_old = """                  ],
+                ))),
+        // hide simulated action buttons"""
+    c_new = """                  ],
+                )))),
+        // hide simulated action buttons"""
+    if t_old in src:
+        src = src.replace(t_old, t_new, 1).replace(c_old, c_new, 1)
+        done += 1
+    elif t_new in src:
+        done += 1
+    else:
+        note(MISS, 'tabbar_widget.dart (ناحیهٔ تب‌ها)', 'قطعه پیدا نشد')
     marker = """  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: ["""
-    new = """  Widget build(BuildContext context) {
-    // NRISP: فقط ردیف دکمه‌های پنجره چپ‌به‌راست است تا بالا-راست بمانند
+    add = """  Widget build(BuildContext context) {
     return Row(
       textDirection: TextDirection.ltr,
       mainAxisAlignment: MainAxisAlignment.end,
       children: ["""
     if marker in src:
-        src = src.replace(marker, new, 1)
-        write(p, src)
-        note(OK, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)')
-    elif new in src:
-        note(SKIP, 'tabbar_widget.dart (دکمه‌های پنجره سمت راست)', 'از قبل اعمال شده')
+        src = src.replace(marker, add, 1)
+        done += 1
+    elif add in src:
+        done += 1
     else:
-        note(MISS, 'tabbar_widget.dart (دکمه‌های پنجره)', 'قطعه پیدا نشد')
+        note(MISS, 'tabbar_widget.dart (ردیف دکمه‌ها)', 'قطعه پیدا نشد')
+    write(p, src)
+    note(OK if done >= 1 else MISS, 'tabbar_widget.dart (دکمه‌های پنجره بالا-راست)')
 
 
 def remove_extras(repo: Path):
